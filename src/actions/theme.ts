@@ -8,7 +8,14 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const themeSchema = z.object({
-  templateId: z.enum(["simple_professional", "fancy_creative", "bento_grid"]),
+  templateId: z.enum([
+    "simple_professional",
+    "fancy_creative",
+    "bento_grid",
+    "developer_terminal",
+    "minimal_swiss",
+    "aurora_studio",
+  ]),
   colorPalette: z.enum(["slate", "emerald", "neon", "terracotta", "ocean"]),
   fontFamily: z.enum(["sans", "serif", "mono"]).default("sans"),
   seoTitle: z.string().optional(),

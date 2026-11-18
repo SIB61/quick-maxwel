@@ -441,6 +441,38 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                   </div>
                 )}
 
+                {templateId === "developer_terminal" && (
+                  <div className="space-y-2 py-1 font-mono text-[10px]">
+                    <div className="flex items-center gap-1.5 pb-1 border-b border-zinc-900">
+                      <div className="h-2 w-2 rounded-full bg-[#ff5f56]" />
+                      <div className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
+                      <div className="h-2 w-2 rounded-full bg-[#27c93f]" />
+                      <span className="text-[9px] text-zinc-500 font-mono ml-1">terminal (zsh)</span>
+                    </div>
+                    <div className="space-y-1 text-zinc-300">
+                      <div className="flex items-center gap-1 text-[9px]">
+                        <span style={{ color: activePalette.accentHex }}>➜</span>
+                        <span className="text-cyan-400">~</span>
+                        <span>whoami --detailed</span>
+                      </div>
+                      <div className="p-2 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-0.5">
+                        <div className="font-bold text-zinc-100">{user.name}</div>
+                        <div className="text-[9px]" style={{ color: activePalette.accentHex }}>
+                          {user.headline || "Systems Engineer"}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 text-[9px] pt-1">
+                        <span style={{ color: activePalette.accentHex }}>➜</span>
+                        <span className="text-cyan-400">~/writings</span>
+                        <span>ls -lh</span>
+                      </div>
+                      <div className="text-[9px] text-zinc-500 pl-2">
+                        -rw-r--r-- 1 {user.handle} articles.log
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Footer preview note */}
                 <div className="pt-2 border-t border-zinc-900 flex items-center justify-between text-[10px] text-zinc-500">
                   <span>Font: {fontFamily}</span>

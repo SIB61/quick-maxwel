@@ -1,4 +1,8 @@
-export type TemplateId = "simple_professional" | "fancy_creative" | "bento_grid";
+export type TemplateId =
+  | "simple_professional"
+  | "fancy_creative"
+  | "bento_grid"
+  | "developer_terminal";
 export type ColorPalette = "slate" | "emerald" | "neon" | "terracotta" | "ocean";
 export type FontFamily = "sans" | "serif" | "mono";
 
@@ -49,6 +53,15 @@ export const TEMPLATES: Record<TemplateId, TemplateConfig> = {
       "Apple and Linear inspired bento-box grid organizing bio, projects, achievements, and availability into tactile interactive tiles.",
     tags: ["Bento Box", "Grid UI", "High Density", "Interactive"],
     recommendedFor: "Full-Stack Devs, Indie Hackers, Multidisciplinary Creators",
+  },
+  developer_terminal: {
+    id: "developer_terminal",
+    name: "Developer Terminal",
+    tagline: "Unix console, command line tabs, and hacker aesthetics",
+    description:
+      "Authentic macOS/Linux terminal environment featuring tabbed console navigation, command prompts, git log trees, and shell execution workflows.",
+    tags: ["Terminal", "CLI", "Developer", "Monospace"],
+    recommendedFor: "Backend Engineers, Systems Programmers, DevOps, CLI Enthusiasts",
   },
 };
 
