@@ -3,7 +3,8 @@ export type TemplateId =
   | "fancy_creative"
   | "bento_grid"
   | "developer_terminal"
-  | "minimal_swiss";
+  | "minimal_swiss"
+  | "aurora_studio";
 export type ColorPalette = "slate" | "emerald" | "neon" | "terracotta" | "ocean";
 export type FontFamily = "sans" | "serif" | "mono";
 
@@ -72,6 +73,15 @@ export const TEMPLATES: Record<TemplateId, TemplateConfig> = {
       "High-contrast editorial layout inspired by classic Swiss graphic design, bold oversized titles, numbered stage indicators, and architectural rules.",
     tags: ["Swiss", "Editorial", "Typography", "Bauhaus", "Minimal"],
     recommendedFor: "Design Engineers, Creative Directors, Architects, Minimalists",
+  },
+  aurora_studio: {
+    id: "aurora_studio",
+    name: "Aurora Studio",
+    tagline: "Spatial glassmorphism, multi-layered aurora flares, and luxury agency aesthetics",
+    description:
+      "A high-end modern studio layout featuring vibrant ambient aurora lighting, translucent frosted panels, metallic borders, and floating glass capsules.",
+    tags: ["Aurora", "Glassmorphism", "Spatial", "Agency", "Modern"],
+    recommendedFor: "Tech Founders, AI Architects, Product Designers, Design Technologists",
   },
 };
 

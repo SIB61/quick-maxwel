@@ -4,6 +4,7 @@ import FancyCreativeTemplate from "./fancy-creative";
 import BentoGridTemplate from "./bento-grid";
 import DeveloperTerminalTemplate from "./developer-terminal";
 import MinimalSwissTemplate from "./minimal-swiss";
+import AuroraStudioTemplate from "./aurora-studio";
 
 export default function PortfolioDispatcher({ portfolio }: { portfolio: PortfolioUser }) {
   const templateId = portfolio.settings?.templateId || "simple_professional";
@@ -17,6 +18,8 @@ export default function PortfolioDispatcher({ portfolio }: { portfolio: Portfoli
       return <DeveloperTerminalTemplate portfolio={portfolio} />;
     case "minimal_swiss":
       return <MinimalSwissTemplate portfolio={portfolio} />;
+    case "aurora_studio":
+      return <AuroraStudioTemplate portfolio={portfolio} />;
     case "simple_professional":
     default:
       return <SimpleProfessionalTemplate portfolio={portfolio} />;

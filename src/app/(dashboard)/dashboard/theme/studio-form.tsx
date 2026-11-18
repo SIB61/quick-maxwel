@@ -499,6 +499,34 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                   </div>
                 )}
 
+                {templateId === "aurora_studio" && (
+                  <div className="space-y-2 py-1 text-[10px] relative">
+                    <div
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full blur-xl opacity-30 pointer-events-none"
+                      style={{ background: `radial-gradient(circle, ${activePalette.accentHex}, #8b5cf6)` }}
+                    />
+                    <div className="relative p-2.5 rounded-xl bg-zinc-900/40 border border-white/10 backdrop-blur-md space-y-1.5 shadow-lg">
+                      <div className="flex items-center justify-between text-[8px]">
+                        <span className="flex items-center gap-1 text-zinc-300">
+                          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activePalette.accentHex }} />
+                          <span>Spatial Studio</span>
+                        </span>
+                        <span className="text-[8px] font-mono text-zinc-500">ENGAGEMENTS OPEN</span>
+                      </div>
+                      <div className="space-y-0.5">
+                        <div className="font-extrabold text-xs text-white tracking-tight">{user.name}</div>
+                        <div className="text-[9px] font-medium" style={{ color: activePalette.accentHex }}>
+                          {user.headline || "Strategic Architect"}
+                        </div>
+                      </div>
+                      <div className="pt-1 border-t border-white/10 flex items-center justify-between text-[8px] text-zinc-400">
+                        <span>High-Leverage Systems</span>
+                        <span style={{ color: activePalette.accentHex }}>Explore &rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Footer preview note */}
                 <div className="pt-2 border-t border-zinc-900 flex items-center justify-between text-[10px] text-zinc-500">
                   <span>Font: {fontFamily}</span>
