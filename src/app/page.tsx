@@ -41,7 +41,7 @@ export default async function HomePage() {
               Portfolio<span className="text-emerald-400">Builder</span>
             </span>
             <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs py-0.5 px-2">
-              v0.2.0 • Phase 2
+              v0.3.0 • Phase 3
             </Badge>
           </div>
 
@@ -195,16 +195,16 @@ export default async function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-zinc-900/40 border-zinc-800 rounded-2xl p-6 py-6 gap-0 space-y-2">
+          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
             <CardHeader className="p-0 space-y-1">
-              <div className="flex items-center gap-2 text-purple-400 text-xs font-semibold uppercase tracking-wider">
-                <Palette className="h-4 w-4" />
-                Workflow 3 (Next)
+              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                <CheckCircle2 className="h-4 w-4" />
+                Workflow 3 (Completed)
               </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">CRUD Management</CardTitle>
+              <CardTitle className="text-base text-zinc-100 font-bold">CRUD & Admin Dashboard</CardTitle>
             </CardHeader>
             <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Admin forms for creating, editing, and toggling featured items for articles, experiences, services, and events.
+              Complete management and edit suites for articles, experience, achievements, services, events, and inbox.
             </CardContent>
           </Card>
         </div>
