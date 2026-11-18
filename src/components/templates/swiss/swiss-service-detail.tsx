@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SwissServiceDetail({
   portfolio,
@@ -72,9 +73,10 @@ export function SwissServiceDetail({
           <div className="text-xs font-mono tracking-widest uppercase text-zinc-500">
             METHODOLOGY &amp; EXECUTION ARCHITECTURE
           </div>
-          <p className="text-base text-zinc-300 font-light leading-relaxed whitespace-pre-wrap">
-            {service.fullDescription}
-          </p>
+          <RichContentDisplay
+            content={service.fullDescription}
+            className="text-base text-zinc-300 font-light leading-relaxed"
+          />
         </section>
       )}
 

@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, Mail, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function FancyServiceDetail({
   portfolio,
@@ -80,9 +81,10 @@ export function FancyServiceDetail({
             <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
               Methodology &amp; Scope
             </h2>
-            <p className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed whitespace-pre-wrap">
-              {service.fullDescription}
-            </p>
+            <RichContentDisplay
+              content={service.fullDescription}
+              className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed"
+            />
           </div>
         )}
 

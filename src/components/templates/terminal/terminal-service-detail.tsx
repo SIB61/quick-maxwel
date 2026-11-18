@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, Sparkles, Terminal as TerminalIcon } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalServiceDetail({
   portfolio,
@@ -65,9 +66,10 @@ export function TerminalServiceDetail({
               <span className="text-zinc-500 text-xs font-bold uppercase tracking-wider">
                 /* EXECUTIVE_SUMMARY */
               </span>
-              <p className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
-                {service.fullDescription || service.shortDescription}
-              </p>
+              <RichContentDisplay
+                content={service.fullDescription || service.shortDescription}
+                className="font-mono text-zinc-300 text-sm leading-relaxed"
+              />
             </div>
 
             {service.deliverables && service.deliverables.length > 0 && (

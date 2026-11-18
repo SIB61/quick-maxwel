@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleServiceDetail({
   portfolio,
@@ -59,9 +60,10 @@ export function SimpleServiceDetail({
             <h2 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               Scope of Work &amp; Execution
             </h2>
-            <div className="text-sm sm:text-base text-zinc-200 leading-relaxed whitespace-pre-wrap">
-              {service.fullDescription}
-            </div>
+            <RichContentDisplay
+              content={service.fullDescription}
+              className="text-sm sm:text-base text-zinc-200 leading-relaxed font-sans"
+            />
           </div>
         )}
 
