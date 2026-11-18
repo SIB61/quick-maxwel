@@ -19,12 +19,12 @@ export default async function DashboardInboxPage() {
   const unreadCount = messages.filter((m) => !m.isRead).length;
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50 flex items-center gap-2.5">
-            <Inbox className="h-7 w-7 text-emerald-400" />
+            <Inbox className="h-7 w-7 text-sky-400" />
             <span>Inquiries & Messages</span>
           </h1>
           <p className="text-sm text-zinc-400 mt-1">
@@ -34,8 +34,8 @@ export default async function DashboardInboxPage() {
 
         <div className="flex items-center gap-2">
           {unreadCount > 0 ? (
-            <Badge variant="outline" className="h-9 px-3.5 rounded-xl border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-semibold">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-pulse" />
+            <Badge variant="outline" className="h-9 px-3.5 rounded-xl border-sky-500/30 bg-sky-500/10 text-sky-400 text-xs font-semibold">
+              <span className="h-2 w-2 rounded-full bg-sky-400 mr-2 animate-pulse" />
               {unreadCount} Unread {unreadCount === 1 ? "Message" : "Messages"}
             </Badge>
           ) : (
@@ -74,7 +74,7 @@ export default async function DashboardInboxPage() {
               <Card
                 key={msg.id}
                 className={`bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-5 gap-0 transition-all space-y-4 ${
-                  !msg.isRead ? "ring-1 ring-emerald-500/20 bg-zinc-900/80" : ""
+                  !msg.isRead ? "ring-1 ring-sky-500/20 bg-zinc-900/80" : ""
                 }`}
               >
                 {/* Top Row: Sender Info & Status */}
@@ -87,14 +87,14 @@ export default async function DashboardInboxPage() {
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-sm text-zinc-100">{msg.senderName}</span>
                         {!msg.isRead && (
-                          <Badge className="bg-emerald-500 text-black font-semibold text-[10px] px-2 py-0.5 rounded-full">
+                          <Badge className="bg-sky-500 text-black font-semibold text-[10px] px-2 py-0.5 rounded-full">
                             NEW
                           </Badge>
                         )}
                       </div>
                       <a
                         href={`mailto:${msg.senderEmail}?subject=Re: ${encodeURIComponent(msg.subject || "Your Inquiry")}`}
-                        className="text-xs text-zinc-400 hover:text-emerald-400 transition-colors"
+                        className="text-xs text-zinc-400 hover:text-sky-400 transition-colors"
                       >
                         {msg.senderEmail}
                       </a>
@@ -123,7 +123,7 @@ export default async function DashboardInboxPage() {
                 <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
                   <a
                     href={`mailto:${msg.senderEmail}?subject=Re: ${encodeURIComponent(msg.subject || "Your Inquiry")}`}
-                    className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 font-semibold"
+                    className="inline-flex items-center gap-1.5 text-xs text-sky-400 hover:text-sky-300 font-semibold"
                   >
                     <Mail className="h-3.5 w-3.5" />
                     <span>Reply via Email</span>
@@ -144,7 +144,7 @@ export default async function DashboardInboxPage() {
                           </>
                         ) : (
                           <>
-                            <MailOpen className="h-3 w-3 mr-1.5 text-emerald-400" />
+                            <MailOpen className="h-3 w-3 mr-1.5 text-sky-400" />
                             <span>Mark Read</span>
                           </>
                         )}

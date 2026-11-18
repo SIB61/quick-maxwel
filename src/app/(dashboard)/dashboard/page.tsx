@@ -70,8 +70,8 @@ export default async function DashboardOverviewPage() {
       count: experiencesCount?.count || 0,
       icon: Briefcase,
       href: "/dashboard/experience",
-      color: "text-emerald-400",
-      bg: "bg-emerald-500/10 border-emerald-500/20",
+      color: "text-sky-400",
+      bg: "bg-sky-500/10 border-sky-500/20",
       addHref: "/dashboard/experience/new",
     },
     {
@@ -126,19 +126,19 @@ export default async function DashboardOverviewPage() {
     "Simple Professional";
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
+    <div className="w-full space-y-8">
       {/* Welcome & Public Link Card */}
       <div className="p-6 sm:p-8 rounded-3xl bg-zinc-900/60 border border-zinc-800/80 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
-                className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 text-xs py-0.5 px-2.5 font-medium flex items-center gap-1.5"
+                className="text-sky-400 border-sky-500/30 bg-sky-500/10 text-xs py-0.5 px-2.5 font-medium flex items-center gap-1.5"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse" />
                 <span>Live Portfolio Active</span>
               </Badge>
               <span className="text-xs font-mono text-zinc-400">/{user.handle}</span>
@@ -167,7 +167,7 @@ export default async function DashboardOverviewPage() {
 
             <Button
               asChild
-              className="h-11 px-4 sm:px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs sm:text-sm font-bold transition-all shadow-md shadow-emerald-500/20"
+              className="h-11 px-4 sm:px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs sm:text-sm font-bold transition-all shadow-md shadow-sky-500/20"
             >
               <a href={`/${user.handle}`} target="_blank" rel="noopener noreferrer">
                 <span>View Public Portfolio</span>
@@ -197,7 +197,7 @@ export default async function DashboardOverviewPage() {
                     <div className={`p-2.5 rounded-xl border ${item.bg}`}>
                       <Icon className={`h-4 w-4 ${item.color}`} />
                     </div>
-                    <ArrowRight className="h-3.5 w-3.5 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
+                    <ArrowRight className="h-3.5 w-3.5 text-zinc-600 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-all" />
                   </div>
 
                   <div>
@@ -226,7 +226,7 @@ export default async function DashboardOverviewPage() {
             </div>
             <Link
               href="/dashboard/inbox"
-              className="text-xs text-emerald-400 hover:underline font-semibold flex items-center gap-1"
+              className="text-xs text-sky-400 hover:underline font-semibold flex items-center gap-1"
             >
               <span>View All Inquiries</span>
               <ArrowRight className="h-3 w-3" />
@@ -250,7 +250,7 @@ export default async function DashboardOverviewPage() {
                       })}
                     </span>
                   </div>
-                  <div className="text-xs font-medium text-emerald-400">
+                  <div className="text-xs font-medium text-sky-400">
                     {inquiry.subject || "Direct Portfolio Inquiry"}
                   </div>
                   <p className="text-xs text-zinc-400 line-clamp-1 leading-relaxed">
@@ -300,7 +300,7 @@ export default async function DashboardOverviewPage() {
                       className="h-3 w-3 rounded-full border border-white/20"
                       style={{
                         backgroundColor:
-                          userSettings?.colorPalette === "emerald"
+                          userSettings?.colorPalette === "sky"
                             ? "#10b981"
                             : userSettings?.colorPalette === "violet"
                             ? "#8b5cf6"
@@ -353,7 +353,7 @@ export default async function DashboardOverviewPage() {
             className="h-11 rounded-xl border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 justify-start px-4 text-xs font-semibold text-zinc-200"
           >
             <Link href="/dashboard/experience/new">
-              <Plus className="h-4 w-4 mr-2 text-emerald-400" />
+              <Plus className="h-4 w-4 mr-2 text-sky-400" />
               <span>Add Career Milestone</span>
             </Link>
           </Button>

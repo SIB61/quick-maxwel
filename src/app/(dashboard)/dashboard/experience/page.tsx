@@ -18,12 +18,12 @@ export default async function DashboardExperiencePage() {
   });
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50 flex items-center gap-2.5">
-            <Briefcase className="h-7 w-7 text-emerald-400" />
+            <Briefcase className="h-7 w-7 text-sky-400" />
             <span>Work Experience</span>
           </h1>
           <p className="text-sm text-zinc-400 mt-1">
@@ -31,7 +31,7 @@ export default async function DashboardExperiencePage() {
           </p>
         </div>
 
-        <Button asChild className="h-11 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition-all shadow-lg shadow-emerald-500/10">
+        <Button asChild className="h-11 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold transition-all shadow-lg shadow-sky-500/10">
           <Link href="/dashboard/experience/new">
             <Plus className="h-4 w-4 mr-2" />
             <span>Add Position</span>
@@ -51,7 +51,7 @@ export default async function DashboardExperiencePage() {
               Add your current and past roles to showcase your career trajectory.
             </p>
           </div>
-          <Button asChild className="h-10 px-4 rounded-xl bg-emerald-500 text-black font-semibold text-xs">
+          <Button asChild className="h-10 px-4 rounded-xl bg-sky-500 text-black font-semibold text-xs">
             <Link href="/dashboard/experience/new">Add Your First Role</Link>
           </Button>
         </Card>
@@ -81,7 +81,7 @@ export default async function DashboardExperiencePage() {
 
                 <div>
                   <h2 className="font-bold text-lg text-zinc-100">{exp.role}</h2>
-                  <div className="text-sm text-emerald-400 flex items-center gap-2 mt-0.5">
+                  <div className="text-sm text-sky-400 flex items-center gap-2 mt-0.5">
                     <span>{exp.company}</span>
                     {exp.location && (
                       <span className="text-xs text-zinc-400 flex items-center gap-1">

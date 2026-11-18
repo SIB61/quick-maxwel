@@ -16,7 +16,7 @@ export default function NewExperiencePage() {
   const [isCurrent, setIsCurrent] = useState(false);
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="w-full space-y-6">
       <Link
         href="/dashboard/experience"
         className="text-xs text-zinc-400 hover:text-zinc-100 inline-flex items-center gap-1.5 transition-colors"
@@ -28,7 +28,7 @@ export default function NewExperiencePage() {
       <Card className="bg-zinc-900/90 border-zinc-800 text-zinc-100 shadow-2xl backdrop-blur rounded-2xl p-8 sm:p-10 py-8 gap-0 space-y-6">
         <CardHeader className="p-0 space-y-2">
           <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2.5">
-            <Briefcase className="h-6 w-6 text-emerald-400" />
+            <Briefcase className="h-6 w-6 text-sky-400" />
             <span>Add Work Experience</span>
           </CardTitle>
           <CardDescription className="text-sm text-zinc-400">
@@ -55,7 +55,7 @@ export default function NewExperiencePage() {
                 type="text"
                 placeholder="e.g. Stripe, Google, or Startup"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -69,7 +69,7 @@ export default function NewExperiencePage() {
                 type="text"
                 placeholder="e.g. Senior Backend Engineer"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function NewExperiencePage() {
                 name="location"
                 type="text"
                 placeholder="San Francisco, CA (or Remote)"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -96,7 +96,7 @@ export default function NewExperiencePage() {
                 id="employmentType"
                 name="employmentType"
                 defaultValue="Full-time"
-                className="w-full h-11 px-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                className="w-full h-11 px-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
               >
                 <option value="Full-time">Full-time</option>
                 <option value="Contract">Contract</option>
@@ -117,7 +117,7 @@ export default function NewExperiencePage() {
                 type="text"
                 placeholder="e.g. Jan 2023 or 2023-01"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -132,7 +132,7 @@ export default function NewExperiencePage() {
                     name="isCurrent"
                     checked={isCurrent}
                     onChange={(e) => setIsCurrent(e.target.checked)}
-                    className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 h-3.5 w-3.5"
+                    className="rounded border-zinc-700 bg-zinc-900 text-sky-500 h-3.5 w-3.5"
                   />
                   <span>I currently work here</span>
                 </label>
@@ -143,7 +143,7 @@ export default function NewExperiencePage() {
                 type="text"
                 placeholder={isCurrent ? "Present" : "e.g. Dec 2024"}
                 disabled={isCurrent}
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 disabled:opacity-40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 disabled:opacity-40"
               />
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function NewExperiencePage() {
               name="skills"
               type="text"
               placeholder="TypeScript, Next.js, Kubernetes, PostgreSQL"
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
             />
           </div>
 
@@ -178,7 +178,7 @@ export default function NewExperiencePage() {
               <input
                 type="checkbox"
                 name="isFeatured"
-                className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
               />
               <span className="text-xs text-zinc-300 font-medium">Feature in portfolio highlights</span>
             </label>
@@ -190,7 +190,7 @@ export default function NewExperiencePage() {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="h-11 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+                className="h-11 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2">

@@ -25,7 +25,7 @@ export default function NewArticlePage() {
   };
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="w-full space-y-6">
       <Link
         href="/dashboard/articles"
         className="text-xs text-zinc-400 hover:text-zinc-100 inline-flex items-center gap-1.5 transition-colors"
@@ -66,7 +66,7 @@ export default function NewArticlePage() {
                 onChange={(e) => handleTitleChange(e.target.value)}
                 placeholder="e.g. Scaling Event-Driven Systems"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -82,7 +82,7 @@ export default function NewArticlePage() {
                 onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                 placeholder="scaling-event-driven-systems"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function NewArticlePage() {
               name="excerpt"
               type="text"
               placeholder="Brief 1-2 sentence preview for cards and search engines"
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
             />
           </div>
 
@@ -110,7 +110,7 @@ export default function NewArticlePage() {
                 name="tags"
                 type="text"
                 placeholder="Distributed Systems, Cloud, PostgreSQL"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function NewArticlePage() {
                 type="text"
                 defaultValue="5 min read"
                 placeholder="5 min read"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function NewArticlePage() {
                 <input
                   type="checkbox"
                   name="isFeatured"
-                  className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                  className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
                 />
                 <span className="text-xs text-zinc-300 font-medium">Feature on landing page</span>
               </label>
@@ -158,7 +158,7 @@ export default function NewArticlePage() {
                   type="checkbox"
                   name="isPublished"
                   defaultChecked
-                  className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                  className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
                 />
                 <span className="text-xs text-zinc-300 font-medium">Publish immediately</span>
               </label>
@@ -171,7 +171,7 @@ export default function NewArticlePage() {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="h-11 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+                className="h-11 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2">

@@ -26,7 +26,7 @@ export default function EditArticleForm({
   const [slug, setSlug] = useState(article.slug);
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="w-full space-y-6">
       <Link
         href="/dashboard/articles"
         className="text-xs text-zinc-400 hover:text-zinc-100 inline-flex items-center gap-1.5 transition-colors"
@@ -66,7 +66,7 @@ export default function EditArticleForm({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -81,7 +81,7 @@ export default function EditArticleForm({
                 value={slug}
                 onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function EditArticleForm({
               name="excerpt"
               type="text"
               defaultValue={article.excerpt || ""}
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-emerald-500/40"
+              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-sky-500/40"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function EditArticleForm({
                 name="tags"
                 type="text"
                 defaultValue={article.tags?.join(", ") || ""}
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -122,7 +122,7 @@ export default function EditArticleForm({
                 name="readTime"
                 type="text"
                 defaultValue={article.readTime || "5 min read"}
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function EditArticleForm({
                   type="checkbox"
                   name="isFeatured"
                   defaultChecked={article.isFeatured}
-                  className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                  className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
                 />
                 <span className="text-xs text-zinc-300 font-medium">Feature on landing page</span>
               </label>
@@ -158,7 +158,7 @@ export default function EditArticleForm({
                   type="checkbox"
                   name="isPublished"
                   defaultChecked={article.isPublished}
-                  className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                  className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
                 />
                 <span className="text-xs text-zinc-300 font-medium">Published</span>
               </label>
@@ -171,7 +171,7 @@ export default function EditArticleForm({
               <Button
                 type="submit"
                 disabled={isPending}
-                className="h-11 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+                className="h-11 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2">

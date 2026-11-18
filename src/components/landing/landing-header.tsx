@@ -27,12 +27,12 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-black font-extrabold text-lg shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-black font-extrabold text-lg shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
             P
           </div>
           <div className="flex flex-col">
             <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center gap-1">
-              Portfolio<span className="text-emerald-400">Builder</span>
+              Portfolio<span className="text-sky-400">Builder</span>
             </span>
             <span className="text-[10px] text-zinc-400 -mt-1 hidden sm:inline">
               Multi-Page Personal Brand Engine
@@ -58,7 +58,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
           {sessionUser ? (
             <Button
               asChild
-              className="h-10 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs transition-all shadow-md shadow-emerald-500/10"
+              className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-black font-semibold text-xs transition-all shadow-md shadow-sky-500/10"
             >
               <Link href="/dashboard">
                 <span>Dashboard (@{sessionUser.handle})</span>
@@ -79,7 +79,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
               </Button>
               <Button
                 asChild
-                className="h-10 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-all shadow-md shadow-emerald-500/20"
+                className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs transition-all shadow-md shadow-sky-500/20"
               >
                 <Link href="/register">
                   <UserPlus className="h-3.5 w-3.5 mr-1.5" />
@@ -96,7 +96,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
             <Button
               asChild
               size="sm"
-              className="h-9 px-3 rounded-lg bg-emerald-500 text-black font-semibold text-xs"
+              className="h-9 px-3 rounded-lg bg-sky-500 text-black font-semibold text-xs"
             >
               <Link href="/dashboard">Dashboard</Link>
             </Button>
@@ -133,7 +133,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
             {sessionUser ? (
               <Button
                 asChild
-                className="w-full h-11 rounded-xl bg-emerald-500 text-black font-bold text-sm"
+                className="w-full h-11 rounded-xl bg-sky-500 text-black font-bold text-sm"
               >
                 <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                   Go to Dashboard (@{sessionUser.handle})
@@ -152,7 +152,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
                 </Button>
                 <Button
                   asChild
-                  className="w-full h-11 rounded-xl bg-emerald-500 text-black font-bold text-sm shadow-md"
+                  className="w-full h-11 rounded-xl bg-sky-500 text-black font-bold text-sm shadow-md"
                 >
                   <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
                     Create Free Portfolio

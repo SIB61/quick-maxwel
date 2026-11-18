@@ -16,7 +16,7 @@ export default function RegisterPage() {
   return (
     <Card className="bg-zinc-900/90 border-zinc-800 text-zinc-100 shadow-2xl backdrop-blur rounded-2xl overflow-hidden py-0 gap-0">
       <CardHeader className="px-8 pt-8 pb-4 space-y-2">
-        <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-sky-400 text-xs font-semibold uppercase tracking-wider">
           <Sparkles className="h-3.5 w-3.5" />
           <span>Instant Setup</span>
         </div>
@@ -49,7 +49,7 @@ export default function RegisterPage() {
                 type="text"
                 placeholder="Alex Morgan"
                 required
-                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 focus-visible:border-emerald-500"
+                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function RegisterPage() {
               <Label htmlFor="handle" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
                 Portfolio Handle
               </Label>
-              <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="text-[11px] font-mono text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded-full border border-sky-500/20">
                 /{handle || "handle"}
               </span>
             </div>
@@ -73,7 +73,7 @@ export default function RegisterPage() {
                 value={handle}
                 onChange={(e) => setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))}
                 required
-                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 focus-visible:border-emerald-500"
+                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 type="email"
                 placeholder="alex@example.com"
                 required
-                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 focus-visible:border-emerald-500"
+                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function RegisterPage() {
                 placeholder="Minimum 6 characters"
                 required
                 minLength={6}
-                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 focus-visible:border-emerald-500"
+                className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold h-11 text-sm rounded-xl transition-all cursor-pointer shadow-lg shadow-emerald-500/10"
+            className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold h-11 text-sm rounded-xl transition-all cursor-pointer shadow-lg shadow-sky-500/10"
           >
             {isPending ? (
               <span className="flex items-center gap-2">
@@ -137,7 +137,7 @@ export default function RegisterPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-emerald-400 hover:text-emerald-300 hover:underline font-semibold transition-colors ml-1"
+              className="text-sky-400 hover:text-sky-300 hover:underline font-semibold transition-colors ml-1"
             >
               Sign In
             </Link>

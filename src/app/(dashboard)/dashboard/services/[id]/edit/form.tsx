@@ -28,7 +28,7 @@ export default function EditServiceForm({
   const deliverablesText = (service.deliverables || []).join("\n");
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="w-full space-y-6">
       <Link
         href="/dashboard/services"
         className="text-xs text-zinc-400 hover:text-zinc-100 inline-flex items-center gap-1.5 transition-colors"
@@ -69,7 +69,7 @@ export default function EditServiceForm({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Cloud Scalability Audit"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -85,7 +85,7 @@ export default function EditServiceForm({
                 onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                 placeholder="cloud-scalability-audit"
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function EditServiceForm({
                 id="pricingType"
                 name="pricingType"
                 defaultValue={service.pricingType || "fixed"}
-                className="w-full h-11 px-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                className="w-full h-11 px-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
               >
                 <option value="fixed">Fixed Price</option>
                 <option value="hourly">Hourly Rate</option>
@@ -117,7 +117,7 @@ export default function EditServiceForm({
                 type="text"
                 defaultValue={service.price || ""}
                 placeholder="e.g. $2,500 / project or $200 / hr"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function EditServiceForm({
               defaultValue={service.shortDescription}
               placeholder="1-2 sentences summarizing what this service achieves"
               required
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
             />
           </div>
 
@@ -147,7 +147,7 @@ export default function EditServiceForm({
               rows={4}
               defaultValue={deliverablesText}
               placeholder="Architecture diagram & system map&#10;P99 latency & bottleneck report&#10;2-hour strategy debrief"
-              className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y leading-relaxed"
+              className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 resize-y leading-relaxed"
             />
           </div>
 
@@ -170,7 +170,7 @@ export default function EditServiceForm({
                 type="checkbox"
                 name="isFeatured"
                 defaultChecked={service.isFeatured}
-                className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                className="rounded border-zinc-700 bg-zinc-900 text-sky-500 focus:ring-sky-500 h-4 w-4"
               />
               <span className="text-xs text-zinc-300 font-medium">Feature on portfolio landing page</span>
             </label>
@@ -182,7 +182,7 @@ export default function EditServiceForm({
               <Button
                 type="submit"
                 disabled={isPending}
-                className="h-11 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+                className="h-11 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2">

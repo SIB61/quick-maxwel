@@ -18,7 +18,7 @@ export default async function DashboardServicesPage() {
   });
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -31,7 +31,7 @@ export default async function DashboardServicesPage() {
           </p>
         </div>
 
-        <Button asChild className="h-11 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition-all shadow-lg shadow-emerald-500/10">
+        <Button asChild className="h-11 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold transition-all shadow-lg shadow-sky-500/10">
           <Link href="/dashboard/services/new">
             <Plus className="h-4 w-4 mr-2" />
             <span>Add Service</span>
@@ -51,7 +51,7 @@ export default async function DashboardServicesPage() {
               Define the services or consulting you provide to prospective clients and teams.
             </p>
           </div>
-          <Button asChild className="h-10 px-4 rounded-xl bg-emerald-500 text-black font-semibold text-xs">
+          <Button asChild className="h-10 px-4 rounded-xl bg-sky-500 text-black font-semibold text-xs">
             <Link href="/dashboard/services/new">Add Your First Service</Link>
           </Button>
         </Card>
@@ -74,7 +74,7 @@ export default async function DashboardServicesPage() {
                     <span className="text-xs font-semibold text-purple-400 capitalize">{service.pricingType}</span>
                   </div>
                   {service.price && (
-                    <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-xs font-mono">
+                    <Badge variant="outline" className="text-sky-400 border-sky-500/30 text-xs font-mono">
                       {service.price}
                     </Badge>
                   )}
@@ -90,7 +90,7 @@ export default async function DashboardServicesPage() {
                   <div className="space-y-1 pt-1">
                     {service.deliverables.slice(0, 2).map((del) => (
                       <div key={del} className="flex items-center gap-1.5 text-xs text-zinc-300">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="h-3 w-3 text-sky-400 shrink-0" />
                         <span className="truncate">{del}</span>
                       </div>
                     ))}

@@ -18,7 +18,7 @@ export default async function DashboardArticlesPage() {
   });
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -31,7 +31,7 @@ export default async function DashboardArticlesPage() {
           </p>
         </div>
 
-        <Button asChild className="h-11 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition-all shadow-lg shadow-emerald-500/10">
+        <Button asChild className="h-11 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold transition-all shadow-lg shadow-sky-500/10">
           <Link href="/dashboard/articles/new">
             <Plus className="h-4 w-4 mr-2" />
             <span>New Article</span>
@@ -51,7 +51,7 @@ export default async function DashboardArticlesPage() {
               Draft your first technical guide or essay to showcase your knowledge.
             </p>
           </div>
-          <Button asChild className="h-10 px-4 rounded-xl bg-emerald-500 text-black font-semibold text-xs">
+          <Button asChild className="h-10 px-4 rounded-xl bg-sky-500 text-black font-semibold text-xs">
             <Link href="/dashboard/articles/new">Write Your First Article</Link>
           </Button>
         </Card>
@@ -70,7 +70,7 @@ export default async function DashboardArticlesPage() {
                       Featured
                     </Badge>
                   )}
-                  <Badge variant="secondary" className={`text-xs px-2 py-0.5 ${article.isPublished ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-zinc-800 text-zinc-400"}`}>
+                  <Badge variant="secondary" className={`text-xs px-2 py-0.5 ${article.isPublished ? "bg-sky-500/10 text-sky-400 border border-sky-500/20" : "bg-zinc-800 text-zinc-400"}`}>
                     {article.isPublished ? "Published" : "Draft"}
                   </Badge>
                   <span className="text-xs text-zinc-500 flex items-center gap-1">
@@ -80,7 +80,7 @@ export default async function DashboardArticlesPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-bold text-lg text-zinc-100 hover:text-emerald-400 transition-colors">
+                  <h2 className="font-bold text-lg text-zinc-100 hover:text-sky-400 transition-colors">
                     {article.title}
                   </h2>
                   <p className="text-xs sm:text-sm text-zinc-400 line-clamp-1 mt-0.5">

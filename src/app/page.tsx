@@ -75,7 +75,7 @@ export default async function HomePage() {
       description: "macOS window chrome with traffic lights, monospace zsh command prompt, and CLI-driven tabs. Built for systems engineers, DevOps leads, and backend specialists.",
       badge: "Obsidian & Emerald",
       icon: Terminal,
-      palette: "emerald",
+      palette: "sky",
     },
     {
       id: "minimal_swiss",
@@ -125,7 +125,7 @@ export default async function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-sky-500 selection:text-black">
       {/* Dynamic Client Navigation Header with Mobile Drawer */}
       <LandingHeader sessionUser={session ? { handle: session.handle, name: session.name } : null} />
 
@@ -133,18 +133,18 @@ export default async function HomePage() {
         {/* HERO SECTION */}
         <section className="relative overflow-hidden pt-12 sm:pt-20 pb-16 sm:pb-24 border-b border-zinc-800/60">
           {/* Ambient Lighting Gradients */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[400px] sm:h-[500px] bg-gradient-to-b from-emerald-500/15 via-emerald-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[400px] sm:h-[500px] bg-gradient-to-b from-sky-500/15 via-sky-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
 
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8 text-center sm:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs font-medium text-zinc-300 backdrop-blur-md shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
               <span>The Multi-Page Personal Brand Engine</span>
             </div>
 
             <div className="space-y-4 max-w-4xl">
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.1] sm:leading-[1.15]">
                 A portfolio builder that respects the{" "}
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
                   true depth
                 </span>{" "}
                 of your work.
@@ -160,7 +160,7 @@ export default async function HomePage() {
               {session ? (
                 <Button
                   asChild
-                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all shadow-lg shadow-emerald-500/20"
+                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-sky-500 hover:bg-sky-400 text-black font-bold text-sm transition-all shadow-lg shadow-sky-500/20"
                 >
                   <Link href="/dashboard">
                     <span>Open Dashboard (@{session.handle})</span>
@@ -170,7 +170,7 @@ export default async function HomePage() {
               ) : (
                 <Button
                   asChild
-                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all shadow-lg shadow-emerald-500/20"
+                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-sky-500 hover:bg-sky-400 text-black font-bold text-sm transition-all shadow-lg shadow-sky-500/20"
                 >
                   <Link href="/register">
                     <span>Claim Your Portfolio Handle</span>
@@ -186,7 +186,7 @@ export default async function HomePage() {
               >
                 <Link href={`/${demoHandle}`}>
                   <span>Explore Live Showcase (@{demoHandle})</span>
-                  <ExternalLink className="h-4 w-4 ml-2 text-emerald-400" />
+                  <ExternalLink className="h-4 w-4 ml-2 text-sky-400" />
                 </Link>
               </Button>
             </div>
@@ -195,7 +195,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-zinc-800/80 text-left">
               <div className="space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
                   <span>100% Multi-Page</span>
                 </div>
                 <p className="text-[11px] text-zinc-400">Dedicated pages for all items, not just landing.</p>
@@ -203,7 +203,7 @@ export default async function HomePage() {
 
               <div className="space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
                   <span>6 Signature Themes</span>
                 </div>
                 <p className="text-[11px] text-zinc-400">Terminal, Swiss, Aurora, Bento, Fancy &amp; Simple.</p>
@@ -211,7 +211,7 @@ export default async function HomePage() {
 
               <div className="space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
                   <span>Private Inbox</span>
                 </div>
                 <p className="text-[11px] text-zinc-400">Direct inquiries delivered straight to your dashboard.</p>
@@ -219,7 +219,7 @@ export default async function HomePage() {
 
               <div className="space-y-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
                   <span>Personal Handle</span>
                 </div>
                 <p className="text-[11px] text-zinc-400">Share your clean address e.g. /{demoHandle}.</p>
@@ -232,7 +232,7 @@ export default async function HomePage() {
         <section id="demo" className="py-16 sm:py-20 border-b border-zinc-800/60 bg-zinc-950/60">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-sky-400">
                 <Globe className="h-3.5 w-3.5" />
                 <span>Live Interactive Showcase</span>
               </div>
@@ -248,9 +248,9 @@ export default async function HomePage() {
             <div className="rounded-3xl p-6 sm:p-8 bg-zinc-900/60 border border-zinc-800/80 shadow-2xl space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800/80">
                 <div className="flex items-center gap-3">
-                  <span className="h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="h-3 w-3 rounded-full bg-sky-400 animate-pulse" />
                   <span className="font-mono text-sm text-zinc-300">
-                    portfoliobuilder.dev/<strong className="text-emerald-400">{demoHandle}</strong>
+                    portfoliobuilder.dev/<strong className="text-sky-400">{demoHandle}</strong>
                   </span>
                 </div>
 
@@ -261,7 +261,7 @@ export default async function HomePage() {
                 >
                   <Link href={`/${demoHandle}`}>
                     <span>Launch Full Portfolio</span>
-                    <ExternalLink className="h-3 w-3 ml-1.5 text-emerald-400" />
+                    <ExternalLink className="h-3 w-3 ml-1.5 text-sky-400" />
                   </Link>
                 </Button>
               </div>
@@ -289,7 +289,7 @@ export default async function HomePage() {
                   href={`/${demoHandle}/experience`}
                   className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
                 >
-                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                  <div className="p-2.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 w-fit mx-auto group-hover:scale-110 transition-transform">
                     <Briefcase className="h-4 w-4" />
                   </div>
                   <div>
@@ -361,7 +361,7 @@ export default async function HomePage() {
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-emerald-400 pt-1">
+                    <div className="text-xs font-bold text-sky-400 pt-1">
                       Direct Form
                     </div>
                     <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors mt-1">
@@ -378,7 +378,7 @@ export default async function HomePage() {
         <section id="templates" className="py-16 sm:py-24 border-b border-zinc-800/60">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="space-y-3 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-sky-400">
                 <Palette className="h-3.5 w-3.5" />
                 <span>6 Award-Winning Design Languages</span>
               </div>
@@ -410,10 +410,10 @@ export default async function HomePage() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                        <h3 className="text-xl font-bold text-white group-hover:text-sky-400 transition-colors">
                           {tpl.name}
                         </h3>
-                        <p className="text-xs font-semibold text-emerald-400/90 uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-sky-400/90 uppercase tracking-wider">
                           {tpl.vibe}
                         </p>
                       </div>
@@ -434,7 +434,7 @@ export default async function HomePage() {
 
                       <Link
                         href="/register"
-                        className="text-emerald-400 font-bold hover:underline"
+                        className="text-sky-400 font-bold hover:underline"
                       >
                         Use Template
                       </Link>
@@ -450,7 +450,7 @@ export default async function HomePage() {
         <section id="why-multipage" className="py-16 sm:py-24 border-b border-zinc-800/60 bg-zinc-950/40">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="space-y-3 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-sky-400">
                 <Layers className="h-3.5 w-3.5" />
                 <span>The Core Advantage</span>
               </div>
@@ -474,7 +474,7 @@ export default async function HomePage() {
               </div>
 
               <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-3.5">
-                <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
                   <Briefcase className="h-5 w-5" />
                 </div>
                 <h3 className="text-xl font-bold text-white">Continuous Career Chronology</h3>
@@ -510,7 +510,7 @@ export default async function HomePage() {
         <section id="how-it-works" className="py-16 sm:py-24 border-b border-zinc-800/60">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="space-y-3 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-sky-400">
                 <Zap className="h-3.5 w-3.5" />
                 <span>Effortless Workflow</span>
               </div>
@@ -521,15 +521,15 @@ export default async function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
-                <div className="text-2xl font-black text-emerald-400 font-mono">01</div>
+                <div className="text-2xl font-black text-sky-400 font-mono">01</div>
                 <h3 className="text-lg font-bold text-white">Claim Your Personal Address</h3>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                  Reserve your unique handle (e.g. <code className="text-emerald-400">/{demoHandle}</code>) with simple one-click registration and authentication.
+                  Reserve your unique handle (e.g. <code className="text-sky-400">/{demoHandle}</code>) with simple one-click registration and authentication.
                 </p>
               </div>
 
               <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
-                <div className="text-2xl font-black text-emerald-400 font-mono">02</div>
+                <div className="text-2xl font-black text-sky-400 font-mono">02</div>
                 <h3 className="text-lg font-bold text-white">Populate Your Career Story</h3>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                   Use your private dashboard to write articles, log work milestones, list advisory packages, and record speaking events.
@@ -537,7 +537,7 @@ export default async function HomePage() {
               </div>
 
               <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
-                <div className="text-2xl font-black text-emerald-400 font-mono">03</div>
+                <div className="text-2xl font-black text-sky-400 font-mono">03</div>
                 <h3 className="text-lg font-bold text-white">Choose Your Aesthetic &amp; Go Live</h3>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                   Toggle in real-time between Terminal, Swiss, Aurora, Bento, Fancy, and Simple templates in the Theme Studio. Your entire portfolio updates instantly.
@@ -549,7 +549,7 @@ export default async function HomePage() {
 
         {/* BOTTOM CALL TO ACTION HERO */}
         <section className="py-20 sm:py-28 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-sky-500/10 rounded-full blur-[140px] pointer-events-none" />
 
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
@@ -562,7 +562,7 @@ export default async function HomePage() {
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
                 asChild
-                className="w-full sm:w-auto h-12 px-8 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm shadow-xl shadow-emerald-500/20"
+                className="w-full sm:w-auto h-12 px-8 rounded-xl bg-sky-500 hover:bg-sky-400 text-black font-bold text-sm shadow-xl shadow-sky-500/20"
               >
                 <Link href="/register">
                   <span>Claim Your Free Portfolio</span>
@@ -577,7 +577,7 @@ export default async function HomePage() {
               >
                 <Link href={`/${demoHandle}`}>
                   <span>View Sample Portfolio (@{demoHandle})</span>
-                  <ExternalLink className="h-4 w-4 ml-2 text-emerald-400" />
+                  <ExternalLink className="h-4 w-4 ml-2 text-sky-400" />
                 </Link>
               </Button>
             </div>
@@ -589,7 +589,7 @@ export default async function HomePage() {
       <footer className="border-t border-zinc-900 bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8 text-xs text-zinc-400">
         <div className="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold text-xs">
+            <div className="h-6 w-6 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-extrabold text-xs">
               P
             </div>
             <span className="font-bold text-zinc-200">PortfolioBuilder</span>

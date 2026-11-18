@@ -18,7 +18,7 @@ export default async function DashboardEventsPage() {
   });
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -31,7 +31,7 @@ export default async function DashboardEventsPage() {
           </p>
         </div>
 
-        <Button asChild className="h-11 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition-all shadow-lg shadow-emerald-500/10">
+        <Button asChild className="h-11 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold transition-all shadow-lg shadow-sky-500/10">
           <Link href="/dashboard/events/new">
             <Plus className="h-4 w-4 mr-2" />
             <span>Add Event</span>
@@ -51,7 +51,7 @@ export default async function DashboardEventsPage() {
               Add upcoming or past conference talks, workshops, and community events to your portfolio.
             </p>
           </div>
-          <Button asChild className="h-10 px-4 rounded-xl bg-emerald-500 text-black font-semibold text-xs">
+          <Button asChild className="h-10 px-4 rounded-xl bg-sky-500 text-black font-semibold text-xs">
             <Link href="/dashboard/events/new">Add Your First Event</Link>
           </Button>
         </Card>

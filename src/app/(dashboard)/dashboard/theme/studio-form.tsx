@@ -48,7 +48,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
     (settings?.templateId as TemplateId) || "simple_professional"
   );
   const [colorPalette, setColorPalette] = useState<ColorPalette>(
-    (settings?.colorPalette as ColorPalette) || "emerald"
+    (settings?.colorPalette as ColorPalette) || "slate"
   );
   const [fontFamily, setFontFamily] = useState<FontFamily>(
     (settings?.fontFamily as FontFamily) || "sans"
@@ -56,11 +56,11 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
   const [seoTitle, setSeoTitle] = useState(settings?.seoTitle || "");
   const [seoDescription, setSeoDescription] = useState(settings?.seoDescription || "");
 
-  const activePalette = PALETTES[colorPalette] || PALETTES.emerald;
+  const activePalette = PALETTES[colorPalette] || PALETTES.slate;
   const activeTemplate = TEMPLATES[templateId] || TEMPLATES.simple_professional;
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -97,7 +97,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
         )}
 
         {state?.success && (
-          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-3">
+          <div className="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-sm flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 shrink-0" />
             <span>Theme settings saved successfully! Your live portfolio has been updated.</span>
           </div>
@@ -110,7 +110,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
             <Card className="bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-6 gap-0 space-y-5">
               <CardHeader className="p-0 space-y-1">
                 <CardTitle className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                  <Layout className="h-5 w-5 text-emerald-400" />
+                  <Layout className="h-5 w-5 text-sky-400" />
                   <span>1. Select Portfolio Layout</span>
                 </CardTitle>
                 <CardDescription className="text-xs text-zinc-400">
@@ -129,7 +129,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                       onClick={() => setTemplateId(id)}
                       className={`cursor-pointer p-4 rounded-xl border transition-all text-left space-y-2 ${
                         isSelected
-                          ? "bg-zinc-800/80 border-emerald-500/80 ring-1 ring-emerald-500/50 shadow-lg"
+                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-lg"
                           : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
                       }`}
                     >
@@ -139,7 +139,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                           <span className="text-xs text-zinc-400 hidden sm:inline">— {t.tagline}</span>
                         </div>
                         {isSelected ? (
-                          <div className="h-5 w-5 rounded-full bg-emerald-500 text-black flex items-center justify-center shrink-0">
+                          <div className="h-5 w-5 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
                             <Check className="h-3 w-3 stroke-[3]" />
                           </div>
                         ) : (
@@ -190,7 +190,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                       onClick={() => setColorPalette(id)}
                       className={`cursor-pointer p-3.5 rounded-xl border transition-all text-left space-y-2.5 ${
                         isSelected
-                          ? "bg-zinc-800/80 border-emerald-500/80 ring-1 ring-emerald-500/50 shadow-md"
+                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-md"
                           : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
                       }`}
                     >
@@ -204,7 +204,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                           <span className="font-bold text-xs text-zinc-100">{p.name}</span>
                         </div>
                         {isSelected && (
-                          <div className="h-4 w-4 rounded-full bg-emerald-500 text-black flex items-center justify-center shrink-0">
+                          <div className="h-4 w-4 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
                             <Check className="h-2.5 w-2.5 stroke-[3]" />
                           </div>
                         )}
@@ -242,14 +242,14 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                       onClick={() => setFontFamily(id)}
                       className={`cursor-pointer p-3.5 rounded-xl border transition-all text-left space-y-1.5 ${
                         isSelected
-                          ? "bg-zinc-800/80 border-emerald-500/80 ring-1 ring-emerald-500/50 shadow-md"
+                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-md"
                           : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-xs text-zinc-100">{f.name}</span>
                         {isSelected && (
-                          <div className="h-4 w-4 rounded-full bg-emerald-500 text-black flex items-center justify-center shrink-0">
+                          <div className="h-4 w-4 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
                             <Check className="h-2.5 w-2.5 stroke-[3]" />
                           </div>
                         )}
@@ -287,7 +287,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                     value={seoTitle}
                     onChange={(e) => setSeoTitle(e.target.value)}
                     placeholder={`${user.name} — Portfolio & Architectural Insights`}
-                    className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                    className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
                   />
                 </div>
 
@@ -302,7 +302,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                     value={seoDescription}
                     onChange={(e) => setSeoDescription(e.target.value)}
                     placeholder="Brief 1-2 sentence description displayed on Google searches and social share cards..."
-                    className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y"
+                    className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 resize-y"
                   />
                 </div>
               </div>
@@ -313,7 +313,7 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
               <Button
                 type="submit"
                 disabled={isPending}
-                className="h-11 px-8 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+                className="h-11 px-8 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2">

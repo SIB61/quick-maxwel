@@ -34,10 +34,10 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   const socials = user.socialLinks || {};
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="w-full space-y-8">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50 flex items-center gap-2.5">
-          <User className="h-7 w-7 text-emerald-400" />
+          <User className="h-7 w-7 text-sky-400" />
           <span>Profile Settings</span>
         </h1>
         <p className="text-sm text-zinc-400 mt-1">
@@ -55,7 +55,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           )}
 
           {state?.success && (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm flex items-start gap-2.5">
+            <div className="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs sm:text-sm flex items-start gap-2.5">
               <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" />
               <span>Profile updated successfully!</span>
             </div>
@@ -73,7 +73,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 type="text"
                 defaultValue={user.name}
                 required
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -103,7 +103,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 type="text"
                 defaultValue={user.headline || ""}
                 placeholder="e.g. Staff Distributed Systems Architect"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
 
@@ -117,7 +117,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 type="text"
                 defaultValue={user.location || ""}
                 placeholder="e.g. San Francisco, CA"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               type="url"
               defaultValue={user.avatarUrl || ""}
               placeholder="https://images.unsplash.com/photo-... or GitHub avatar"
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
             />
           </div>
 
@@ -155,7 +155,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           <div className="space-y-4 pt-4 border-t border-zinc-800/60">
             <div className="space-y-1">
               <h3 className="font-bold text-sm text-zinc-100 flex items-center gap-2">
-                <Globe className="h-4 w-4 text-emerald-400" />
+                <Globe className="h-4 w-4 text-sky-400" />
                 <span>Social Profiles & Contact Links</span>
               </h3>
               <p className="text-xs text-zinc-400">
@@ -175,7 +175,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   type="url"
                   defaultValue={socials.github || ""}
                   placeholder="https://github.com/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
                 />
               </div>
 
@@ -190,7 +190,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   type="url"
                   defaultValue={socials.twitter || ""}
                   placeholder="https://twitter.com/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
                 />
               </div>
 
@@ -205,7 +205,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   type="url"
                   defaultValue={socials.linkedin || ""}
                   placeholder="https://linkedin.com/in/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   type="url"
                   defaultValue={socials.website || ""}
                   placeholder="https://yourdomain.com"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40"
+                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
                 />
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             <Button
               type="submit"
               disabled={isPending}
-              className="h-11 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold shadow-lg shadow-emerald-500/10 cursor-pointer"
+              className="h-11 px-7 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
             >
               {isPending ? (
                 <span className="flex items-center gap-2">
