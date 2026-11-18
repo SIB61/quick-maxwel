@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Calendar, MapPin, Mic } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -54,9 +55,10 @@ export function SimpleEvents({ portfolio, handle }: { portfolio: PortfolioUser; 
               </h2>
 
               {event.description && (
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed line-clamp-2">
-                  {event.description}
-                </p>
+                <RichContentDisplay
+                  content={event.description}
+                  className="text-xs sm:text-sm text-zinc-300 leading-relaxed line-clamp-2"
+                />
               )}
             </div>
 

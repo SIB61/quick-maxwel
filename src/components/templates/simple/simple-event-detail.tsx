@@ -2,6 +2,7 @@ import { PortfolioUser } from "@/lib/portfolio-data";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, ExternalLink, MapPin, Mic } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleEventDetail({
   portfolio,
@@ -55,9 +56,10 @@ export function SimpleEventDetail({
             <h2 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               Session Abstract &amp; Details
             </h2>
-            <div className="text-sm sm:text-base text-zinc-200 leading-relaxed whitespace-pre-wrap">
-              {event.description}
-            </div>
+            <RichContentDisplay
+              content={event.description}
+              className="text-sm sm:text-base text-zinc-200 leading-relaxed font-sans"
+            />
           </div>
         )}
 

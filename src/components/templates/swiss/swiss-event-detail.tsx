@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, MapPin } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SwissEventDetail({
   portfolio,
@@ -53,9 +54,10 @@ export function SwissEventDetail({
           <div className="text-xs font-mono tracking-widest uppercase text-zinc-500">
             SESSION ABSTRACT &amp; SYLLABUS
           </div>
-          <p className="text-base sm:text-lg text-zinc-200 font-light leading-relaxed whitespace-pre-wrap">
-            {event.description}
-          </p>
+          <RichContentDisplay
+            content={event.description}
+            className="text-base sm:text-lg text-zinc-200 font-light leading-relaxed"
+          />
         </section>
       )}
 

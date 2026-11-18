@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, MapPin } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SwissEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -69,9 +70,10 @@ export function SwissEvents({ portfolio, handle }: { portfolio: PortfolioUser; h
                     )}
 
                     {event.description && (
-                      <p className="text-sm text-zinc-400 font-light leading-relaxed max-w-3xl pt-1 line-clamp-2">
-                        {event.description}
-                      </p>
+                      <RichContentDisplay
+                        content={event.description}
+                        className="text-sm text-zinc-400 font-light leading-relaxed max-w-3xl pt-1 line-clamp-2"
+                      />
                     )}
                   </div>
                 </div>

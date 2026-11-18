@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, ExternalLink, MapPin } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -68,9 +69,10 @@ export function TerminalEvents({ portfolio, handle }: { portfolio: PortfolioUser
                 )}
 
                 {event.description && (
-                  <p className="text-xs text-zinc-400 leading-relaxed pt-1 line-clamp-2">
-                    # {event.description}
-                  </p>
+                  <RichContentDisplay
+                    content={event.description}
+                    className="font-mono text-xs text-zinc-400 leading-relaxed pt-1 line-clamp-2"
+                  />
                 )}
 
                 <div className="pt-2 flex items-center justify-between text-xs">

@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, ExternalLink, MapPin, Terminal as TerminalIcon } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalEventDetail({
   portfolio,
@@ -60,9 +61,10 @@ export function TerminalEventDetail({
             <span className="text-zinc-500 text-xs font-bold uppercase tracking-wider">
               /* SESSION_ABSTRACT */
             </span>
-            <p className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
-              {event.description}
-            </p>
+            <RichContentDisplay
+              content={event.description}
+              className="font-mono text-zinc-300 text-sm leading-relaxed"
+            />
           </div>
 
           <div className="pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">

@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, ExternalLink, MapPin, Radio } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function BentoEventDetail({
   portfolio,
@@ -64,9 +65,10 @@ export function BentoEventDetail({
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">
                 Session Abstract &amp; Agenda
               </h2>
-              <p className="text-base text-zinc-200 leading-relaxed whitespace-pre-wrap font-light">
-                {event.description}
-              </p>
+              <RichContentDisplay
+                content={event.description}
+                className="text-base text-zinc-200 leading-relaxed font-light"
+              />
             </div>
           )}
         </div>

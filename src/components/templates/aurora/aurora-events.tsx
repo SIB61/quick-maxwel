@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, ExternalLink, MapPin, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function AuroraEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -99,9 +100,10 @@ export function AuroraEvents({ portfolio, handle }: { portfolio: PortfolioUser; 
             </h2>
 
             {event.description && (
-              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-4xl">
-                {event.description}
-              </p>
+              <RichContentDisplay
+                content={event.description}
+                className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-4xl"
+              />
             )}
 
             <div className="pt-4 border-t border-white/5 flex items-center justify-between">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft, Calendar, Loader2, Save } from "lucide-react";
 import Link from "next/link";
@@ -148,14 +149,13 @@ export default function NewEventPage() {
 
           <div className="space-y-1.5">
             <Label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-              Description & Highlights
+              Description & Highlights (Visual Editor)
             </Label>
-            <Textarea
+            <RichTextEditor
               id="description"
               name="description"
-              rows={5}
-              placeholder="Key abstract, audience demographics, topics covered, or reception..."
-              className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y leading-relaxed"
+              minHeight="180px"
+              placeholder="Key abstract, audience demographics, topics covered, or reception. Use toolbar buttons to format headings, bullet points, and emphasis..."
             />
           </div>
 

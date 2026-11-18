@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, ExternalLink, MapPin, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function AuroraEventDetail({
   portfolio,
@@ -78,9 +79,10 @@ export function AuroraEventDetail({
               <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                 Session Abstract &amp; Key Takeaways
               </h2>
-              <p className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed whitespace-pre-wrap">
-                {event.description}
-              </p>
+              <RichContentDisplay
+                content={event.description}
+                className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed"
+              />
             </div>
           )}
 

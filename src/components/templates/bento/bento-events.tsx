@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, ExternalLink, MapPin, Radio } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function BentoEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -75,9 +76,10 @@ export function BentoEvents({ portfolio, handle }: { portfolio: PortfolioUser; h
               )}
 
               {event.description && (
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed line-clamp-3">
-                  {event.description}
-                </p>
+                <RichContentDisplay
+                  content={event.description}
+                  className="text-xs sm:text-sm text-zinc-300 leading-relaxed line-clamp-3"
+                />
               )}
             </div>
 
