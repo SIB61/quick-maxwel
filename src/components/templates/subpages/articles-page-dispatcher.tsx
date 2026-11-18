@@ -3,6 +3,7 @@ import { TerminalArticlesList } from "../terminal/terminal-articles";
 import { SwissArticlesList } from "../swiss/swiss-articles";
 import { AuroraArticlesList } from "../aurora/aurora-articles";
 import { BentoArticlesList } from "../bento/bento-articles";
+import { FancyArticlesList } from "../fancy/fancy-articles";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, FileText } from "lucide-react";
@@ -28,6 +29,9 @@ export default function ArticlesPageDispatcher({
   }
   if (templateId === "bento_grid") {
     return <BentoArticlesList portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "fancy_creative") {
+    return <FancyArticlesList portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

@@ -3,6 +3,7 @@ import { TerminalAchievements } from "../terminal/terminal-achievements";
 import { SwissAchievements } from "../swiss/swiss-achievements";
 import { AuroraAchievements } from "../aurora/aurora-achievements";
 import { BentoAchievements } from "../bento/bento-achievements";
+import { FancyAchievements } from "../fancy/fancy-achievements";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Award, ExternalLink } from "lucide-react";
@@ -28,6 +29,9 @@ export default function AchievementsPageDispatcher({
   }
   if (templateId === "bento_grid") {
     return <BentoAchievements portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "fancy_creative") {
+    return <FancyAchievements portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

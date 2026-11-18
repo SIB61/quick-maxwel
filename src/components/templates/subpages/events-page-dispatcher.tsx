@@ -3,6 +3,7 @@ import { TerminalEvents } from "../terminal/terminal-events";
 import { SwissEvents } from "../swiss/swiss-events";
 import { AuroraEvents } from "../aurora/aurora-events";
 import { BentoEvents } from "../bento/bento-events";
+import { FancyEvents } from "../fancy/fancy-events";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Calendar, ExternalLink, MapPin } from "lucide-react";
@@ -28,6 +29,9 @@ export default function EventsPageDispatcher({
   }
   if (templateId === "bento_grid") {
     return <BentoEvents portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "fancy_creative") {
+    return <FancyEvents portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

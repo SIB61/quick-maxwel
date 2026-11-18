@@ -3,6 +3,7 @@ import { TerminalServices } from "../terminal/terminal-services";
 import { SwissServices } from "../swiss/swiss-services";
 import { AuroraServices } from "../aurora/aurora-services";
 import { BentoServices } from "../bento/bento-services";
+import { FancyServices } from "../fancy/fancy-services";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
@@ -28,6 +29,9 @@ export default function ServicesPageDispatcher({
   }
   if (templateId === "bento_grid") {
     return <BentoServices portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "fancy_creative") {
+    return <FancyServices portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback
