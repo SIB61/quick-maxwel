@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function AuroraArticleDetail({
   portfolio,
@@ -85,8 +86,8 @@ export function AuroraArticleDetail({
         </header>
 
         {/* Article Body */}
-        <div className="p-8 sm:p-12 prose prose-invert max-w-none text-zinc-200 text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-light">
-          {article.content}
+        <div className="p-8 sm:p-12">
+          <RichContentDisplay content={article.content} className="text-base sm:text-lg text-zinc-200 font-light" />
         </div>
 
         {/* Spatial Author Colophon */}

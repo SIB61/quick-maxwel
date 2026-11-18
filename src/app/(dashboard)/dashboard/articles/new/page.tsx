@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft, FileText, Loader2, Save, Sparkles } from "lucide-react";
@@ -130,15 +131,14 @@ export default function NewArticlePage() {
 
           <div className="space-y-1.5">
             <Label htmlFor="content" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-              Article Content (Markdown)
+              Article Content (Visual Editor)
             </Label>
-            <Textarea
+            <RichTextEditor
               id="content"
               name="content"
-              rows={12}
-              placeholder="# Introduction&#10;&#10;Write your article in markdown format..."
+              minHeight="320px"
+              placeholder="Start drafting your article. Use the buttons above to format headings, bold text, lists, code, and links..."
               required
-              className="p-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y leading-relaxed"
             />
           </div>
 

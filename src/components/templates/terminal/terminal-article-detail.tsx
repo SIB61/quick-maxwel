@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, Hash } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalArticleDetail({
   portfolio,
@@ -82,20 +83,11 @@ export function TerminalArticleDetail({
         </div>
 
         {/* Line Numbered Buffer */}
-        <div className="p-4 sm:p-6 space-y-1 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto">
-          {lines.map((line, idx) => (
-            <div key={idx} className="flex items-start gap-4 group">
-              <span className="w-8 text-right text-zinc-600 select-none text-[11px] group-hover:text-zinc-400 transition-colors shrink-0">
-                {String(idx + 1).padStart(2, " ")}
-              </span>
-              <span className="text-zinc-300 whitespace-pre-wrap break-words flex-1">
-                {line || "\u00A0"}
-              </span>
-            </div>
-          ))}
-          <div className="flex items-start gap-4 pt-2">
-            <span className="w-8 text-right text-emerald-400 select-none text-[11px]">~</span>
-            <span className="text-zinc-600 text-xs italic">[EOF]</span>
+        <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto border-t border-zinc-800">
+          <RichContentDisplay content={article.content} className="font-mono text-zinc-300 text-xs sm:text-sm" />
+          <div className="flex items-center gap-2 pt-4 text-xs">
+            <span className="text-emerald-400 select-none font-bold">~</span>
+            <span className="text-zinc-600 italic">[BUFFER_EOF: 100% READ]</span>
           </div>
         </div>
 

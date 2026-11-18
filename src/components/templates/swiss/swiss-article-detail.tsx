@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SwissArticleDetail({
   portfolio,
@@ -64,8 +65,8 @@ export function SwissArticleDetail({
       </header>
 
       {/* Editorial Content */}
-      <div className="border-t border-b border-zinc-800 py-10 prose prose-invert max-w-none text-zinc-200 text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-light">
-        {article.content}
+      <div className="border-t border-b border-zinc-800 py-10 font-light">
+        <RichContentDisplay content={article.content} className="text-zinc-200 text-base sm:text-lg" />
       </div>
 
       {/* Swiss Author Colophon */}

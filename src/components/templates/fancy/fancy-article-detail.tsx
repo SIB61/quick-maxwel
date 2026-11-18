@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function FancyArticleDetail({
   portfolio,
@@ -74,8 +75,8 @@ export function FancyArticleDetail({
         </header>
 
         {/* Prose Body */}
-        <div className="prose prose-invert max-w-none text-zinc-200 text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-sans">
-          {article.content}
+        <div>
+          <RichContentDisplay content={article.content} className="text-zinc-200 text-base sm:text-lg font-sans" />
         </div>
 
         {/* Author Colophon */}

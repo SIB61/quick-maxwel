@@ -2,6 +2,7 @@ import { PortfolioUser } from "@/lib/portfolio-data";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleArticleDetail({
   portfolio,
@@ -59,8 +60,8 @@ export function SimpleArticleDetail({
       </header>
 
       {/* Article Content */}
-      <div className="prose prose-invert max-w-none text-zinc-200 text-base leading-relaxed whitespace-pre-wrap font-sans">
-        {article.content}
+      <div>
+        <RichContentDisplay content={article.content} className="text-zinc-200 text-base font-sans" />
       </div>
 
       <footer className="pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, LayoutGrid, Send, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function BentoArticleDetail({
   portfolio,
@@ -56,8 +57,8 @@ export function BentoArticleDetail({
             )}
           </header>
 
-          <div className="prose prose-invert max-w-none text-zinc-200 text-base leading-relaxed whitespace-pre-wrap font-sans">
-            {article.content}
+          <div>
+            <RichContentDisplay content={article.content} className="text-zinc-200 text-base font-sans" />
           </div>
         </article>
 
