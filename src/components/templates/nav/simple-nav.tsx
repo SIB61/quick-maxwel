@@ -49,7 +49,7 @@ export function SimpleFooter({ portfolio, handle }: { portfolio: PortfolioUser; 
   return (
     <footer className="w-full mt-16 border-t border-zinc-800 py-8 px-6 text-center text-xs text-zinc-500">
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>© {new Date().getFullYear()} {portfolio.name}. All rights reserved.</p>
+        <p>{`© ${new Date().getFullYear()} ${portfolio.name}. All rights reserved.`}</p>
         <div className="flex items-center gap-4 text-zinc-400">
           <Link href={`/${handle}`} className="hover:text-zinc-200 transition-colors">
             Overview
