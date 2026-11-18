@@ -63,6 +63,9 @@ export function RichTextEditor({
         heading: {
           levels: [1, 2, 3],
         },
+        link: false,
+        underline: false,
+        trailingNode: false,
       }),
       Underline,
       Link.configure({
@@ -105,6 +108,84 @@ export function RichTextEditor({
     }
   }, [defaultValue, editor]);
 
+  // Helper to split any hard breaks (<br>) within the current selection into distinct paragraphs
+  const splitHardBreaks = () => {
+    if (!editor) return;
+    const { state, view } = editor;
+    const { from, to } = state.selection;
+    const breakPositions: number[] = [];
+
+    state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.type.name === "hardBreak") {
+        breakPositions.push(pos);
+      }
+    });
+
+    if (breakPositions.length > 0) {
+      const tr = state.tr;
+      for (let i = breakPositions.length - 1; i >= 0; i--) {
+        const pos = breakPositions[i];
+        tr.delete(pos, pos + 1);
+        tr.split(pos);
+      }
+      view.dispatch(tr);
+    }
+  };
+
+  const handleToggleHeading = (level: 1 | 2 | 3) => {
+    if (!editor) return;
+    splitHardBreaks();
+    if (editor.isActive("heading", { level })) {
+      editor.chain().focus().clearNodes().setParagraph().run();
+    } else {
+      editor.chain().focus().clearNodes().setHeading({ level }).run();
+    }
+  };
+
+  const handleToggleParagraph = () => {
+    if (!editor) return;
+    splitHardBreaks();
+    editor.chain().focus().clearNodes().setParagraph().run();
+  };
+
+  const handleToggleBulletList = () => {
+    if (!editor) return;
+    splitHardBreaks();
+    if (editor.isActive("bulletList")) {
+      editor.chain().focus().clearNodes().setParagraph().run();
+    } else {
+      editor.chain().focus().clearNodes().toggleBulletList().run();
+    }
+  };
+
+  const handleToggleOrderedList = () => {
+    if (!editor) return;
+    splitHardBreaks();
+    if (editor.isActive("orderedList")) {
+      editor.chain().focus().clearNodes().setParagraph().run();
+    } else {
+      editor.chain().focus().clearNodes().toggleOrderedList().run();
+    }
+  };
+
+  const handleToggleBlockquote = () => {
+    if (!editor) return;
+    if (editor.isActive("blockquote")) {
+      editor.chain().focus().clearNodes().setParagraph().run();
+    } else {
+      editor.chain().focus().clearNodes().toggleBlockquote().run();
+    }
+  };
+
+  const handleToggleCodeBlock = () => {
+    if (!editor) return;
+    if (editor.isActive("codeBlock")) {
+      editor.chain().focus().clearNodes().setParagraph().run();
+    } else {
+      editor.chain().focus().clearNodes().toggleCodeBlock().run();
+    }
+  };
+
   const handleApplyLink = () => {
     if (!editor) return;
     if (linkUrl.trim()) {
@@ -136,7 +217,7 @@ export function RichTextEditor({
             title="Normal Paragraph"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().setParagraph().run();
+              handleToggleParagraph();
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor?.isActive("paragraph") && !editor?.isActive("heading")
@@ -151,7 +232,7 @@ export function RichTextEditor({
             title="Heading 1"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleHeading({ level: 1 }).run();
+              handleToggleHeading(1);
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer font-bold ${
               editor?.isActive("heading", { level: 1 })
@@ -166,7 +247,7 @@ export function RichTextEditor({
             title="Heading 2"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleHeading({ level: 2 }).run();
+              handleToggleHeading(2);
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer font-bold ${
               editor?.isActive("heading", { level: 2 })
@@ -181,7 +262,7 @@ export function RichTextEditor({
             title="Heading 3"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleHeading({ level: 3 }).run();
+              handleToggleHeading(3);
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer font-bold ${
               editor?.isActive("heading", { level: 3 })
@@ -279,7 +360,7 @@ export function RichTextEditor({
             title="Bulleted List"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleBulletList().run();
+              handleToggleBulletList();
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor?.isActive("bulletList")
@@ -294,7 +375,7 @@ export function RichTextEditor({
             title="Numbered List"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleOrderedList().run();
+              handleToggleOrderedList();
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor?.isActive("orderedList")
@@ -309,7 +390,7 @@ export function RichTextEditor({
             title="Blockquote"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleBlockquote().run();
+              handleToggleBlockquote();
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor?.isActive("blockquote")
@@ -324,7 +405,7 @@ export function RichTextEditor({
             title="Code Block"
             onMouseDown={(e) => {
               e.preventDefault();
-              editor?.chain().focus().toggleCodeBlock().run();
+              handleToggleCodeBlock();
             }}
             className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor?.isActive("codeBlock")
