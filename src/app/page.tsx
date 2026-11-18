@@ -3,17 +3,37 @@ import { users } from "@/db/schema";
 import { getSession } from "@/lib/auth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Database, Sparkles, Layers, Palette, Terminal, CheckCircle2, ArrowRight, UserPlus, LogIn, ExternalLink } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { LandingHeader } from "@/components/landing/landing-header";
+import {
+  Sparkles,
+  ArrowRight,
+  ExternalLink,
+  Layers,
+  Palette,
+  Terminal,
+  Grid,
+  FileText,
+  Briefcase,
+  Award,
+  Calendar,
+  Mail,
+  CheckCircle2,
+  Compass,
+  Zap,
+  ShieldCheck,
+  Layout,
+  Globe,
+} from "lucide-react";
 import Link from "next/link";
 
 export default async function HomePage() {
-  let dbStatus = "Connected";
-  let demoUser = null;
   const session = await getSession();
 
+  let demoUser = null;
   try {
     demoUser = await db.query.users.findFirst({
+      where: (table, { eq }) => eq(table.handle, "sarah"),
       with: {
         settings: true,
         articles: true,
@@ -24,208 +44,573 @@ export default async function HomePage() {
       },
     });
   } catch (error) {
-    dbStatus = "Connection Error";
-    console.error(error);
+    console.error("Failed to load demo user", error);
   }
 
+  // Fallback to first user if sarah is not found
+  if (!demoUser) {
+    try {
+      demoUser = await db.query.users.findFirst({
+        with: {
+          settings: true,
+          articles: true,
+          experiences: true,
+          achievements: true,
+          services: true,
+          events: true,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const demoHandle = demoUser?.handle || "sarah";
+
+  const templatesList = [
+    {
+      id: "developer_terminal",
+      name: "Developer Terminal",
+      vibe: "Command-Line Precision",
+      description: "macOS window chrome with traffic lights, monospace zsh command prompt, and CLI-driven tabs. Built for systems engineers, DevOps leads, and backend specialists.",
+      badge: "Obsidian & Emerald",
+      icon: Terminal,
+      palette: "emerald",
+    },
+    {
+      id: "minimal_swiss",
+      name: "Minimal Swiss",
+      vibe: "International Typographic Order",
+      description: "Archival folio metadata, rigorous typographic hierarchy, brutalist grid lines, and numbered chronology. Built for architects, design leaders, and researchers.",
+      badge: "Monochrome & Slate",
+      icon: Layout,
+      palette: "mono",
+    },
+    {
+      id: "aurora_studio",
+      name: "Aurora Studio",
+      vibe: "Spatial Glassmorphic Glow",
+      description: "Spatial frosted glass cards, ambient aurora lighting flares, and floating capsule navigation. Built for product designers, UI/UX innovators, and creative technologists.",
+      badge: "Frosted & Indigo",
+      icon: Sparkles,
+      palette: "indigo",
+    },
+    {
+      id: "bento_grid",
+      name: "Bento Grid",
+      vibe: "Modular Information Architecture",
+      description: "Linear and Apple-inspired asymmetrical tiles, live operational status telemetry, and dense tactile cards. Built for full-stack builders, founders, and makers.",
+      badge: "Tactile & Violet",
+      icon: Grid,
+      palette: "violet",
+    },
+    {
+      id: "fancy_creative",
+      name: "Fancy Creative",
+      vibe: "Fluid Gradient Expressiveness",
+      description: "Fluid radial gradient meshes, animated radar availability ping, metallic accolades, and expressive headlines. Built for creative developers and agency founders.",
+      badge: "Radial Mesh & Rose",
+      icon: Zap,
+      palette: "rose",
+    },
+    {
+      id: "simple_professional",
+      name: "Simple Professional",
+      vibe: "Editorial Resume & Timeline",
+      description: "Classic executive resume styling with continuous vertical timeline ruler, structured 2-column grids, and timeless elegance. Built for engineering managers and consultants.",
+      badge: "Executive & Slate",
+      icon: Compass,
+      palette: "slate",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
-      {/* Navigation Header */}
-      <header className="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 group">
-            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-base transition-transform group-hover:scale-105">
-              P
-            </div>
-            <span className="font-semibold tracking-tight text-base">
-              Portfolio<span className="text-emerald-400">Builder</span>
-            </span>
-            <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs py-0.5 px-2">
-              v1.0.0 • All Workflows Complete
-            </Badge>
-          </div>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+      {/* Dynamic Client Navigation Header with Mobile Drawer */}
+      <LandingHeader sessionUser={session ? { handle: session.handle, name: session.name } : null} />
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 border border-zinc-800 rounded-full px-3.5 py-1.5 bg-zinc-900/60">
-              <span className={`h-2 w-2 rounded-full ${dbStatus === "Connected" ? "bg-emerald-400 animate-pulse" : "bg-red-500"}`} />
-              <span>PostgreSQL: <strong className="text-zinc-200">{dbStatus}</strong></span>
+      <main className="flex-1 w-full">
+        {/* HERO SECTION */}
+        <section className="relative overflow-hidden pt-12 sm:pt-20 pb-16 sm:pb-24 border-b border-zinc-800/60">
+          {/* Ambient Lighting Gradients */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[400px] sm:h-[500px] bg-gradient-to-b from-emerald-500/15 via-emerald-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
+
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8 text-center sm:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs font-medium text-zinc-300 backdrop-blur-md shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>The Multi-Page Personal Brand Engine</span>
             </div>
 
-            {session ? (
-              <Button asChild size="sm" className="h-9 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs transition-all shadow-md shadow-emerald-500/10">
-                <Link href="/dashboard">
-                  <span>Dashboard (@{session.handle})</span>
-                  <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
-                </Link>
-              </Button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Button asChild variant="ghost" size="sm" className="h-9 px-3.5 rounded-xl text-xs text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800">
-                  <Link href="/login">
-                    <LogIn className="h-3.5 w-3.5 mr-1.5" />
-                    Sign In
+            <div className="space-y-4 max-w-4xl">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.1] sm:leading-[1.15]">
+                A portfolio builder that respects the{" "}
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                  true depth
+                </span>{" "}
+                of your work.
+              </h1>
+
+              <p className="text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl mx-auto sm:mx-0">
+                Single-page sites reduce years of craft to a superficial summary. PortfolioBuilder gives you an end-to-end multi-page platform with dedicated spaces for your writings, career timeline, consulting packages, verified achievements, and speaking appearances—backed by 6 signature design templates and a personal dashboard.
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-2 justify-center sm:justify-start">
+              {session ? (
+                <Button
+                  asChild
+                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all shadow-lg shadow-emerald-500/20"
+                >
+                  <Link href="/dashboard">
+                    <span>Open Dashboard (@{session.handle})</span>
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="sm" className="h-9 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs transition-all shadow-md shadow-emerald-500/10">
+              ) : (
+                <Button
+                  asChild
+                  className="w-full sm:w-auto h-12 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all shadow-lg shadow-emerald-500/20"
+                >
                   <Link href="/register">
-                    <UserPlus className="h-3.5 w-3.5 mr-1.5" />
-                    Get Started
+                    <span>Claim Your Portfolio Handle</span>
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+              )}
 
-      {/* Hero Section */}
-      <main className="max-w-6xl mx-auto px-6 sm:px-8 py-16 sm:py-20 flex-1 flex flex-col justify-center">
-        <div className="space-y-6 max-w-3xl">
-          <Badge className="bg-zinc-800/80 hover:bg-zinc-800 text-zinc-300 border-zinc-700 font-mono text-xs px-3 py-1">
-            Next.js 16 • PostgreSQL • Drizzle ORM • Multi-Tenant Routing
-          </Badge>
-
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1] text-zinc-50">
-            Build and publish your custom multi-page portfolio.
-          </h1>
-
-          <p className="text-lg sm:text-xl text-zinc-400 leading-relaxed max-w-2xl">
-            Manage your articles, career timeline, achievements, services, and events all in one place with a dedicated admin dashboard and multiple stunning presentation layouts.
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Button asChild size="lg" className="h-12 px-7 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-sm transition-all shadow-lg shadow-emerald-500/10">
-              <Link href="/register">
-                <span>Claim Your Portfolio Handle</span>
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
-            </Button>
-
-            {demoUser && (
-              <Button asChild variant="outline" size="lg" className="h-12 px-7 rounded-xl border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-200 text-sm font-semibold transition-all">
-                <Link href={`/${demoUser.handle}`}>
-                  <span>View Live Demo (@{demoUser.handle})</span>
+              <Button
+                asChild
+                variant="outline"
+                className="w-full sm:w-auto h-12 px-7 rounded-xl border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-200 text-sm font-semibold transition-all"
+              >
+                <Link href={`/${demoHandle}`}>
+                  <span>Explore Live Showcase (@{demoHandle})</span>
                   <ExternalLink className="h-4 w-4 ml-2 text-emerald-400" />
                 </Link>
               </Button>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Live Demo Showcase Card */}
-        {demoUser && (
-          <div className="mt-14">
-            <Card className="bg-zinc-900/80 border-zinc-800 text-zinc-100 overflow-hidden relative rounded-3xl p-8 sm:p-10 shadow-2xl py-8 gap-0 space-y-6">
-              <div className="absolute top-0 right-0 h-64 w-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-              <CardHeader className="p-0 pb-2">
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-                    <CardTitle className="text-xl font-bold tracking-tight">Live Multi-Tenant Public Portfolio</CardTitle>
+            {/* Value Highlights */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-zinc-800/80 text-left">
+              <div className="space-y-1">
+                <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>100% Multi-Page</span>
+                </div>
+                <p className="text-[11px] text-zinc-400">Dedicated pages for all items, not just landing.</p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>6 Signature Themes</span>
+                </div>
+                <p className="text-[11px] text-zinc-400">Terminal, Swiss, Aurora, Bento, Fancy &amp; Simple.</p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>Private Inbox</span>
+                </div>
+                <p className="text-[11px] text-zinc-400">Direct inquiries delivered straight to your dashboard.</p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>Personal Handle</span>
+                </div>
+                <p className="text-[11px] text-zinc-400">Share your clean address e.g. /{demoHandle}.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* LIVE MULTI-PAGE SHOWCASE SECTION */}
+        <section id="demo" className="py-16 sm:py-20 border-b border-zinc-800/60 bg-zinc-950/60">
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+                <Globe className="h-3.5 w-3.5" />
+                <span>Live Interactive Showcase</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                One portfolio dataset. Complete multi-page reach.
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
+                Take a look at how @{demoHandle}&apos;s live portfolio is structured. Every single category has its own dedicated index and detail views, ready to explore:
+              </p>
+            </div>
+
+            {/* Public Route Explorer Card */}
+            <div className="rounded-3xl p-6 sm:p-8 bg-zinc-900/60 border border-zinc-800/80 shadow-2xl space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800/80">
+                <div className="flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-mono text-sm text-zinc-300">
+                    portfoliobuilder.dev/<strong className="text-emerald-400">{demoHandle}</strong>
+                  </span>
+                </div>
+
+                <Button
+                  asChild
+                  size="sm"
+                  className="w-fit h-9 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs border border-zinc-700"
+                >
+                  <Link href={`/${demoHandle}`}>
+                    <span>Launch Full Portfolio</span>
+                    <ExternalLink className="h-3 w-3 ml-1.5 text-emerald-400" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* 6 Category Sub-Pages Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                <Link
+                  href={`/${demoHandle}/articles`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <FileText className="h-4 w-4" />
                   </div>
-                  <Button asChild size="sm" variant="outline" className="h-9 px-3.5 rounded-xl border-zinc-700 bg-zinc-800/80 hover:bg-zinc-800 text-xs text-emerald-400 font-semibold">
-                    <Link href={`/${demoUser.handle}`}>
-                      <span>Visit /{demoUser.handle}</span>
-                      <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
-                    </Link>
-                  </Button>
-                </div>
-                <CardDescription className="text-sm text-zinc-400 leading-relaxed mt-1">
-                  Dynamic multi-page public routes are live: overview, articles, experience, achievements, services, events, and contact form.
-                </CardDescription>
-              </CardHeader>
+                  <div>
+                    <div className="text-xl font-extrabold text-white">
+                      {demoUser?.articles?.length || 3}
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                      Articles →
+                    </div>
+                  </div>
+                </Link>
 
-              <CardContent className="p-0 space-y-6">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5">
-                  <Link href={`/${demoUser.handle}/articles`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-2xl font-bold text-emerald-400">{demoUser.articles.length}</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Articles →</div>
-                  </Link>
-                  <Link href={`/${demoUser.handle}/experience`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-2xl font-bold text-emerald-400">{demoUser.experiences.length}</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Experience →</div>
-                  </Link>
-                  <Link href={`/${demoUser.handle}/achievements`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-2xl font-bold text-emerald-400">{demoUser.achievements.length}</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Awards →</div>
-                  </Link>
-                  <Link href={`/${demoUser.handle}/services`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-2xl font-bold text-emerald-400">{demoUser.services.length}</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Services →</div>
-                  </Link>
-                  <Link href={`/${demoUser.handle}/events`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-2xl font-bold text-emerald-400">{demoUser.events.length}</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Events →</div>
-                  </Link>
-                  <Link href={`/${demoUser.handle}/contact`} className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/70 text-center hover:border-zinc-700 hover:bg-zinc-950 transition-all">
-                    <div className="text-xs font-semibold text-emerald-400 mt-1">Direct Form</div>
-                    <div className="text-xs text-zinc-400 mt-1 font-medium">Contact →</div>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+                <Link
+                  href={`/${demoHandle}/experience`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <Briefcase className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-extrabold text-white">
+                      {demoUser?.experiences?.length || 4}
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                      Career →
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${demoHandle}/achievements`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <Award className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-extrabold text-white">
+                      {demoUser?.achievements?.length || 3}
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                      Honors →
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${demoHandle}/services`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-extrabold text-white">
+                      {demoUser?.services?.length || 3}
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                      Services →
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${demoHandle}/events`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <Calendar className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-extrabold text-white">
+                      {demoUser?.events?.length || 3}
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                      Speaking →
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${demoHandle}/contact`}
+                  className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-900/80 transition-all text-center group flex flex-col justify-between space-y-3"
+                >
+                  <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 w-fit mx-auto group-hover:scale-110 transition-transform">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-emerald-400 pt-1">
+                      Direct Form
+                    </div>
+                    <div className="text-xs font-semibold text-zinc-400 group-hover:text-zinc-200 transition-colors mt-1">
+                      Inquiries →
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
-        )}
+        </section>
 
-        {/* Workflow Roadmap Grid */}
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
-            <CardHeader className="p-0 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                <CheckCircle2 className="h-4 w-4" />
-                Workflow 1 (Done)
+        {/* 6 CURATED DESIGN TEMPLATES SECTION */}
+        <section id="templates" className="py-16 sm:py-24 border-b border-zinc-800/60">
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="space-y-3 text-center sm:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+                <Palette className="h-3.5 w-3.5" />
+                <span>6 Award-Winning Design Languages</span>
               </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">Scaffolding & DB</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Next.js 16, PostgreSQL container, Drizzle ORM schema, migrations, and seed data.
-            </CardContent>
-          </Card>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+                Not just color skins. Complete visual architectures.
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
+                Switching templates doesn&apos;t just change accents. It re-renders every single page with bespoke navigation, typography, cards, and interactive behaviors designed around different creative philosophies.
+              </p>
+            </div>
 
-          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
-            <CardHeader className="p-0 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                <CheckCircle2 className="h-4 w-4" />
-                Workflow 2 (Done)
-              </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">Auth & Multi-Tenancy</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Session-based auth, secure middleware redirect, and multi-page <code className="text-zinc-300">/[handle]</code> routing.
-            </CardContent>
-          </Card>
+            {/* Template Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {templatesList.map((tpl) => {
+                const Icon = tpl.icon;
+                return (
+                  <Card
+                    key={tpl.id}
+                    className="p-6 sm:p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/80 transition-all flex flex-col justify-between space-y-6 group shadow-lg"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="h-10 w-10 rounded-2xl bg-zinc-800/80 border border-zinc-700/80 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <Badge variant="outline" className="text-[10px] font-mono border-zinc-700 text-zinc-400">
+                          {tpl.badge}
+                        </Badge>
+                      </div>
 
-          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
-            <CardHeader className="p-0 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                <CheckCircle2 className="h-4 w-4" />
-                Workflow 3 (Done)
-              </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">CRUD Dashboard</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Complete management and edit suites for articles, experience, awards, services, events, and inbox.
-            </CardContent>
-          </Card>
+                      <div className="space-y-1.5">
+                        <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                          {tpl.name}
+                        </h3>
+                        <p className="text-xs font-semibold text-emerald-400/90 uppercase tracking-wider">
+                          {tpl.vibe}
+                        </p>
+                      </div>
 
-          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
-            <CardHeader className="p-0 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                <CheckCircle2 className="h-4 w-4" />
-                Workflow 4 (Done)
+                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                        {tpl.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                      <Link
+                        href={`/${demoHandle}`}
+                        className="text-zinc-400 hover:text-white flex items-center gap-1 font-medium transition-colors"
+                      >
+                        <span>Preview Live</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+
+                      <Link
+                        href="/register"
+                        className="text-emerald-400 font-bold hover:underline"
+                      >
+                        Use Template
+                      </Link>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY MULTI-PAGE MATTERS SECTION */}
+        <section id="why-multipage" className="py-16 sm:py-24 border-b border-zinc-800/60 bg-zinc-950/40">
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="space-y-3 text-center sm:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+                <Layers className="h-3.5 w-3.5" />
+                <span>The Core Advantage</span>
               </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">Theming Engine</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Theme Studio, Bento Grid, Simple Professional, and Fancy Creative multi-template engine.
-            </CardContent>
-          </Card>
-        </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+                Why professionals outgrow single-page portfolios
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
+                As your career progresses, a one-page overview cannot communicate your technical depth, leadership trajectory, advisory scope, or writing authority.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-3.5">
+                <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
+                  <FileText className="h-5 w-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">Dedicated Technical Writings</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Publish architectural retrospectives, engineering essays, and tutorials with tags, estimated reading times, and dedicated reading layouts with feedback forms.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-3.5">
+                <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                  <Briefcase className="h-5 w-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">Continuous Career Chronology</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Document your leadership roles, platform transformations, and engineering impact with verified technology stack pills and timeline rulers.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-3.5">
+                <div className="h-10 w-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">Commercial Advisory &amp; Services</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Turn inbound interest into structured consulting contracts. List advisory packages with fixed or hourly pricing, deliverables matrices, and booking calls to action.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-3.5">
+                <div className="h-10 w-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center">
+                  <Award className="h-5 w-5" />
+                </div>
+                <h3 className="text-xl font-bold text-white">Verified Honors &amp; Speaking Timetable</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Display industry awards, patents, and technical certifications alongside your upcoming conference keynotes, workshops, and podcast sessions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS SECTION */}
+        <section id="how-it-works" className="py-16 sm:py-24 border-b border-zinc-800/60">
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="space-y-3 text-center sm:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-emerald-400">
+                <Zap className="h-3.5 w-3.5" />
+                <span>Effortless Workflow</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+                From signup to custom multi-page portfolio in 3 steps
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
+                <div className="text-2xl font-black text-emerald-400 font-mono">01</div>
+                <h3 className="text-lg font-bold text-white">Claim Your Personal Address</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Reserve your unique handle (e.g. <code className="text-emerald-400">/{demoHandle}</code>) with simple one-click registration and authentication.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
+                <div className="text-2xl font-black text-emerald-400 font-mono">02</div>
+                <h3 className="text-lg font-bold text-white">Populate Your Career Story</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Use your private dashboard to write articles, log work milestones, list advisory packages, and record speaking events.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 space-y-4">
+                <div className="text-2xl font-black text-emerald-400 font-mono">03</div>
+                <h3 className="text-lg font-bold text-white">Choose Your Aesthetic &amp; Go Live</h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  Toggle in real-time between Terminal, Swiss, Aurora, Bento, Fancy, and Simple templates in the Theme Studio. Your entire portfolio updates instantly.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* BOTTOM CALL TO ACTION HERO */}
+        <section className="py-20 sm:py-28 relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
+
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+              Ready to build a portfolio you are genuinely proud of?
+            </h2>
+            <p className="text-base sm:text-lg text-zinc-300 font-light max-w-2xl mx-auto leading-relaxed">
+              Join software architects, creative directors, consultants, and leaders who present their work with clarity and distinction.
+            </p>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button
+                asChild
+                className="w-full sm:w-auto h-12 px-8 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm shadow-xl shadow-emerald-500/20"
+              >
+                <Link href="/register">
+                  <span>Claim Your Free Portfolio</span>
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+
+              <Button
+                asChild
+                variant="outline"
+                className="w-full sm:w-auto h-12 px-8 rounded-xl border-zinc-700 bg-zinc-900/80 hover:bg-zinc-850 text-white font-semibold text-sm"
+              >
+                <Link href={`/${demoHandle}`}>
+                  <span>View Sample Portfolio (@{demoHandle})</span>
+                  <ExternalLink className="h-4 w-4 ml-2 text-emerald-400" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-900/80 py-8 px-6 sm:px-8 text-center text-xs text-zinc-500">
-        Portfolio Builder • 8pt Harmonic Design System Applied
+      {/* PROFESSIONAL FOOTER */}
+      <footer className="border-t border-zinc-900 bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8 text-xs text-zinc-400">
+        <div className="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold text-xs">
+              P
+            </div>
+            <span className="font-bold text-zinc-200">PortfolioBuilder</span>
+            <span>— The Multi-Page Personal Brand Engine</span>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <Link href="#features" className="hover:text-zinc-200 transition-colors">
+              Features
+            </Link>
+            <Link href="#templates" className="hover:text-zinc-200 transition-colors">
+              Templates
+            </Link>
+            <Link href={`/${demoHandle}`} className="hover:text-zinc-200 transition-colors">
+              Live Demo
+            </Link>
+            <Link href="/login" className="hover:text-zinc-200 transition-colors">
+              Sign In
+            </Link>
+          </div>
+        </div>
       </footer>
     </div>
   );
