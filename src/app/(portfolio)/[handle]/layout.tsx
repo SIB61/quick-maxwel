@@ -1,7 +1,8 @@
 import { getPortfolioData } from "@/lib/portfolio-data";
-import { getPaletteConfig, FONTS, FontFamily } from "@/lib/templates";
+import { getPaletteConfig, FONTS, FontFamily, TemplateId } from "@/lib/templates";
 import TemplateNavbar from "@/components/templates/nav/template-navbar";
 import TemplateFooter from "@/components/templates/nav/template-footer";
+import { TemplatePreviewBanner } from "@/components/templates/nav/template-preview-banner";
 import React from "react";
 
 export const dynamic = "force-dynamic";
@@ -31,6 +32,14 @@ export default async function PortfolioLayout({
         } as React.CSSProperties
       }
     >
+      {/* Template Preview Switcher Banner (when in preview mode) */}
+      {portfolio.isPreview && (
+        <TemplatePreviewBanner
+          activeTemplate={portfolio.settings?.templateId as TemplateId}
+          handle={handle}
+        />
+      )}
+
       {/* Template-Specific Navbar */}
       <TemplateNavbar portfolio={portfolio} handle={handle} />
 

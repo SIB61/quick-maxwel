@@ -425,15 +425,15 @@ export default async function HomePage() {
 
                     <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                       <Link
-                        href={`/${demoHandle}`}
-                        className="text-zinc-400 hover:text-white flex items-center gap-1 font-medium transition-colors"
+                        href={`/${demoHandle}?template=${tpl.id}`}
+                        className="text-zinc-300 hover:text-white flex items-center gap-1.5 font-medium transition-colors group-hover:text-sky-400"
                       >
                         <span>Preview Live</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
 
                       <Link
-                        href="/register"
+                        href={`/register?template=${tpl.id}`}
                         className="text-sky-400 font-bold hover:underline"
                       >
                         Use Template

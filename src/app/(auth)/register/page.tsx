@@ -1,25 +1,41 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { registerAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle, ArrowRight, Lock, Mail, User, AtSign, Loader2, Sparkles } from "lucide-react";
+import { AlertCircle, ArrowRight, Lock, Mail, User, AtSign, Loader2, Sparkles, Layout } from "lucide-react";
 import Link from "next/link";
+import { TEMPLATES, TemplateId } from "@/lib/templates";
 
-export default function RegisterPage() {
+function RegisterForm() {
+  const searchParams = useSearchParams();
+  const templateParam = (searchParams.get("template") || "simple_professional") as TemplateId;
+  const templateConfig = TEMPLATES[templateParam] || TEMPLATES.simple_professional;
+
   const [state, formAction, isPending] = useActionState(registerAction, undefined);
   const [handle, setHandle] = useState("");
 
   return (
     <Card className="bg-zinc-900/90 border-zinc-800 text-zinc-100 shadow-2xl backdrop-blur rounded-2xl overflow-hidden py-0 gap-0">
       <CardHeader className="px-8 pt-8 pb-4 space-y-2">
-        <div className="flex items-center gap-2 text-sky-400 text-xs font-semibold uppercase tracking-wider">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Instant Setup</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sky-400 text-xs font-semibold uppercase tracking-wider">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Instant Setup</span>
+          </div>
+
+          {templateParam && (
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-[11px] font-medium text-sky-400">
+              <Layout className="h-3 w-3" />
+              <span>Theme: {templateConfig.name}</span>
+            </div>
+          )}
         </div>
+
         <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50">
           Create your portfolio
         </CardTitle>
@@ -29,6 +45,8 @@ export default function RegisterPage() {
       </CardHeader>
 
       <form action={formAction}>
+        <input type="hidden" name="templateId" value={templateParam} />
+
         <CardContent className="px-8 py-3 space-y-5">
           {state?.error && (
             <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs sm:text-sm flex items-start gap-2.5">
@@ -145,5 +163,13 @@ export default function RegisterPage() {
         </CardFooter>
       </form>
     </Card>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="h-96 flex items-center justify-center text-zinc-500">Loading form...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

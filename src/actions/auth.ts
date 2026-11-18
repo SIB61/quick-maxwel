@@ -74,13 +74,24 @@ export async function registerAction(prevState: ActionState | undefined, formDat
     })
     .returning();
 
-  // Create default portfolio settings for the new user
+  const requestedTemplate = (formData.get("templateId") as string) || "simple_professional";
+  const validTemplates = [
+    "developer_terminal",
+    "minimal_swiss",
+    "aurora_studio",
+    "bento_grid",
+    "fancy_creative",
+    "simple_professional",
+  ];
+  const templateId = validTemplates.includes(requestedTemplate) ? requestedTemplate : "simple_professional";
+
+  // Create default portfolio settings for the new user with selected template
   await db.insert(portfolioSettings).values({
     userId: newUser.id,
-    templateId: "simple_professional",
+    templateId,
     colorPalette: "slate",
     primaryColor: "#0f172a",
-    accentColor: "#3b82f6",
+    accentColor: "#38bdf8",
     fontFamily: "sans",
     seoTitle: `${name} — Professional Portfolio`,
     seoDescription: `Portfolio and work highlights for ${name}.`,
