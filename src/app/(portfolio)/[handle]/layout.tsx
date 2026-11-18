@@ -1,7 +1,7 @@
 import { getPortfolioData } from "@/lib/portfolio-data";
 import { getPaletteConfig, FONTS, FontFamily } from "@/lib/templates";
-import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import TemplateNavbar from "@/components/templates/nav/template-navbar";
+import TemplateFooter from "@/components/templates/nav/template-footer";
 import React from "react";
 
 export default async function PortfolioLayout({
@@ -13,16 +13,6 @@ export default async function PortfolioLayout({
 }) {
   const { handle } = await params;
   const portfolio = await getPortfolioData(handle);
-
-  const navLinks = [
-    { label: "Overview", href: `/${handle}` },
-    { label: "Articles", href: `/${handle}/articles` },
-    { label: "Experience", href: `/${handle}/experience` },
-    { label: "Achievements", href: `/${handle}/achievements` },
-    { label: "Services", href: `/${handle}/services` },
-    { label: "Events", href: `/${handle}/events` },
-    { label: "Contact", href: `/${handle}/contact` },
-  ];
 
   const paletteConfig = getPaletteConfig(portfolio.settings?.colorPalette);
   const fontKey = (portfolio.settings?.fontFamily || "sans") as FontFamily;
@@ -39,68 +29,16 @@ export default async function PortfolioLayout({
         } as React.CSSProperties
       }
     >
-      {/* Portfolio Navbar */}
-      <header className="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${handle}`} className="flex items-center gap-3 group">
-            {portfolio.avatarUrl ? (
-              <img
-                src={portfolio.avatarUrl}
-                alt={portfolio.name}
-                className="h-8 w-8 rounded-full object-cover border border-zinc-700"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-300">
-                {portfolio.name.charAt(0)}
-              </div>
-            )}
-            <span className="font-semibold text-zinc-100 group-hover:text-white transition-colors">
-              {portfolio.name}
-            </span>
-          </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 text-sm text-zinc-400">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-3 py-1.5 rounded-lg hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href={`/${handle}/contact`}
-              className="text-xs font-bold text-black px-4 py-2 rounded-full transition-all hover:opacity-90 shadow-sm"
-              style={{ backgroundColor: "var(--theme-accent)" }}
-            >
-              Get in Touch
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Template-Specific Navbar */}
+      <TemplateNavbar portfolio={portfolio} handle={handle} />
 
       {/* Main Portfolio Content */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-12">
+      <main className="flex-1 w-full flex flex-col">
         {children}
       </main>
 
-      {/* Portfolio Footer */}
-      <footer className="border-t border-zinc-900 py-8 px-6 text-center text-xs text-zinc-500">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} {portfolio.name}. Built with PortfolioBuilder.</p>
-          <div className="flex items-center gap-4 text-zinc-400">
-            <Link href="/" className="hover:text-zinc-200 transition-colors flex items-center gap-1">
-              <span>Create your own</span>
-              <ExternalLink className="h-3 w-3" />
-            </Link>
-          </div>
-        </div>
-      </footer>
+      {/* Template-Specific Footer */}
+      <TemplateFooter portfolio={portfolio} handle={handle} />
     </div>
   );
 }
