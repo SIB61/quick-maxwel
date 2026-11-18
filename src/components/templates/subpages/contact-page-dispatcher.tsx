@@ -5,6 +5,7 @@ import { submitContactAction } from "@/actions/contact";
 import { TerminalContact } from "../terminal/terminal-contact";
 import { SwissContact } from "../swiss/swiss-contact";
 import { AuroraContact } from "../aurora/aurora-contact";
+import { BentoContact } from "../bento/bento-contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +34,9 @@ export default function ContactPageDispatcher({
   }
   if (templateId === "aurora_studio") {
     return <AuroraContact handle={handle} />;
+  }
+  if (templateId === "bento_grid") {
+    return <BentoContact handle={handle} />;
   }
 
   // Standard/Simple template fallback

@@ -2,6 +2,7 @@ import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalAchievements } from "../terminal/terminal-achievements";
 import { SwissAchievements } from "../swiss/swiss-achievements";
 import { AuroraAchievements } from "../aurora/aurora-achievements";
+import { BentoAchievements } from "../bento/bento-achievements";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Award, ExternalLink } from "lucide-react";
@@ -24,6 +25,9 @@ export default function AchievementsPageDispatcher({
   }
   if (templateId === "aurora_studio") {
     return <AuroraAchievements portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "bento_grid") {
+    return <BentoAchievements portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

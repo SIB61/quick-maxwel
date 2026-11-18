@@ -2,6 +2,7 @@ import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalExperience } from "../terminal/terminal-experience";
 import { SwissExperience } from "../swiss/swiss-experience";
 import { AuroraExperience } from "../aurora/aurora-experience";
+import { BentoExperience } from "../bento/bento-experience";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Briefcase, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -23,6 +24,9 @@ export default function ExperiencePageDispatcher({
   }
   if (templateId === "aurora_studio") {
     return <AuroraExperience portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "bento_grid") {
+    return <BentoExperience portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback
