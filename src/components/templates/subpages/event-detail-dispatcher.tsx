@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalEventDetail } from "../terminal/terminal-event-detail";
+import { SwissEventDetail } from "../swiss/swiss-event-detail";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -17,6 +18,9 @@ export default function EventDetailPageDispatcher({
 
   if (templateId === "developer_terminal") {
     return <TerminalEventDetail portfolio={portfolio} event={event} handle={handle} />;
+  }
+  if (templateId === "minimal_swiss") {
+    return <SwissEventDetail portfolio={portfolio} event={event} handle={handle} />;
   }
 
   // Standard/Simple template fallback

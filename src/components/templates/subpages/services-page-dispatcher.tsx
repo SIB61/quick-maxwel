@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalServices } from "../terminal/terminal-services";
+import { SwissServices } from "../swiss/swiss-services";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
@@ -16,6 +17,9 @@ export default function ServicesPageDispatcher({
 
   if (templateId === "developer_terminal") {
     return <TerminalServices portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "minimal_swiss") {
+    return <SwissServices portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

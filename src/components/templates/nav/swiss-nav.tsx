@@ -74,11 +74,13 @@ export function SwissFooter({ portfolio, handle }: { portfolio: PortfolioUser; h
     <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-zinc-400 py-10 px-6 font-mono text-xs">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1">
-          <div className="text-sm font-bold text-white uppercase tracking-wider">
-            {portfolio.name} — ALL RIGHTS RESERVED
+          <div className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span>ARCHIVAL FOLIO</span>
+            <span>//</span>
+            <span>{portfolio.name}</span>
           </div>
           <p className="text-[11px] text-zinc-500">
-            SYSTEM EDITION 2026.04 // DESIGNED IN BASEL &amp; ZÜRICH.
+            SWISS COORDINATES: 47.3769° N, 8.5417° E // SYSTEM EDITION 2026.04 // DESIGNED IN BASEL &amp; ZÜRICH.
           </p>
         </div>
 

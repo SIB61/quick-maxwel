@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalExperience } from "../terminal/terminal-experience";
+import { SwissExperience } from "../swiss/swiss-experience";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Briefcase, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -15,6 +16,9 @@ export default function ExperiencePageDispatcher({
 
   if (templateId === "developer_terminal") {
     return <TerminalExperience portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "minimal_swiss") {
+    return <SwissExperience portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

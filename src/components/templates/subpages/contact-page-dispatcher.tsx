@@ -3,6 +3,7 @@
 import { useActionState, use } from "react";
 import { submitContactAction } from "@/actions/contact";
 import { TerminalContact } from "../terminal/terminal-contact";
+import { SwissContact } from "../swiss/swiss-contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +26,9 @@ export default function ContactPageDispatcher({
 
   if (templateId === "developer_terminal") {
     return <TerminalContact handle={handle} />;
+  }
+  if (templateId === "minimal_swiss") {
+    return <SwissContact handle={handle} />;
   }
 
   // Standard/Simple template fallback
