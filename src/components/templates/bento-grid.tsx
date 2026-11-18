@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured);
@@ -78,9 +79,10 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
             </div>
 
             {portfolio.bio && (
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                {portfolio.bio}
-              </p>
+              <RichContentDisplay
+                content={portfolio.bio}
+                className="text-xs sm:text-sm text-zinc-300 leading-relaxed"
+              />
             )}
           </div>
 

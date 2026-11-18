@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Award, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function FancyAchievements({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -62,9 +63,10 @@ export function FancyAchievements({ portfolio, handle }: { portfolio: PortfolioU
               </h2>
 
               {item.description && (
-                <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-                  {item.description}
-                </p>
+                <RichContentDisplay
+                  content={item.description}
+                  className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed"
+                />
               )}
             </div>
 

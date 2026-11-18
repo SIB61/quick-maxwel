@@ -144,7 +144,9 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                 {portfolio.bio && (
                   <div className="pt-2 border-t border-zinc-800/60 text-xs text-zinc-300 leading-relaxed">
                     <span className="text-zinc-500 font-mono"># Bio</span>
-                    <p className="mt-1">{portfolio.bio}</p>
+                    <div className="mt-1">
+                      <RichContentDisplay content={portfolio.bio} className="font-mono text-xs text-zinc-300 leading-relaxed" />
+                    </div>
                   </div>
                 )}
 

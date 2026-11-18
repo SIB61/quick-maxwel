@@ -63,9 +63,10 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
           </div>
 
           {portfolio.bio && (
-            <p className="text-zinc-300 text-base sm:text-lg leading-relaxed max-w-3xl pt-2 font-light">
-              {portfolio.bio}
-            </p>
+            <RichContentDisplay
+              content={portfolio.bio}
+              className="text-zinc-300 text-base sm:text-lg leading-relaxed max-w-3xl pt-2 font-light"
+            />
           )}
 
           {/* Minimalist Meta Links */}

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft, Award, Loader2, Save } from "lucide-react";
 import Link from "next/link";
@@ -102,14 +103,13 @@ export default function NewAchievementPage() {
 
           <div className="space-y-1.5">
             <Label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-              Brief Description
+              Description &amp; Competencies (Visual Editor)
             </Label>
-            <Textarea
+            <RichTextEditor
               id="description"
               name="description"
-              rows={3}
-              placeholder="What this credential certifies and technical competencies validated..."
-              className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y leading-relaxed"
+              minHeight="140px"
+              placeholder="What this credential certifies and technical competencies validated. Use buttons for bold text and bullet points..."
             />
           </div>
 

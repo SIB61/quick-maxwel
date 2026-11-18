@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Award, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleAchievements({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -45,9 +46,10 @@ export function SimpleAchievements({ portfolio, handle }: { portfolio: Portfolio
               </h2>
 
               {item.description && (
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                  {item.description}
-                </p>
+                <RichContentDisplay
+                  content={item.description}
+                  className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans"
+                />
               )}
             </div>
 

@@ -130,8 +130,8 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
         </div>
 
         {portfolio.bio && (
-          <div className="p-7 sm:p-8 rounded-3xl bg-gradient-to-br from-zinc-900/70 via-zinc-900/40 to-zinc-950/70 border border-zinc-800/80 backdrop-blur-xl shadow-xl text-zinc-300 text-sm sm:text-base leading-relaxed">
-            {portfolio.bio}
+          <div className="p-7 sm:p-8 rounded-3xl bg-gradient-to-br from-zinc-900/70 via-zinc-900/40 to-zinc-950/70 border border-zinc-800/80 backdrop-blur-xl shadow-xl">
+            <RichContentDisplay content={portfolio.bio} className="text-zinc-300 text-sm sm:text-base leading-relaxed" />
           </div>
         )}
       </section>

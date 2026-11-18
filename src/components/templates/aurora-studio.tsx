@@ -99,9 +99,10 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
           </div>
 
           {portfolio.bio && (
-            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-3xl pt-2 font-light">
-              {portfolio.bio}
-            </p>
+            <RichContentDisplay
+              content={portfolio.bio}
+              className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-3xl pt-2 font-light"
+            />
           )}
 
           {/* Social Glass Capsules */}

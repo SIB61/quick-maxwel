@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Award, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function AuroraAchievements({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -78,9 +79,10 @@ export function AuroraAchievements({ portfolio, handle }: { portfolio: Portfolio
               </h2>
 
               {item.description && (
-                <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">
-                  {item.description}
-                </p>
+                <RichContentDisplay
+                  content={item.description}
+                  className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed"
+                />
               )}
             </div>
 

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, AlertCircle, CheckCircle2, Loader2, Save, MapPin, Globe, Sparkles } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
@@ -139,15 +140,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           {/* Biography */}
           <div className="space-y-1.5">
             <Label htmlFor="bio" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-              Personal Bio & Background
+              Personal Bio &amp; Background (Visual Editor)
             </Label>
-            <Textarea
+            <RichTextEditor
               id="bio"
               name="bio"
-              rows={4}
-              defaultValue={user.bio || ""}
-              placeholder="Tell visitors about your philosophy, background, leadership style, or what you enjoy building..."
-              className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-emerald-500/40 resize-y leading-relaxed"
+              defaultValue={user.bio}
+              minHeight="180px"
+              placeholder="Tell visitors about your philosophy, background, leadership style, or what you enjoy building. Use toolbar buttons for bold text, lists, and headings..."
             />
           </div>
 

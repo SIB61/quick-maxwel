@@ -111,9 +111,9 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
         </div>
 
         {portfolio.bio && (
-          <p className="text-zinc-300 leading-relaxed text-sm sm:text-base pt-2">
-            {portfolio.bio}
-          </p>
+          <div className="pt-2">
+            <RichContentDisplay content={portfolio.bio} className="text-zinc-300 leading-relaxed text-sm sm:text-base font-sans" />
+          </div>
         )}
       </section>
 

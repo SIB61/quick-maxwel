@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Award, CheckCircle2, ExternalLink } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalAchievements({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -73,9 +74,10 @@ export function TerminalAchievements({ portfolio, handle }: { portfolio: Portfol
                   </div>
 
                   {item.description && (
-                    <p className="text-xs text-zinc-400 leading-relaxed pt-1">
-                      {item.description}
-                    </p>
+                    <RichContentDisplay
+                      content={item.description}
+                      className="font-mono text-zinc-400 text-xs leading-relaxed pt-1"
+                    />
                   )}
                 </div>
               );

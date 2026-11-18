@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Award } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function BentoAchievements({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -55,9 +56,10 @@ export function BentoAchievements({ portfolio, handle }: { portfolio: PortfolioU
               </h2>
 
               {item.description && (
-                <p className="text-xs text-zinc-300 leading-relaxed">
-                  {item.description}
-                </p>
+                <RichContentDisplay
+                  content={item.description}
+                  className="text-xs text-zinc-300 leading-relaxed"
+                />
               )}
             </div>
 
