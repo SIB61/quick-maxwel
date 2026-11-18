@@ -22,7 +22,7 @@ export default async function ExperiencePage({
           <span>Back to Overview</span>
         </Link>
         <h1 className="text-3xl font-extrabold tracking-tight text-zinc-100 flex items-center gap-2">
-          <Briefcase className="h-6 w-6 text-emerald-400" />
+          <Briefcase className="h-6 w-6" style={{ color: "var(--theme-accent)" }} />
           Work Experience
         </h1>
         <p className="text-sm text-zinc-400">
@@ -34,13 +34,16 @@ export default async function ExperiencePage({
         {portfolio.experiences.map((exp) => (
           <div key={exp.id} className="relative group">
             {/* Timeline bullet */}
-            <div className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-zinc-950 bg-emerald-400 group-hover:scale-125 transition-transform" />
+            <div
+              className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-zinc-950 group-hover:scale-125 transition-transform"
+              style={{ backgroundColor: "var(--theme-accent)" }}
+            />
 
             <div className="space-y-3 p-5 rounded-xl bg-zinc-900/50 border border-zinc-800/80">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <div>
                   <h2 className="font-bold text-lg text-zinc-100">{exp.role}</h2>
-                  <div className="text-sm text-emerald-400 flex items-center gap-2">
+                  <div className="text-sm flex items-center gap-2 font-medium" style={{ color: "var(--theme-accent)" }}>
                     <span>{exp.company}</span>
                     {exp.location && (
                       <span className="text-xs text-zinc-400 flex items-center gap-1">

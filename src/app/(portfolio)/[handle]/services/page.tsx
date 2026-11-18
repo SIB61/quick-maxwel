@@ -41,7 +41,7 @@ export default async function ServicesPage({
                     {service.title}
                   </h2>
                   {service.price && (
-                    <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-xs shrink-0">
+                    <Badge variant="outline" className="text-xs shrink-0 font-mono" style={{ color: "var(--theme-accent)", borderColor: "var(--theme-accent)" }}>
                       {service.price}
                     </Badge>
                   )}
@@ -56,7 +56,7 @@ export default async function ServicesPage({
                     <div className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Key Deliverables</div>
                     {service.deliverables.slice(0, 3).map((item) => (
                       <div key={item} className="flex items-center gap-2 text-xs text-zinc-300">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: "var(--theme-accent)" }} />
                         <span>{item}</span>
                       </div>
                     ))}
@@ -64,7 +64,7 @@ export default async function ServicesPage({
                 )}
               </div>
 
-              <div className="pt-4 flex items-center text-xs text-emerald-400 font-medium gap-1">
+              <div className="pt-4 flex items-center text-xs font-semibold gap-1" style={{ color: "var(--theme-accent)" }}>
                 <span>View full details & pricing</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </div>

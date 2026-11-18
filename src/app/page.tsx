@@ -41,7 +41,7 @@ export default async function HomePage() {
               Portfolio<span className="text-emerald-400">Builder</span>
             </span>
             <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs py-0.5 px-2">
-              v0.3.0 • Phase 3
+              v0.4.0 • Phase 4
             </Badge>
           </div>
 
@@ -168,17 +168,17 @@ export default async function HomePage() {
         )}
 
         {/* Workflow Roadmap Grid */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
             <CardHeader className="p-0 space-y-1">
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
                 <CheckCircle2 className="h-4 w-4" />
-                Workflow 1 (Completed)
+                Workflow 1 (Done)
               </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">Scaffolding & Database</CardTitle>
+              <CardTitle className="text-base text-zinc-100 font-bold">Scaffolding & DB</CardTitle>
             </CardHeader>
             <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Next.js 16, PostgreSQL 16 container, Drizzle ORM schema, migrations, and seed data.
+              Next.js 16, PostgreSQL container, Drizzle ORM schema, migrations, and seed data.
             </CardContent>
           </Card>
 
@@ -186,12 +186,12 @@ export default async function HomePage() {
             <CardHeader className="p-0 space-y-1">
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
                 <CheckCircle2 className="h-4 w-4" />
-                Workflow 2 (Completed)
+                Workflow 2 (Done)
               </div>
               <CardTitle className="text-base text-zinc-100 font-bold">Auth & Multi-Tenancy</CardTitle>
             </CardHeader>
             <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Session-based auth (register, login, middleware), admin dashboard layout, and multi-page <code className="text-zinc-300">/[handle]</code> routing.
+              Session-based auth, secure middleware redirect, and multi-page <code className="text-zinc-300">/[handle]</code> routing.
             </CardContent>
           </Card>
 
@@ -199,12 +199,25 @@ export default async function HomePage() {
             <CardHeader className="p-0 space-y-1">
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
                 <CheckCircle2 className="h-4 w-4" />
-                Workflow 3 (Completed)
+                Workflow 3 (Done)
               </div>
-              <CardTitle className="text-base text-zinc-100 font-bold">CRUD & Admin Dashboard</CardTitle>
+              <CardTitle className="text-base text-zinc-100 font-bold">CRUD Dashboard</CardTitle>
             </CardHeader>
             <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
-              Complete management and edit suites for articles, experience, achievements, services, events, and inbox.
+              Complete management and edit suites for articles, experience, awards, services, events, and inbox.
+            </CardContent>
+          </Card>
+
+          <Card className="bg-zinc-900/40 border-emerald-500/30 rounded-2xl p-6 py-6 gap-0 space-y-2">
+            <CardHeader className="p-0 space-y-1">
+              <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                <CheckCircle2 className="h-4 w-4" />
+                Workflow 4 (Done)
+              </div>
+              <CardTitle className="text-base text-zinc-100 font-bold">Theming Engine</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 text-xs text-zinc-400 leading-relaxed pt-1">
+              Theme Studio, Bento Grid, Simple Professional, and Fancy Creative multi-template engine.
             </CardContent>
           </Card>
         </div>

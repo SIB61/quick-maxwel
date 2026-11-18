@@ -35,7 +35,7 @@ export default function ContactPage({
       <Card className="bg-zinc-900/90 border-zinc-800 text-zinc-100 shadow-2xl backdrop-blur rounded-2xl overflow-hidden p-8 sm:p-10 py-8 gap-0 space-y-6">
         <CardHeader className="p-0 space-y-2">
           <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2.5">
-            <Mail className="h-6 w-6 text-emerald-400" />
+            <Mail className="h-6 w-6" style={{ color: "var(--theme-accent)" }} />
             <span>Send a Message</span>
           </CardTitle>
           <CardDescription className="text-sm text-zinc-400 leading-relaxed">
@@ -136,7 +136,8 @@ export default function ContactPage({
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold h-11 text-sm rounded-xl transition-all cursor-pointer shadow-lg shadow-emerald-500/10 mt-2"
+                style={{ backgroundColor: "var(--theme-accent)" }}
+                className="w-full text-black font-semibold h-11 text-sm rounded-xl transition-all cursor-pointer shadow-lg hover:opacity-90 mt-2"
               >
                 {isPending ? (
                   <span>Sending message...</span>

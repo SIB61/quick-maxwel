@@ -1,6 +1,7 @@
 import { getPortfolioData } from "@/lib/portfolio-data";
+import { getPaletteConfig, FONTS, FontFamily } from "@/lib/templates";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import React from "react";
 
 export default async function PortfolioLayout({
@@ -23,15 +24,25 @@ export default async function PortfolioLayout({
     { label: "Contact", href: `/${handle}/contact` },
   ];
 
-  // Palette color definitions
-  const palette = portfolio.settings?.colorPalette || "slate";
+  const paletteConfig = getPaletteConfig(portfolio.settings?.colorPalette);
+  const fontKey = (portfolio.settings?.fontFamily || "sans") as FontFamily;
+  const fontClass = FONTS[fontKey]?.className || "font-sans";
 
   return (
-    <div className={`min-h-screen bg-zinc-950 text-zinc-100 theme-${palette} flex flex-col justify-between selection:bg-emerald-500 selection:text-black`}>
+    <div
+      className={`min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between ${fontClass}`}
+      style={
+        {
+          "--theme-accent": paletteConfig.accentHex,
+          "--theme-accent-glow": paletteConfig.glowRgba,
+          "--theme-primary": paletteConfig.primaryHex,
+        } as React.CSSProperties
+      }
+    >
       {/* Portfolio Navbar */}
       <header className="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${handle}`} className="flex items-center gap-3">
+          <Link href={`/${handle}`} className="flex items-center gap-3 group">
             {portfolio.avatarUrl ? (
               <img
                 src={portfolio.avatarUrl}
@@ -43,7 +54,7 @@ export default async function PortfolioLayout({
                 {portfolio.name.charAt(0)}
               </div>
             )}
-            <span className="font-semibold text-zinc-100 hover:text-emerald-400 transition-colors">
+            <span className="font-semibold text-zinc-100 group-hover:text-white transition-colors">
               {portfolio.name}
             </span>
           </Link>
@@ -54,7 +65,7 @@ export default async function PortfolioLayout({
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-3 py-1.5 rounded-md hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors"
+                className="px-3 py-1.5 rounded-lg hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors"
               >
                 {link.label}
               </Link>
@@ -64,7 +75,8 @@ export default async function PortfolioLayout({
           <div className="flex items-center gap-2">
             <Link
               href={`/${handle}/contact`}
-              className="text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-black px-3 py-1.5 rounded-full transition-all"
+              className="text-xs font-bold text-black px-4 py-2 rounded-full transition-all hover:opacity-90 shadow-sm"
+              style={{ backgroundColor: "var(--theme-accent)" }}
             >
               Get in Touch
             </Link>

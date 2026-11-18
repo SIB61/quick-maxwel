@@ -23,7 +23,7 @@ export default async function ArticlesListPage({
           <span>Back to Overview</span>
         </Link>
         <h1 className="text-3xl font-extrabold tracking-tight text-zinc-100 flex items-center gap-2">
-          <FileText className="h-6 w-6 text-emerald-400" />
+          <FileText className="h-6 w-6" style={{ color: "var(--theme-accent)" }} />
           All Articles
         </h1>
         <p className="text-sm text-zinc-400">
