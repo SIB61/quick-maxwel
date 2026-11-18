@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalAchievements } from "../terminal/terminal-achievements";
 import { SwissAchievements } from "../swiss/swiss-achievements";
+import { AuroraAchievements } from "../aurora/aurora-achievements";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Award, ExternalLink } from "lucide-react";
@@ -20,6 +21,9 @@ export default function AchievementsPageDispatcher({
   }
   if (templateId === "minimal_swiss") {
     return <SwissAchievements portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "aurora_studio") {
+    return <AuroraAchievements portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

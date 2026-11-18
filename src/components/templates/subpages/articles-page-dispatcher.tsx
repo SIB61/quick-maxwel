@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalArticlesList } from "../terminal/terminal-articles";
 import { SwissArticlesList } from "../swiss/swiss-articles";
+import { AuroraArticlesList } from "../aurora/aurora-articles";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, FileText } from "lucide-react";
@@ -20,6 +21,9 @@ export default function ArticlesPageDispatcher({
   }
   if (templateId === "minimal_swiss") {
     return <SwissArticlesList portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "aurora_studio") {
+    return <AuroraArticlesList portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

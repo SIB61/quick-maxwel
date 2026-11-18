@@ -1,0 +1,138 @@
+import { PortfolioUser } from "@/lib/portfolio-data";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+
+export function AuroraServices({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
+  return (
+    <div className="max-w-5xl mx-auto px-6 py-12 space-y-12 relative text-zinc-100">
+      {/* Ambient Aurora Flare */}
+      <div
+        className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-full blur-[140px] pointer-events-none opacity-25"
+        style={{
+          background: `radial-gradient(circle, var(--theme-accent) 0%, #6366f1 50%, transparent 80%)`,
+        }}
+      />
+
+      {/* Header Panel */}
+      <div className="p-8 sm:p-10 rounded-3xl bg-zinc-900/30 border border-white/10 backdrop-blur-2xl shadow-2xl space-y-4 relative overflow-hidden">
+        <div
+          className="absolute top-0 left-0 right-0 h-[1.5px]"
+          style={{
+            background: `linear-gradient(90deg, transparent, var(--theme-accent), transparent)`,
+          }}
+        />
+
+        <Link
+          href={`/${handle}`}
+          className="text-xs text-zinc-400 hover:text-white inline-flex items-center gap-1.5 transition-colors font-medium"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          <span>Back to Studio Overview</span>
+        </Link>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950/60 border border-white/10 text-xs text-zinc-300">
+              <Sparkles className="h-3 w-3" style={{ color: "var(--theme-accent)" }} />
+              <span>Studio Capabilities</span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+              Capabilities &amp; Advisory
+            </h1>
+          </div>
+
+          <span className="text-xs font-mono text-zinc-400 bg-zinc-950/40 px-3 py-1.5 rounded-full border border-white/5">
+            {portfolio.services.length} Studio Packages
+          </span>
+        </div>
+
+        <p className="text-sm sm:text-base text-zinc-300 font-light max-w-2xl leading-relaxed">
+          High-tier technical advisory, cloud infrastructure architecture audits, and specialized engineering execution.
+        </p>
+      </div>
+
+      {/* Frosted Capabilities Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+        {portfolio.services.map((service) => (
+          <div
+            key={service.id}
+            className="p-8 rounded-3xl bg-zinc-900/30 border border-white/10 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all space-y-6 flex flex-col justify-between group relative overflow-hidden"
+          >
+            <div
+              className="absolute top-0 left-0 right-0 h-[1.5px] opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{
+                background: `linear-gradient(90deg, transparent, var(--theme-accent), transparent)`,
+              }}
+            />
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                  {service.pricingType}
+                </span>
+
+                {service.price && (
+                  <span
+                    className="px-3.5 py-1 rounded-full text-xs font-bold border"
+                    style={{
+                      borderColor: "var(--theme-accent)",
+                      color: "var(--theme-accent)",
+                      backgroundColor: "rgba(0,0,0,0.4)",
+                    }}
+                  >
+                    {service.price}
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-2xl font-bold text-white tracking-tight leading-snug hover:opacity-90 transition-opacity">
+                <Link href={`/${handle}/services/${service.slug}`}>
+                  {service.title}
+                </Link>
+              </h2>
+
+              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">
+                {service.shortDescription}
+              </p>
+
+              {service.deliverables && service.deliverables.length > 0 && (
+                <div className="space-y-2 pt-4 border-t border-white/5">
+                  <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+                    Included Deliverables:
+                  </span>
+                  <div className="space-y-1.5">
+                    {service.deliverables.slice(0, 3).map((item) => (
+                      <div key={item} className="flex items-center gap-2 text-xs text-zinc-300 font-light">
+                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: "var(--theme-accent)" }} />
+                        <span className="line-clamp-1">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+              <Link
+                href={`/${handle}/services/${service.slug}`}
+                className="text-xs font-semibold hover:underline flex items-center gap-1 transition-colors"
+                style={{ color: "var(--theme-accent)" }}
+              >
+                <span>Full Specification</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+
+              <Link
+                href={`/${handle}/contact?subject=${encodeURIComponent(`Inquiry: ${service.title}`)}`}
+                className="px-4 py-2 rounded-full text-xs font-bold text-black transition-all hover:scale-105 shadow-md"
+                style={{ backgroundColor: "var(--theme-accent)" }}
+              >
+                Inquire Package
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

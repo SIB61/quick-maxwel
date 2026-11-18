@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalEvents } from "../terminal/terminal-events";
 import { SwissEvents } from "../swiss/swiss-events";
+import { AuroraEvents } from "../aurora/aurora-events";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, Calendar, ExternalLink, MapPin } from "lucide-react";
@@ -20,6 +21,9 @@ export default function EventsPageDispatcher({
   }
   if (templateId === "minimal_swiss") {
     return <SwissEvents portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "aurora_studio") {
+    return <AuroraEvents portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback

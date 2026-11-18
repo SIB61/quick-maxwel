@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import { TerminalServices } from "../terminal/terminal-services";
 import { SwissServices } from "../swiss/swiss-services";
+import { AuroraServices } from "../aurora/aurora-services";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
@@ -20,6 +21,9 @@ export default function ServicesPageDispatcher({
   }
   if (templateId === "minimal_swiss") {
     return <SwissServices portfolio={portfolio} handle={handle} />;
+  }
+  if (templateId === "aurora_studio") {
+    return <AuroraServices portfolio={portfolio} handle={handle} />;
   }
 
   // Standard/Simple template fallback
