@@ -41,7 +41,7 @@ export default async function HomePage() {
               Portfolio<span className="text-emerald-400">Builder</span>
             </span>
             <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs py-0.5 px-2">
-              v0.4.0 • Phase 4
+              v1.0.0 • All Workflows Complete
             </Badge>
           </div>
 

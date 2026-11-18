@@ -30,6 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { label: "Events", href: "/dashboard/events", icon: Calendar },
     { label: "Inquiries", href: "/dashboard/inbox", icon: Mail },
     { label: "Templates & Themes", href: "/dashboard/theme", icon: Palette },
+    { label: "Profile", href: "/dashboard/profile", icon: User },
   ];
 
   return (
