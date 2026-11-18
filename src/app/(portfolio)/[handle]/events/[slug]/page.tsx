@@ -54,7 +54,8 @@ export default async function EventDetailPage({
               href={event.eventUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1.5"
+              className="text-xs hover:underline inline-flex items-center gap-1.5 font-semibold"
+              style={{ color: "var(--theme-accent)" }}
             >
               <span>Visit Event Website / Registration</span>
               <ExternalLink className="h-3.5 w-3.5" />

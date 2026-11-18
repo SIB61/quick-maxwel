@@ -33,7 +33,7 @@ export default async function ServiceDetailPage({
             {service.title}
           </h1>
           {service.price && (
-            <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-sm px-3 py-1 w-fit">
+            <Badge variant="outline" className="text-sm font-mono px-3 py-1 w-fit" style={{ color: "var(--theme-accent)", borderColor: "var(--theme-accent)" }}>
               {service.price}
             </Badge>
           )}
@@ -50,7 +50,7 @@ export default async function ServiceDetailPage({
           <div className="grid grid-cols-1 gap-2 pt-2">
             {service.deliverables.map((item) => (
               <div key={item} className="flex items-start gap-2.5 text-sm text-zinc-300">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "var(--theme-accent)" }} />
                 <span>{item}</span>
               </div>
             ))}
@@ -76,7 +76,8 @@ export default async function ServiceDetailPage({
         </div>
         <Link
           href={`/${handle}/contact?subject=${encodeURIComponent(`Inquiry: ${service.title}`)}`}
-          className="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-5 py-2 rounded-full text-xs transition-colors shrink-0 flex items-center gap-2"
+          className="text-black font-semibold px-5 py-2.5 rounded-full text-xs transition-opacity hover:opacity-90 shrink-0 flex items-center gap-2"
+          style={{ backgroundColor: "var(--theme-accent)" }}
         >
           <Mail className="h-3.5 w-3.5" />
           <span>Inquire about this service</span>
