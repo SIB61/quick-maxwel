@@ -2,7 +2,8 @@ export type TemplateId =
   | "simple_professional"
   | "fancy_creative"
   | "bento_grid"
-  | "developer_terminal";
+  | "developer_terminal"
+  | "minimal_swiss";
 export type ColorPalette = "slate" | "emerald" | "neon" | "terracotta" | "ocean";
 export type FontFamily = "sans" | "serif" | "mono";
 
@@ -62,6 +63,15 @@ export const TEMPLATES: Record<TemplateId, TemplateConfig> = {
       "Authentic macOS/Linux terminal environment featuring tabbed console navigation, command prompts, git log trees, and shell execution workflows.",
     tags: ["Terminal", "CLI", "Developer", "Monospace"],
     recommendedFor: "Backend Engineers, Systems Programmers, DevOps, CLI Enthusiasts",
+  },
+  minimal_swiss: {
+    id: "minimal_swiss",
+    name: "Minimal Swiss",
+    tagline: "International Typographic Style, hairline grids, and bold typography",
+    description:
+      "High-contrast editorial layout inspired by classic Swiss graphic design, bold oversized titles, numbered stage indicators, and architectural rules.",
+    tags: ["Swiss", "Editorial", "Typography", "Bauhaus", "Minimal"],
+    recommendedFor: "Design Engineers, Creative Directors, Architects, Minimalists",
   },
 };
 

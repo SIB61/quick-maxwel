@@ -473,6 +473,32 @@ export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps
                   </div>
                 )}
 
+                {templateId === "minimal_swiss" && (
+                  <div className="space-y-2.5 py-1 text-[10px]">
+                    <div className="flex items-center justify-between text-[8px] font-mono text-zinc-500 uppercase border-b border-zinc-800 pb-1">
+                      <span>FOLIO // VOL. 26</span>
+                      <span>BASE: GLOBAL</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-sm font-black uppercase tracking-tighter text-zinc-100">
+                        {user.name}
+                      </div>
+                      <div className="text-[9px] font-light tracking-tight" style={{ color: activePalette.accentHex }}>
+                        {user.headline || "Staff Architect"}
+                      </div>
+                    </div>
+                    <div className="border-t border-zinc-800 pt-1.5 space-y-1">
+                      <div className="flex items-center justify-between text-[8px] font-mono uppercase text-zinc-500">
+                        <span>01 // ESSAYS</span>
+                        <span style={{ color: activePalette.accentHex }}>INDEX →</span>
+                      </div>
+                      <div className="text-[9px] font-bold text-zinc-200">
+                        Zero-Downtime Distributed Architecture
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Footer preview note */}
                 <div className="pt-2 border-t border-zinc-900 flex items-center justify-between text-[10px] text-zinc-500">
                   <span>Font: {fontFamily}</span>
