@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Calendar, ExternalLink, MapPin, Sparkles } from 
 
 export function FancyEvents({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 space-y-12 relative text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 relative text-zinc-100">
       {/* Background Flare */}
       <div
         className="absolute -top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full blur-[120px] pointer-events-none opacity-30"

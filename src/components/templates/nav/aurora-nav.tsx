@@ -13,8 +13,8 @@ export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
   ];
 
   return (
-    <header className="sticky top-4 z-40 w-full px-4 sm:px-6 pointer-events-none">
-      <div className="max-w-5xl mx-auto flex items-center justify-between pointer-events-auto">
+    <header className="sticky top-4 z-40 w-full px-4 sm:px-6 lg:px-8 pointer-events-none">
+      <div className="max-w-5xl mx-auto flex flex-col pointer-events-auto">
         {/* Floating Frosted Capsule */}
         <div className="w-full flex items-center justify-between rounded-full bg-zinc-900/60 backdrop-blur-2xl border border-white/10 px-4 sm:px-6 py-2.5 shadow-2xl relative overflow-hidden group">
           {/* Subtle Aurora Ambient Shine inside capsule */}
@@ -66,6 +66,19 @@ export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
             </Link>
           </div>
         </div>
+
+        {/* Mobile Horizontal Capsule Nav Strip */}
+        <div className="md:hidden mt-2 flex items-center gap-1.5 overflow-x-auto py-1 px-2 no-scrollbar rounded-full bg-zinc-900/60 backdrop-blur-xl border border-white/10">
+          {navLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="px-2.5 py-1 rounded-full text-[11px] text-zinc-300 hover:text-white whitespace-nowrap"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </header>
   );
@@ -73,7 +86,7 @@ export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
 
 export function AuroraFooter({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <footer className="w-full mt-16 pb-12 px-4 sm:px-6 relative overflow-hidden">
+    <footer className="w-full mt-16 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Aurora Ambient Flare at bottom */}
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 blur-3xl opacity-20 pointer-events-none rounded-full"

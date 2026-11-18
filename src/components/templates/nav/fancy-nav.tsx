@@ -14,7 +14,7 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-zinc-950/80 backdrop-blur-xl">
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href={`/${handle}`} className="flex items-center gap-3 group">
           <div className="relative">
             {portfolio.avatarUrl ? (
@@ -54,12 +54,25 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
 
         <Link
           href={`/${handle}/contact`}
-          className="px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
+          className="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
           style={{ backgroundColor: "var(--theme-accent)" }}
         >
           <Sparkles className="h-3 w-3" />
           <span>Get in Touch</span>
         </Link>
+      </div>
+
+      {/* Mobile Horizontal Fancy Nav Strip */}
+      <div className="md:hidden border-t border-white/5 px-4 py-2 flex items-center gap-2 overflow-x-auto text-xs no-scrollbar bg-zinc-950/60">
+        {navLinks.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="px-2.5 py-1 rounded-full text-[11px] text-zinc-300 hover:text-white whitespace-nowrap bg-white/5"
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
     </header>
   );
@@ -67,7 +80,7 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
 
 export function FancyFooter({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <footer className="w-full mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-zinc-950/80 py-10 px-6 text-center text-xs text-zinc-500">
+    <footer className="w-full mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-zinc-950/80 py-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-zinc-500">
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <p>{`© ${new Date().getFullYear()} ${portfolio.name}. Built with Fancy Creative engine.`}</p>
         <div className="flex items-center gap-4 text-zinc-400">

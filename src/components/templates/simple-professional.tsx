@@ -26,7 +26,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
   const socials = portfolio.socialLinks || {};
 
   return (
-    <div className="space-y-16 sm:space-y-20 max-w-4xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20">
       {/* Editorial Minimal Hero */}
       <section className="space-y-6 pt-4 border-b border-zinc-800/60 pb-12">
         <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">

@@ -28,7 +28,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
   const socials = portfolio.socialLinks || {};
 
   return (
-    <div className="max-w-5xl mx-auto space-y-24 sm:space-y-28 relative">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-28 relative">
       {/* Background Spatial Aurora Lighting Flares */}
       <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[750px] h-[450px] rounded-full blur-[140px] pointer-events-none opacity-25"
         style={{

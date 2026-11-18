@@ -14,7 +14,7 @@ export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
-      <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href={`/${handle}`} className="flex items-center gap-3 group">
           <span className="font-semibold text-zinc-100 group-hover:text-white transition-colors">
             {portfolio.name}
@@ -41,14 +41,27 @@ export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
           Contact
         </Link>
       </div>
+
+      {/* Mobile Horizontal Simple Nav Strip */}
+      <div className="md:hidden border-t border-zinc-800/80 px-4 py-2 flex items-center gap-3 overflow-x-auto text-xs text-zinc-400 no-scrollbar bg-zinc-950">
+        {navLinks.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="hover:text-white whitespace-nowrap py-1"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
     </header>
   );
 }
 
 export function SimpleFooter({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <footer className="w-full mt-16 border-t border-zinc-800 py-8 px-6 text-center text-xs text-zinc-500">
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer className="w-full mt-16 border-t border-zinc-800 py-8 px-4 sm:px-6 lg:px-8 text-center text-xs text-zinc-500">
+      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <p>{`© ${new Date().getFullYear()} ${portfolio.name}. All rights reserved.`}</p>
         <div className="flex items-center gap-4 text-zinc-400">
           <Link href={`/${handle}`} className="hover:text-zinc-200 transition-colors">

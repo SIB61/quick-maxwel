@@ -46,7 +46,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 font-mono text-xs sm:text-sm">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 font-mono text-xs sm:text-sm">
       {/* Window Container */}
       <div className="rounded-2xl border border-zinc-800 bg-zinc-950/95 shadow-2xl overflow-hidden backdrop-blur-xl">
         {/* Terminal Header Bar */}

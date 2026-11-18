@@ -27,7 +27,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
   const socials = portfolio.socialLinks || {};
 
   return (
-    <div className="space-y-20 max-w-5xl mx-auto relative">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20 relative">
       {/* Decorative ambient gradient backdrop */}
       <div
         className="absolute -top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full blur-[120px] pointer-events-none opacity-30"
@@ -317,7 +317,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
       )}
 
       {/* High-Impact Contact Banner with Accent Glow */}
-      <section className="relative overflow-hidden p-10 sm:p-14 rounded-3xl bg-zinc-900/90 border border-zinc-800 text-center space-y-5 shadow-2xl">
+      <section className="relative overflow-hidden p-6 sm:p-10 md:p-14 rounded-3xl bg-zinc-900/90 border border-zinc-800 text-center space-y-5 shadow-2xl">
         <div
           className="absolute -top-20 -right-20 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
           style={{ backgroundColor: "var(--theme-accent)" }}

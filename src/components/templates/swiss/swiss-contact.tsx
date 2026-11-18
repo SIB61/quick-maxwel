@@ -16,7 +16,7 @@ export function SwissContact({ handle }: { handle: string }) {
   const [state, formAction, isPending] = useActionState(submitContactAction, undefined);
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-12 space-y-12 font-sans text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 font-sans text-zinc-100">
       {/* Swiss Return Bar */}
       <div className="border-b border-zinc-800 pb-4 flex items-center justify-between text-xs font-mono tracking-widest uppercase text-zinc-500">
         <Link

@@ -14,7 +14,7 @@ export function TerminalArticleDetail({
   const lines = article.content.split("\n");
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 font-mono text-xs sm:text-sm px-4 py-8">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 font-mono text-xs sm:text-sm">
       {/* Return to buffer list */}
       <div className="flex items-center gap-2 text-zinc-400">
         <Link href={`/${handle}/articles`} className="hover:text-zinc-100 flex items-center gap-1">

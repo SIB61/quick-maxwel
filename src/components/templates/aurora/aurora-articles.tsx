@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, FileText, Sparkles, Clock, Calendar } from "luci
 
 export function AuroraArticlesList({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 space-y-12 relative text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 relative text-zinc-100">
       {/* Background Aurora Flare */}
       <div
         className="absolute -top-20 left-1/2 -translate-x-1/2 w-[650px] h-[350px] rounded-full blur-[140px] pointer-events-none opacity-25"

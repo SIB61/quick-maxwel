@@ -15,7 +15,7 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-md">
       {/* Top Swiss Archival Metadata Header */}
-      <div className="border-b border-zinc-800/80 px-6 py-1.5 flex items-center justify-between text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
+      <div className="border-b border-zinc-800/80 px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
         <div className="flex items-center gap-3">
           <span className="font-bold text-zinc-300">ARCHIVAL FOLIO</span>
           <span>//</span>
@@ -30,7 +30,7 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
       </div>
 
       {/* Main Swiss Nav Grid */}
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         <Link href={`/${handle}`} className="flex items-baseline gap-2 group shrink-0">
           <span className="font-mono text-xs font-bold" style={{ color: "var(--theme-accent)" }}>
             №
@@ -58,12 +58,26 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
         <div className="shrink-0">
           <Link
             href={`/${handle}/contact`}
-            className="px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white text-white hover:bg-white hover:text-black transition-all flex items-center gap-1.5"
+            className="px-3 sm:px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white text-white hover:bg-white hover:text-black transition-all flex items-center gap-1.5"
           >
             <span>DISPATCH</span>
             <ArrowUpRight className="h-3 w-3" />
           </Link>
         </div>
+      </div>
+
+      {/* Mobile Sub-Navigation Strip */}
+      <div className="md:hidden border-t border-zinc-800/80 px-4 py-2 flex items-center gap-4 overflow-x-auto text-[11px] font-mono no-scrollbar bg-zinc-950/90">
+        {navLinks.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="text-zinc-400 hover:text-white whitespace-nowrap flex items-center gap-1 shrink-0"
+          >
+            <span className="text-zinc-600 text-[10px]">{item.num}</span>
+            <span>{item.label}</span>
+          </Link>
+        ))}
       </div>
     </header>
   );
@@ -71,8 +85,8 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
 
 export function SwissFooter({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-zinc-400 py-10 px-6 font-mono text-xs">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <footer className="w-full border-t border-zinc-800 bg-zinc-950 text-zinc-400 py-10 px-4 sm:px-6 lg:px-8 font-mono text-xs">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1">
           <div className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <span>ARCHIVAL FOLIO</span>

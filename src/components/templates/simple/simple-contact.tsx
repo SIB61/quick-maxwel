@@ -16,7 +16,7 @@ export function SimpleContact({ handle }: { handle: string }) {
   const [state, formAction, isPending] = useActionState(submitContactAction, undefined);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 space-y-10 font-sans text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 font-sans text-zinc-100">
       {/* Header */}
       <div className="space-y-3 border-b border-zinc-800 pb-8">
         <Link

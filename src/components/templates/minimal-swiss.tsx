@@ -27,7 +27,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
   const socials = portfolio.socialLinks || {};
 
   return (
-    <div className="max-w-5xl mx-auto space-y-24 sm:space-y-32 font-sans text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-32 font-sans text-zinc-100">
       {/* 00: Swiss Editorial Hero */}
       <section className="space-y-10 pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4 text-xs font-mono tracking-widest uppercase text-zinc-500">

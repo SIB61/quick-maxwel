@@ -7,7 +7,7 @@ export function BentoArticlesList({ portfolio, handle }: { portfolio: PortfolioU
   const secondaryArticles = portfolio.articles.slice(1);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 space-y-8 text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 text-zinc-100">
       {/* Top Header Bento Tile */}
       <div className="p-6 sm:p-8 rounded-3xl bg-zinc-900/60 border border-zinc-800/80 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-2">

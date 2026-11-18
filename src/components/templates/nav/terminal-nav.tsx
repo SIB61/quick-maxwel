@@ -35,7 +35,7 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
       </div>
 
       {/* Monospace Navigation Bar */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between overflow-x-auto gap-4">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between overflow-x-auto gap-4">
         <Link href={`/${handle}`} className="flex items-center gap-2 text-zinc-200 hover:text-white shrink-0 group">
           <TerminalIcon className="h-4 w-4" style={{ color: "var(--theme-accent)" }} />
           <span className="font-bold tracking-tight text-zinc-100 group-hover:underline">
@@ -43,7 +43,7 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 overflow-x-auto py-1">
+        <nav className="flex items-center gap-1 overflow-x-auto py-1 no-scrollbar">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -76,8 +76,8 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
 
 export function TerminalFooter({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
-    <footer className="w-full border-t border-zinc-900 bg-zinc-950 font-mono text-xs text-zinc-500 py-6 px-4 sm:px-6 select-none">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+    <footer className="w-full border-t border-zinc-900 bg-zinc-950 font-mono text-xs text-zinc-500 py-6 px-4 sm:px-6 lg:px-8 select-none">
+      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
         <div className="flex items-center gap-2 text-zinc-400">
           <span className="text-emerald-400 font-bold">[EXIT 0]</span>
           <span>Process returned 0 (0x00) // Session active</span>
