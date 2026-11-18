@@ -4,13 +4,13 @@ import { Sparkles, ArrowRight } from "lucide-react";
 
 export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   const navLinks = [
-    { label: "Overview", href: `/${handle}` },
-    { label: "Articles", href: `/${handle}/articles` },
-    { label: "Experience", href: `/${handle}/experience` },
-    { label: "Achievements", href: `/${handle}/achievements` },
-    { label: "Services", href: `/${handle}/services` },
-    { label: "Events", href: `/${handle}/events` },
-  ];
+    { label: "Overview", href: `/${handle}`, show: true },
+    { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
+    { label: "Experience", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Achievements", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
+    { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
+    { label: "Events", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
+  ].filter((item) => item.show);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-zinc-950/80 backdrop-blur-xl">

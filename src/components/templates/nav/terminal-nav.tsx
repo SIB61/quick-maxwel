@@ -4,14 +4,13 @@ import { Terminal as TerminalIcon } from "lucide-react";
 
 export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   const navItems = [
-    { label: "cd ~", href: `/${handle}`, desc: "overview" },
-    { label: "cd ~/articles", href: `/${handle}/articles`, desc: "writings" },
-    { label: "cd ~/experience", href: `/${handle}/experience`, desc: "career" },
-    { label: "cd ~/achievements", href: `/${handle}/achievements`, desc: "awards" },
-    { label: "cd ~/services", href: `/${handle}/services`, desc: "advisory" },
-    { label: "cd ~/events", href: `/${handle}/events`, desc: "talks" },
-    { label: "cd ~/contact", href: `/${handle}/contact`, desc: "msg" },
-  ];
+    { label: "cd ~", href: `/${handle}`, desc: "overview", show: true },
+    { label: "cd ~/articles", href: `/${handle}/articles`, desc: "writings", show: (portfolio.articles?.length || 0) > 0 },
+    { label: "cd ~/experience", href: `/${handle}/experience`, desc: "career", show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "cd ~/achievements", href: `/${handle}/achievements`, desc: "awards", show: (portfolio.achievements?.length || 0) > 0 },
+    { label: "cd ~/services", href: `/${handle}/services`, desc: "advisory", show: (portfolio.services?.length || 0) > 0 },
+    { label: "cd ~/events", href: `/${handle}/events`, desc: "talks", show: (portfolio.events?.length || 0) > 0 },
+  ].filter((item) => item.show);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-xl font-mono text-xs">

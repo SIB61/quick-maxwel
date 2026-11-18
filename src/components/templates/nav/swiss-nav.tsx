@@ -3,14 +3,21 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
-  const navLinks = [
-    { num: "01", label: "OVERVIEW", href: `/${handle}` },
-    { num: "02", label: "ESSAYS", href: `/${handle}/articles` },
-    { num: "03", label: "CHRONICLE", href: `/${handle}/experience` },
-    { num: "04", label: "HONORS", href: `/${handle}/achievements` },
-    { num: "05", label: "DISCIPLINES", href: `/${handle}/services` },
-    { num: "06", label: "ENGAGEMENTS", href: `/${handle}/events` },
+  const rawLinks = [
+    { label: "OVERVIEW", href: `/${handle}`, show: true },
+    { label: "ESSAYS", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
+    { label: "CHRONICLE", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "HONORS", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
+    { label: "DISCIPLINES", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
+    { label: "ENGAGEMENTS", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
   ];
+
+  const navLinks = rawLinks
+    .filter((item) => item.show)
+    .map((item, idx) => ({
+      ...item,
+      num: String(idx + 1).padStart(2, "0"),
+    }));
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-md">

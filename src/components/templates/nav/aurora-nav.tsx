@@ -4,13 +4,13 @@ import { Sparkles, ArrowRight } from "lucide-react";
 
 export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   const navLinks = [
-    { label: "Overview", href: `/${handle}` },
-    { label: "Writings", href: `/${handle}/articles` },
-    { label: "Journey", href: `/${handle}/experience` },
-    { label: "Accolades", href: `/${handle}/achievements` },
-    { label: "Studio Services", href: `/${handle}/services` },
-    { label: "Appearances", href: `/${handle}/events` },
-  ];
+    { label: "Overview", href: `/${handle}`, show: true },
+    { label: "Writings", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
+    { label: "Journey", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Accolades", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
+    { label: "Studio Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
+    { label: "Appearances", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
+  ].filter((item) => item.show);
 
   return (
     <header className="sticky top-4 z-40 w-full px-4 sm:px-6 lg:px-8 pointer-events-none">

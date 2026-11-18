@@ -4,13 +4,13 @@ import { LayoutGrid, Send } from "lucide-react";
 
 export function BentoNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   const navLinks = [
-    { label: "Overview", href: `/${handle}` },
-    { label: "Articles", href: `/${handle}/articles` },
-    { label: "Career", href: `/${handle}/experience` },
-    { label: "Awards", href: `/${handle}/achievements` },
-    { label: "Services", href: `/${handle}/services` },
-    { label: "Events", href: `/${handle}/events` },
-  ];
+    { label: "Overview", href: `/${handle}`, show: true },
+    { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
+    { label: "Career", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Awards", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
+    { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
+    { label: "Events", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
+  ].filter((item) => item.show);
 
   return (
     <header className="sticky top-3 z-40 w-full px-4 sm:px-6 lg:px-8">
