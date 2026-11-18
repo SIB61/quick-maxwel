@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, GitCommit, GitBranch, MapPin } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function TerminalExperience({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -79,9 +80,10 @@ export function TerminalExperience({ portfolio, handle }: { portfolio: Portfolio
 
                   {/* Description */}
                   {exp.description && (
-                    <p className="text-zinc-400 text-xs leading-relaxed pt-1 whitespace-pre-wrap">
-                      {exp.description}
-                    </p>
+                    <RichContentDisplay
+                      content={exp.description}
+                      className="font-mono text-zinc-400 text-xs leading-relaxed pt-1"
+                    />
                   )}
 
                   {/* Technologies / Flags */}

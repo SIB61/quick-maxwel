@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export default function FancyCreativeTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 3);
@@ -294,9 +295,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
                   </Badge>
                 </div>
                 {exp.description && (
-                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed pt-1">
-                    {exp.description}
-                  </p>
+                  <RichContentDisplay content={exp.description} className="text-xs sm:text-sm text-zinc-300 leading-relaxed pt-1" />
                 )}
                 {exp.skills && exp.skills.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-2">

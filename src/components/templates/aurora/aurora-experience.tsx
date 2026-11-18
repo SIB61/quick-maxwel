@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Briefcase, MapPin, Sparkles } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function AuroraExperience({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -96,9 +97,10 @@ export function AuroraExperience({ portfolio, handle }: { portfolio: PortfolioUs
             </div>
 
             {exp.description && (
-              <p className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed whitespace-pre-wrap max-w-4xl">
-                {exp.description}
-              </p>
+              <RichContentDisplay
+                content={exp.description}
+                className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed max-w-4xl"
+              />
             )}
 
             {exp.skills && exp.skills.length > 0 && (

@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, Briefcase, MapPin, Layers } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function BentoExperience({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -73,9 +74,10 @@ export function BentoExperience({ portfolio, handle }: { portfolio: PortfolioUse
               )}
 
               {exp.description && (
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
-                  {exp.description}
-                </p>
+                <RichContentDisplay
+                  content={exp.description}
+                  className="text-xs sm:text-sm text-zinc-300 leading-relaxed"
+                />
               )}
             </div>
 

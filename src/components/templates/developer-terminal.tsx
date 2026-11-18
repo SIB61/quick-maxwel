@@ -24,6 +24,7 @@ import {
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
 import { useState } from "react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 type TabId = "all" | "articles" | "experience" | "services" | "events";
 
@@ -288,9 +289,9 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                     </div>
 
                     {exp.description && (
-                      <p className="text-xs text-zinc-400 leading-relaxed pl-6">
-                        {exp.description}
-                      </p>
+                      <div className="pl-6">
+                        <RichContentDisplay content={exp.description} className="font-mono text-xs text-zinc-400 leading-relaxed" />
+                      </div>
                     )}
 
                     {exp.skills && exp.skills.length > 0 && (

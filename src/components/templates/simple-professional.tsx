@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 3);
@@ -156,9 +157,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
                 </div>
 
                 {exp.description && (
-                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed pt-1">
-                    {exp.description}
-                  </p>
+                  <RichContentDisplay content={exp.description} className="text-xs sm:text-sm text-zinc-300 leading-relaxed pt-1" />
                 )}
 
                 {exp.skills && exp.skills.length > 0 && (

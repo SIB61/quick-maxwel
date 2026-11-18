@@ -2,6 +2,7 @@ import { PortfolioUser } from "@/lib/portfolio-data";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Briefcase, MapPin } from "lucide-react";
 import Link from "next/link";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SimpleExperience({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -54,9 +55,7 @@ export function SimpleExperience({ portfolio, handle }: { portfolio: PortfolioUs
               </div>
 
               {exp.description && (
-                <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
-                  {exp.description}
-                </p>
+                <RichContentDisplay content={exp.description} className="text-sm text-zinc-300 leading-relaxed" />
               )}
 
               {exp.skills && exp.skills.length > 0 && (

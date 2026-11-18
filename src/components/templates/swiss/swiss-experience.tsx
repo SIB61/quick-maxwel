@@ -1,6 +1,7 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, MapPin } from "lucide-react";
+import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 export function SwissExperience({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
   return (
@@ -70,9 +71,10 @@ export function SwissExperience({ portfolio, handle }: { portfolio: PortfolioUse
 
               {/* Description */}
               {exp.description && (
-                <p className="text-zinc-300 text-sm sm:text-base font-light leading-relaxed whitespace-pre-wrap max-w-4xl">
-                  {exp.description}
-                </p>
+                <RichContentDisplay
+                  content={exp.description}
+                  className="text-zinc-300 text-sm sm:text-base font-light leading-relaxed max-w-4xl"
+                />
               )}
 
               {/* Skills as specs */}
