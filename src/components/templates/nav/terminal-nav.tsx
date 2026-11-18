@@ -24,7 +24,7 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
             <span className="h-3 w-3 rounded-full bg-[#27c93f] inline-block border border-[#1aab29]" />
           </div>
           <span className="ml-2 text-zinc-400 font-mono text-[11px] sm:text-xs">
-            {handle}@archlinux: ~/portfolio (zsh)
+            {`${handle}@archlinux: ~/portfolio (zsh)`}
           </span>
         </div>
 
@@ -84,7 +84,7 @@ export function TerminalFooter({ portfolio, handle }: { portfolio: PortfolioUser
         </div>
 
         <div className="flex items-center gap-4 text-zinc-500">
-          <span>ssh {handle}@portfolio.dev</span>
+          <span>{`ssh ${handle}@portfolio.dev`}</span>
           <span>•</span>
           <Link href="/" className="hover:text-zinc-300 transition-colors">
             PortfolioBuilder v2.4

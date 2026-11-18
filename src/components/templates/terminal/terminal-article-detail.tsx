@@ -104,6 +104,7 @@ export function TerminalArticleDetail({
           <div className="flex items-center gap-2">
             <span className="px-1.5 py-0.5 bg-zinc-800 font-bold text-zinc-200 rounded">NORMAL</span>
             <span className="text-zinc-500">"{article.slug}.md" [readonly]</span>
+            <span className="text-zinc-500 font-mono">:set number</span>
           </div>
           <div className="flex items-center gap-4">
             <Link

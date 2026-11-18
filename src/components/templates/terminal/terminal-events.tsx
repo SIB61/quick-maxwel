@@ -41,6 +41,9 @@ export function TerminalEvents({ portfolio, handle }: { portfolio: PortfolioUser
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-emerald-400 font-bold text-[11px] shrink-0">
+                      [CRON]
+                    </span>
                     <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-[10px] uppercase font-bold border border-zinc-700">
                       {event.eventType}
                     </span>

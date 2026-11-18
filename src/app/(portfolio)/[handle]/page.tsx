@@ -1,6 +1,8 @@
 import { getPortfolioData } from "@/lib/portfolio-data";
 import PortfolioDispatcher from "@/components/templates/portfolio-dispatcher";
 
+export const dynamic = "force-dynamic";
+
 export default async function PortfolioLandingPage({
   params,
 }: {

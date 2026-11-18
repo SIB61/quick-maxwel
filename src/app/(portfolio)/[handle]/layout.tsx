@@ -4,6 +4,8 @@ import TemplateNavbar from "@/components/templates/nav/template-navbar";
 import TemplateFooter from "@/components/templates/nav/template-footer";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function PortfolioLayout({
   children,
   params,

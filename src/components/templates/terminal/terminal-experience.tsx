@@ -54,7 +54,7 @@ export function TerminalExperience({ portfolio, handle }: { portfolio: Portfolio
                       <span className="text-amber-400 font-bold">commit {hash}</span>
                       {isFirst && (
                         <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] border border-emerald-500/30">
-                          HEAD -&gt; main
+                          {"HEAD -> main"}
                         </span>
                       )}
                       <span className="text-zinc-500">tag: v{portfolio.experiences.length - idx}.0</span>

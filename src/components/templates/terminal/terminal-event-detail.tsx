@@ -20,7 +20,7 @@ export function TerminalEventDetail({
           <span>cd .. (back to calendar)</span>
         </Link>
         <span>/</span>
-        <span className="text-zinc-200">journalctl -u {event.slug}.service</span>
+        <span className="text-zinc-200">SYSTEMD: journalctl -u {event.slug}.service</span>
       </div>
 
       {/* Terminal Window Box */}
@@ -30,9 +30,9 @@ export function TerminalEventDetail({
             <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-green-500/80" />
-            <span className="ml-2 text-zinc-400 text-xs">sh: journalctl -u {event.slug} -f</span>
+            <span className="ml-2 text-zinc-400 text-xs">sh: journalctl -u {event.slug}.service -f</span>
           </div>
-          <span className="text-zinc-500 text-[11px]">EVENT DESCRIPTOR</span>
+          <span className="text-zinc-500 text-[11px]">[SYSTEMD]</span>
         </div>
 
         <div className="p-6 sm:p-8 space-y-6">

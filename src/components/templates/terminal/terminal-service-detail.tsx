@@ -30,9 +30,9 @@ export function TerminalServiceDetail({
             <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-green-500/80" />
-            <span className="ml-2 text-zinc-400 text-xs">sh: cat ~/services/{service.slug}.json</span>
+            <span className="ml-2 text-zinc-400 text-xs">sh: cat ~/services/{service.slug}.manifest.json</span>
           </div>
-          <span className="text-zinc-500 text-[11px]">SPECIFICATION</span>
+          <span className="text-zinc-500 text-[11px]">JSON MANIFEST</span>
         </div>
 
         <div className="p-6 sm:p-8 space-y-6">
@@ -88,19 +88,22 @@ export function TerminalServiceDetail({
           </div>
 
           {/* Action CTA */}
-          <div className="pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-xs text-zinc-500">
-              Execute inquiry protocol to book this engagement.
-            </div>
+          <div className="pt-6 border-t border-zinc-800/80 flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="text-xs text-zinc-400 font-mono">
+                <span className="text-zinc-500">// CLI Booking:</span>{" "}
+                <code>curl -X POST https://api.portfolio.dev/v1/services/{service.slug}/booking</code>
+              </div>
 
-            <Link
-              href={`/${handle}/contact?subject=${encodeURIComponent(`Inquiry: ${service.title}`)}`}
-              className="px-6 py-3 rounded-xl font-bold text-black transition-all hover:opacity-90 flex items-center gap-2"
-              style={{ backgroundColor: "var(--theme-accent)" }}
-            >
-              <TerminalIcon className="h-4 w-4" />
-              <span>./book-session.sh --tier={service.slug}</span>
-            </Link>
+              <Link
+                href={`/${handle}/contact?subject=${encodeURIComponent(`Inquiry: ${service.title}`)}`}
+                className="px-6 py-3 rounded-xl font-bold text-black transition-all hover:opacity-90 flex items-center gap-2 shrink-0"
+                style={{ backgroundColor: "var(--theme-accent)" }}
+              >
+                <TerminalIcon className="h-4 w-4" />
+                <span>./book-session.sh --tier={service.slug}</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
