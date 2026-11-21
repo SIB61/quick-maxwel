@@ -20,6 +20,7 @@ import {
   X,
   Copy,
   Check,
+  FolderKanban,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -42,6 +43,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
     { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { label: "Articles", href: "/dashboard/articles", icon: FileText },
     { label: "Experience", href: "/dashboard/experience", icon: Briefcase },
+    { label: "Projects", href: "/dashboard/projects", icon: FolderKanban },
     { label: "Achievements", href: "/dashboard/achievements", icon: Award },
     { label: "Services", href: "/dashboard/services", icon: Sparkles },
     { label: "Events", href: "/dashboard/events", icon: Calendar },

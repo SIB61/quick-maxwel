@@ -142,3 +142,21 @@ export function sanitizeRichHtml(html: string): string {
 export function renderRichContent(content: string): string {
   return sanitizeRichHtml(markdownToHtml(content));
 }
+
+/** Average adult silent-reading speed for technical prose. */
+const WORDS_PER_MINUTE = 200;
+
+/** Counts readable words in HTML or Markdown content (tags and syntax ignored). */
+export function countWords(content: string): number {
+  if (!content) return 0;
+  const text = markdownToHtml(content)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&[a-z0-9#]+;/gi, " ");
+  return text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
+}
+
+/** Estimates reading time from content, e.g. "4 min read" (minimum 1 minute). */
+export function estimateReadTime(content: string): string {
+  const minutes = Math.max(1, Math.ceil(countWords(content) / WORDS_PER_MINUTE));
+  return `${minutes} min read`;
+}

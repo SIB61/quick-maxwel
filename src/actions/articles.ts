@@ -7,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { estimateReadTime } from "@/lib/rich-text";
 
 const articleSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -18,7 +19,6 @@ const articleSchema = z.object({
   content: z.string().min(10, "Content must be at least 10 characters"),
   coverImageUrl: z.string().optional(),
   tags: z.string().optional(), // Comma-separated
-  readTime: z.string().optional(),
   isFeatured: z.boolean().default(false),
   isPublished: z.boolean().default(true),
 });
@@ -49,7 +49,6 @@ export async function createArticleAction(
     content: formData.get("content") as string,
     coverImageUrl: (formData.get("coverImageUrl") as string) || "",
     tags: tagsRaw,
-    readTime: (formData.get("readTime") as string) || "5 min read",
     isFeatured: formData.get("isFeatured") === "on",
     isPublished: formData.get("isPublished") === "on",
   };
@@ -76,7 +75,7 @@ export async function createArticleAction(
     content: parsed.data.content,
     coverImageUrl: parsed.data.coverImageUrl || null,
     tags,
-    readTime: parsed.data.readTime,
+    readTime: estimateReadTime(parsed.data.content),
     isFeatured: parsed.data.isFeatured,
     isPublished: parsed.data.isPublished,
   });
@@ -111,7 +110,6 @@ export async function updateArticleAction(
     content: formData.get("content") as string,
     coverImageUrl: (formData.get("coverImageUrl") as string) || "",
     tags: tagsRaw,
-    readTime: (formData.get("readTime") as string) || "5 min read",
     isFeatured: formData.get("isFeatured") === "on",
     isPublished: formData.get("isPublished") === "on",
   };
@@ -142,7 +140,7 @@ export async function updateArticleAction(
       content: parsed.data.content,
       coverImageUrl: parsed.data.coverImageUrl || null,
       tags,
-      readTime: parsed.data.readTime,
+      readTime: estimateReadTime(parsed.data.content),
       isFeatured: parsed.data.isFeatured,
       isPublished: parsed.data.isPublished,
       updatedAt: new Date(),

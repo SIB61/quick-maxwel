@@ -7,6 +7,7 @@ export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
     { label: "Overview", href: `/${handle}`, show: true },
     { label: "Writings", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "Journey", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Works", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "Accolades", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "Studio Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
     { label: "Appearances", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },

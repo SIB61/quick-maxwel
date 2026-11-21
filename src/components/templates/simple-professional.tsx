@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Globe,
   ChevronRight,
+  FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
@@ -23,6 +24,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 2);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = portfolio.socialLinks || {};
 
@@ -219,6 +221,55 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
                     {article.excerpt}
                   </p>
                 )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+              <FolderKanban className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
+              <span>Selected Projects</span>
+            </h2>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-semibold flex items-center gap-1 transition-colors hover:underline"
+              style={{ color: "var(--theme-accent)" }}
+            >
+              <span>View All ({portfolio.projects.length})</span>
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {featuredProjects.map((project) => (
+              <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                <Card className="bg-zinc-900/40 border-zinc-800 hover:border-zinc-700 transition-all p-6 rounded-2xl h-full flex flex-col justify-between py-6 gap-0 space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-bold text-base text-zinc-100">{project.title}</h3>
+                      {project.timeline && <span className="text-xs font-mono text-zinc-500 shrink-0">{project.timeline}</span>}
+                    </div>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                    {project.techStack && project.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.techStack.slice(0, 4).map((tech) => (
+                          <Badge key={tech} variant="outline" className="text-[10px] border-zinc-700 text-zinc-300">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-xs font-semibold flex items-center gap-1 pt-2" style={{ color: "var(--theme-accent)" }}>
+                    <span>Case Study</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
+                </Card>
               </Link>
             ))}
           </div>

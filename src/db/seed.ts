@@ -2,8 +2,9 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 import { db } from "./index";
-import { users, portfolioSettings, articles, experiences, achievements, services, events, contacts } from "./schema";
+import { users, portfolioSettings, articles, experiences, achievements, services, projects, events, contacts } from "./schema";
 import bcrypt from "bcryptjs";
+import { estimateReadTime } from "../lib/rich-text";
 import { eq } from "drizzle-orm";
 
 async function seed() {
@@ -58,7 +59,7 @@ async function seed() {
   console.log("✓ Created portfolio settings");
 
   // 3. Articles
-  await db.insert(articles).values([
+  const articleRows = [
     {
       userId: user.id,
       title: "Scaling Event-Driven Systems to 10M Concurrent Transactions",
@@ -79,7 +80,6 @@ When updating a relational database and publishing to a message broker, failures
 By transitioning from synchronous HTTP RPCs to event streams, p99 latency dropped by **64%**, while system resilience during node failover increased to 99.999% uptime.`,
       coverImageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80",
       tags: ["Distributed Systems", "Kafka", "PostgreSQL", "Cloud"],
-      readTime: "7 min read",
       isFeatured: true,
       isPublished: true,
     },
@@ -103,7 +103,6 @@ Never make destructive changes in a single release. Follow the two-phase approac
 Avoid \`ALTER TABLE ... ADD COLUMN ... DEFAULT\` without PostgreSQL 11+ optimizations, and never create indexes without the \`CONCURRENTLY\` keyword.`,
       coverImageUrl: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&auto=format&fit=crop&q=80",
       tags: ["Database", "PostgreSQL", "DevOps"],
-      readTime: "5 min read",
       isFeatured: true,
       isPublished: true,
     },
@@ -117,11 +116,13 @@ Avoid \`ALTER TABLE ... ADD COLUMN ... DEFAULT\` without PostgreSQL 11+ optimiza
 When processing telemetry data at 100,000 packets per second, garbage collection pauses become noticeable bottlenecks. We explored replacing Go workers with Rust to eliminate jitter.`,
       coverImageUrl: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80",
       tags: ["Rust", "Performance", "Concurrency"],
-      readTime: "4 min read",
       isFeatured: false,
       isPublished: true,
     },
-  ]);
+  ];
+  await db
+    .insert(articles)
+    .values(articleRows.map((a) => ({ ...a, readTime: estimateReadTime(a.content) })));
   console.log("✓ Created articles");
 
   // 4. Experiences
@@ -274,6 +275,62 @@ Our Cloud Architecture Audit delivers an objective, deep-dive examination of you
     },
   ]);
   console.log("✓ Created services");
+
+  // 6b. Projects
+  await db.insert(projects).values([
+    {
+      userId: user.id,
+      title: "Streamline: Realtime Event Pipeline",
+      slug: "streamline-event-pipeline",
+      summary: "Open-source streaming engine that ingests, enriches, and fans out millions of events per second with exactly-once delivery.",
+      description: `<p>Streamline started as an internal tool to replace a brittle chain of cron jobs and queues. It grew into a standalone open-source project used by several fintech and logistics teams.</p><h2>Architecture</h2><ul><li>Partitioned log built on Kafka with a Go consumer runtime</li><li>Pluggable enrichment stages compiled to WebAssembly</li><li>Idempotent sinks for Postgres, ClickHouse, and S3</li></ul><p>The hardest problem was keeping exactly-once guarantees while allowing hot-reloading of pipeline stages.</p>`,
+      role: "Creator & Maintainer",
+      status: "in_progress",
+      timeline: "2023 – Present",
+      repoUrl: "https://github.com/example/streamline",
+      liveUrl: "https://streamline.example.com",
+      techStack: ["Go", "Kafka", "WebAssembly", "ClickHouse"],
+      highlights: [
+        "2M events/sec sustained on a 6-node cluster",
+        "p99 end-to-end latency under 15ms",
+        "1.4k GitHub stars and 40+ contributors",
+      ],
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      userId: user.id,
+      title: "Atlas Cloud Cost Explorer",
+      slug: "atlas-cost-explorer",
+      summary: "Internal dashboard that attributes cloud spend to teams and services, surfacing waste and right-sizing opportunities.",
+      description: `<p>Built for a 300-engineer organisation whose AWS bill was growing faster than revenue. Atlas joins billing exports with Kubernetes metadata to show cost per service, per team, per request.</p>`,
+      role: "Lead Engineer",
+      status: "completed",
+      timeline: "2022",
+      techStack: ["TypeScript", "Next.js", "PostgreSQL", "AWS"],
+      highlights: [
+        "Identified $1.1M in annual savings in the first quarter",
+        "Adopted by 24 engineering teams",
+      ],
+      isFeatured: true,
+      orderIndex: 1,
+    },
+    {
+      userId: user.id,
+      title: "Helmsman Deploy CLI",
+      slug: "helmsman-deploy-cli",
+      summary: "A tiny Rust CLI that turns a single YAML file into safe, progressive Kubernetes rollouts with automatic rollback.",
+      role: "Solo Developer",
+      status: "archived",
+      timeline: "2021",
+      repoUrl: "https://github.com/example/helmsman",
+      techStack: ["Rust", "Kubernetes", "Helm"],
+      highlights: ["Canary + blue/green strategies out of the box"],
+      isFeatured: false,
+      orderIndex: 2,
+    },
+  ]);
+  console.log("✓ Created projects");
 
   // 7. Events
   await db.insert(events).values([

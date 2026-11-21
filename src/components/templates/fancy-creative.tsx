@@ -14,6 +14,7 @@ import {
   Globe,
   Sparkle,
   Zap,
+  FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
@@ -24,6 +25,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 3);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = portfolio.socialLinks || {};
 
@@ -135,6 +137,54 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
           </div>
         )}
       </section>
+
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
+                <FolderKanban className="h-4 w-4" />
+                <span>Recent Work</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-100">Featured Projects</h2>
+            </div>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-semibold px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 flex items-center gap-1.5 transition-all"
+            >
+              <span>See all work</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {featuredProjects.map((project) => (
+              <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                <div className="group relative rounded-3xl bg-zinc-900/50 border border-zinc-800 hover:border-zinc-600 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col h-full overflow-hidden">
+                  <div className="aspect-[16/9] overflow-hidden bg-zinc-950">
+                    {project.coverImageUrl ? (
+                      <img src={project.coverImageUrl} alt="" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-5xl font-black text-zinc-800" style={{ background: "radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--theme-accent) 25%, transparent), transparent 70%)" }}>
+                        {project.title.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 sm:p-7 space-y-2">
+                    <h3 className="font-extrabold text-lg text-zinc-100 group-hover:text-white">{project.title}</h3>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                    <div className="flex items-center gap-1.5 text-xs font-bold pt-2" style={{ color: "var(--theme-accent)" }}>
+                      <span>View project</span>
+                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured Services with Glowing Price Tags */}
       {featuredServices.length > 0 && (

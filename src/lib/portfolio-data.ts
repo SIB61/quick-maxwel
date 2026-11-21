@@ -37,6 +37,9 @@ export async function getPortfolioData(handle: string, explicitTemplate?: string
       services: {
         orderBy: (services, { asc }) => [asc(services.orderIndex)],
       },
+      projects: {
+        orderBy: (projects, { asc }) => [asc(projects.orderIndex)],
+      },
       events: {
         orderBy: (events, { asc }) => [asc(events.orderIndex)],
       },

@@ -5,6 +5,7 @@ import { articles } from "./articles";
 import { experiences } from "./experiences";
 import { achievements } from "./achievements";
 import { services } from "./services";
+import { projects } from "./projects";
 import { events } from "./events";
 import { contacts } from "./contacts";
 
@@ -14,6 +15,7 @@ export * from "./articles";
 export * from "./experiences";
 export * from "./achievements";
 export * from "./services";
+export * from "./projects";
 export * from "./events";
 export * from "./contacts";
 
@@ -27,6 +29,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   experiences: many(experiences),
   achievements: many(achievements),
   services: many(services),
+  projects: many(projects),
   events: many(events),
   contacts: many(contacts),
 }));
@@ -62,6 +65,13 @@ export const achievementsRelations = relations(achievements, ({ one }) => ({
 export const servicesRelations = relations(services, ({ one }) => ({
   user: one(users, {
     fields: [services.userId],
+    references: [users.id],
+  }),
+}));
+
+export const projectsRelations = relations(projects, ({ one }) => ({
+  user: one(users, {
+    fields: [projects.userId],
     references: [users.id],
   }),
 }));

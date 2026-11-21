@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle, ArrowLeft, FileText, Loader2, Save } from "lucide-react";
+import { AlertCircle, Clock, ArrowLeft, FileText, Loader2, Save } from "lucide-react";
 import Link from "next/link";
+import { countWords, estimateReadTime } from "@/lib/rich-text";
 import { Article } from "@/db/schema";
 
 export default function EditArticleForm({
@@ -24,6 +25,8 @@ export default function EditArticleForm({
 
   const [title, setTitle] = useState(article.title);
   const [slug, setSlug] = useState(article.slug);
+  const [content, setContent] = useState(article.content);
+  const wordCount = countWords(content);
 
   return (
     <div className="w-full space-y-6">
@@ -114,16 +117,21 @@ export default function EditArticleForm({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="readTime" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
                 Estimated Read Time
-              </Label>
-              <Input
-                id="readTime"
-                name="readTime"
-                type="text"
-                defaultValue={article.readTime || "5 min read"}
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 focus-visible:ring-sky-500/40"
-              />
+              </span>
+              <div
+                aria-live="polite"
+                className="flex h-11 items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950/40 px-3 text-sm"
+              >
+                <span className="flex items-center gap-2 font-medium text-zinc-100">
+                  <Clock className="h-4 w-4 text-sky-400" aria-hidden="true" />
+                  {estimateReadTime(content)}
+                </span>
+                <span className="text-xs text-zinc-500">
+                  {wordCount.toLocaleString()} {wordCount === 1 ? "word" : "words"} · auto
+                </span>
+              </div>
             </div>
           </div>
 
@@ -134,6 +142,7 @@ export default function EditArticleForm({
             <RichTextEditor
               id="content"
               name="content"
+              onChange={setContent}
               defaultValue={article.content}
               minHeight="320px"
               placeholder="Design your article content visually with toolbar buttons..."

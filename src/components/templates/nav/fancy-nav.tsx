@@ -7,6 +7,7 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
     { label: "Overview", href: `/${handle}`, show: true },
     { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "Experience", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Projects", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "Achievements", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
     { label: "Events", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },

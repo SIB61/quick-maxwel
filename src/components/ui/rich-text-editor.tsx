@@ -53,7 +53,10 @@ export function RichTextEditor({
   className = "",
   onChange,
 }: RichTextEditorProps) {
-  const [htmlValue, setHtmlValue] = useState("");
+  // Seed with the initial content so an untouched editor still submits it.
+  const [htmlValue, setHtmlValue] = useState(() =>
+    defaultValue ? markdownToHtml(defaultValue) : ""
+  );
   const [isLinkPromptOpen, setIsLinkPromptOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
 

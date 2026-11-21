@@ -24,6 +24,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = portfolio.socialLinks || {};
 
@@ -231,6 +232,45 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
                   </div>
                 )}
               </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Selected Works */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
+            <div>
+              <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SELECTED WORKS</span>
+              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-zinc-50">Projects</h2>
+            </div>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-mono uppercase tracking-wider hover:underline flex items-center gap-1"
+              style={{ color: "var(--theme-accent)" }}
+            >
+              <span>INDEX ({portfolio.projects.length})</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="divide-y divide-zinc-800">
+            {featuredProjects.map((project, pIdx) => (
+              <Link
+                key={project.id}
+                href={`/${portfolio.handle}/projects/${project.slug}`}
+                className="grid grid-cols-12 gap-4 py-5 group"
+              >
+                <span className="col-span-2 sm:col-span-1 text-xs font-mono text-zinc-500 pt-1">0{pIdx + 1}</span>
+                <div className="col-span-10 sm:col-span-8 space-y-1">
+                  <h3 className="text-lg font-bold uppercase tracking-tight text-zinc-100 group-hover:text-white">{project.title}</h3>
+                  <p className="text-xs text-zinc-400 font-light leading-relaxed line-clamp-2">{project.summary}</p>
+                </div>
+                <span className="hidden sm:block col-span-3 text-right text-xs font-mono uppercase tracking-wider text-zinc-500 pt-1">
+                  {project.timeline}
+                </span>
+              </Link>
             ))}
           </div>
         </section>

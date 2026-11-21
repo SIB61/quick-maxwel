@@ -74,6 +74,7 @@ export async function updateProfileAction(
   revalidatePath(`/${user.handle}/experience`);
   revalidatePath(`/${user.handle}/achievements`);
   revalidatePath(`/${user.handle}/services`);
+  revalidatePath(`/${user.handle}/projects`);
   revalidatePath(`/${user.handle}/events`);
   revalidatePath(`/${user.handle}/contact`);
 

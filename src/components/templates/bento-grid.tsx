@@ -15,6 +15,7 @@ import {
   Clock,
   Layers,
   CheckCircle2,
+  FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import Link from "next/link";
@@ -32,6 +33,9 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
 
   const featuredServices = portfolio.services.filter((s) => s.isFeatured);
   const primaryService = featuredServices[0] || portfolio.services[0];
+
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured);
+  const topProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 3);
 
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured);
   const topEvent = featuredEvents[0] || portfolio.events[0];
@@ -378,6 +382,48 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
             <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
+
+        {/* TILE 8b: Projects Showcase (Spans 4 cols / Full width) */}
+        {topProjects.length > 0 && (
+          <div className="md:col-span-2 lg:col-span-4 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FolderKanban className="h-4 w-4" style={{ color: "var(--theme-accent)" }} />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Project Showcase</span>
+              </div>
+              <Link
+                href={`/${portfolio.handle}/projects`}
+                className="text-xs font-bold flex items-center gap-1 hover:underline"
+                style={{ color: "var(--theme-accent)" }}
+              >
+                <span>All {portfolio.projects.length}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {topProjects.map((project) => (
+                <Link
+                  key={project.id}
+                  href={`/${portfolio.handle}/projects/${project.slug}`}
+                  className="p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800 hover:border-zinc-700 transition-all space-y-2 group"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-bold text-sm text-zinc-100 group-hover:text-white">{project.title}</h3>
+                    {project.timeline && <span className="text-[11px] font-mono text-zinc-500 shrink-0">{project.timeline}</span>}
+                  </div>
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                  {project.techStack && project.techStack.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {project.techStack.slice(0, 3).map((tech) => (
+                        <span key={tech} className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900 border border-zinc-800 text-zinc-300">{tech}</span>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* TILE 9: Skills & Competencies Cloud (Spans 4 cols / Full width) */}
         {allSkills.length > 0 && (
