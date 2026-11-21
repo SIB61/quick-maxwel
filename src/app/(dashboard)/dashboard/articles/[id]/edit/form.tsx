@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Clock, ArrowLeft, FileText, Loader2, Save } from "lucide-react";
+import { FileUploadField } from "@/components/ui/file-upload-field";
 import Link from "next/link";
 import { countWords, estimateReadTime } from "@/lib/rich-text";
 import { Article } from "@/db/schema";
@@ -136,11 +137,25 @@ export default function EditArticleForm({
           </div>
 
           <div className="space-y-1.5">
+            <Label htmlFor="coverImageUrl" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              Cover Image
+            </Label>
+            <FileUploadField
+              id="coverImageUrl"
+              name="coverImageUrl"
+              folder="articles"
+              defaultValue={article.coverImageUrl}
+              placeholder="https://… or upload an image"
+            />
+          </div>
+
+          <div className="space-y-1.5">
             <Label htmlFor="content" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
               Article Content (Visual Editor)
             </Label>
             <RichTextEditor
               id="content"
+              imageUploadFolder="articles"
               name="content"
               onChange={setContent}
               defaultValue={article.content}

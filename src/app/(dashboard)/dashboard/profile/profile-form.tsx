@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { updateProfileAction } from "@/actions/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FileUploadField } from "@/components/ui/file-upload-field";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
@@ -125,15 +126,15 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           {/* Avatar URL */}
           <div className="space-y-1.5">
             <Label htmlFor="avatarUrl" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-              Avatar Image URL
+              Avatar Image
             </Label>
-            <Input
+            <FileUploadField
               id="avatarUrl"
               name="avatarUrl"
-              type="url"
-              defaultValue={user.avatarUrl || ""}
-              placeholder="https://images.unsplash.com/photo-... or GitHub avatar"
-              className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
+              folder="avatars"
+              defaultValue={user.avatarUrl}
+              previewShape="square"
+              placeholder="https://… or upload a photo"
             />
           </div>
 

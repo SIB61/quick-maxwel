@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft, Award, Loader2, Save } from "lucide-react";
+import { FileUploadField } from "@/components/ui/file-upload-field";
 import Link from "next/link";
 
 export default function NewAchievementPage() {
@@ -89,14 +90,14 @@ export default function NewAchievementPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="credentialUrl" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-                Verification / Credential URL
+                Credential Link or Certificate (PDF/Image)
               </Label>
-              <Input
+              <FileUploadField
                 id="credentialUrl"
                 name="credentialUrl"
-                type="url"
-                placeholder="https://credly.com/your-badge"
-                className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
+                folder="achievements"
+                kind="document"
+                placeholder="https://credly.com/… or upload a certificate"
               />
             </div>
           </div>

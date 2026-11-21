@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { createProjectAction, updateProjectAction } from "@/actions/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FileUploadField } from "@/components/ui/file-upload-field";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
@@ -142,7 +143,7 @@ export function ProjectForm({ project, userHandle }: { project?: Project; userHa
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
               <Label htmlFor="liveUrl" className={labelClass}>Live URL</Label>
               <Input
@@ -165,17 +166,17 @@ export function ProjectForm({ project, userHandle }: { project?: Project; userHa
                 className={inputClass}
               />
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="coverImageUrl" className={labelClass}>Cover Image URL</Label>
-              <Input
-                id="coverImageUrl"
-                name="coverImageUrl"
-                type="url"
-                defaultValue={project?.coverImageUrl ?? ""}
-                placeholder="https://images.example.com/cover.png"
-                className={inputClass}
-              />
-            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="coverImageUrl" className={labelClass}>Cover Image</Label>
+            <FileUploadField
+              id="coverImageUrl"
+              name="coverImageUrl"
+              folder="projects"
+              defaultValue={project?.coverImageUrl}
+              placeholder="https://… or upload an image"
+            />
           </div>
 
           <div className="space-y-1.5">

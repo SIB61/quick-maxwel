@@ -10,6 +10,7 @@ import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Clock, ArrowLeft, FileText, Loader2, Save, Sparkles } from "lucide-react";
+import { FileUploadField } from "@/components/ui/file-upload-field";
 import Link from "next/link";
 import { countWords, estimateReadTime } from "@/lib/rich-text";
 import { slugify } from "@/lib/utils";
@@ -144,11 +145,24 @@ export default function NewArticlePage() {
           </div>
 
           <div className="space-y-1.5">
+            <Label htmlFor="coverImageUrl" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              Cover Image
+            </Label>
+            <FileUploadField
+              id="coverImageUrl"
+              name="coverImageUrl"
+              folder="articles"
+              placeholder="https://… or upload an image"
+            />
+          </div>
+
+          <div className="space-y-1.5">
             <Label htmlFor="content" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
               Article Content (Visual Editor)
             </Label>
             <RichTextEditor
               id="content"
+              imageUploadFolder="articles"
               name="content"
               onChange={setContent}
               minHeight="320px"
