@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { User, AlertCircle, CheckCircle2, Loader2, Save, MapPin, Globe, Sparkles } from "lucide-react";
 import type { StoredSocialLinks } from "@/lib/social-platforms";
 import { SocialLinksEditor } from "./social-links-editor";
+import { CvManager } from "./cv-manager";
 
 interface ProfileFormProps {
   user: {
@@ -22,6 +23,7 @@ interface ProfileFormProps {
     bio?: string | null;
     location?: string | null;
     avatarUrl?: string | null;
+    cvUrl?: string | null;
     socialLinks?: StoredSocialLinks;
   };
 }
@@ -131,6 +133,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               previewShape="square"
               placeholder="https://… or upload a photo"
             />
+          </div>
+
+          {/* CV / Résumé (saved immediately, separate from the Save button) */}
+          <div className="space-y-1.5">
+            <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              CV / Résumé
+            </Label>
+            <CvManager handle={user.handle} initialCvUrl={user.cvUrl ?? null} />
           </div>
 
           {/* Biography */}

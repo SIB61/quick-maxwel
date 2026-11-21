@@ -1,11 +1,12 @@
 /** Browser-side helper for the /api/uploads endpoint. */
 
 export type UploadFolder = "avatars" | "articles" | "projects" | "achievements" | "misc";
-export type UploadKind = "image" | "document";
+export type UploadKind = "image" | "document" | "pdf";
 
 export const UPLOAD_ACCEPT: Record<UploadKind, string> = {
   image: "image/jpeg,image/png,image/webp,image/gif,image/avif",
   document: "image/jpeg,image/png,image/webp,application/pdf",
+  pdf: "application/pdf",
 };
 
 export const UPLOAD_MAX_BYTES = 4 * 1024 * 1024;

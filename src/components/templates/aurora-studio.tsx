@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Compass,
   FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import { SocialIcon } from "@/components/social-icon";
@@ -122,6 +123,26 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
                 <span>{SOCIAL_PLATFORM_MAP[link.platform].label}</span>
               </a>
             ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>View CV</span>
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>Download CV</span>
+                </a>
+              </>
+            )}
           </div>
         </div>
       </section>

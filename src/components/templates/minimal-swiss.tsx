@@ -14,6 +14,7 @@ import {
   Globe,
   CornerDownRight,
   CheckCircle2,
+  ArrowDown,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import { SocialIcon } from "@/components/social-icon";
@@ -85,6 +86,26 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
                 <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
             ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white inline-flex items-center gap-1 transition-colors group"
+                >
+                  <span>CV / VIEW</span>
+                  <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="hover:text-white inline-flex items-center gap-1 transition-colors group"
+                >
+                  <span>CV / DOWNLOAD</span>
+                  <ArrowDown className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -21,6 +21,7 @@ import {
   Check,
   CheckCircle2,
   FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import { SocialIcon } from "@/components/social-icon";
@@ -169,6 +170,26 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                       <span>{link.platform}</span>
                     </a>
                   ))}
+                  {portfolio.cvUrl && (
+                    <>
+                      <a
+                        href={`/${portfolio.handle}/cv`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <FileText className="h-3 w-3" />
+                        <span>cv.pdf</span>
+                      </a>
+                      <a
+                        href={`/${portfolio.handle}/cv?download=1`}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <Download className="h-3 w-3" />
+                        <span>wget cv.pdf</span>
+                      </a>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

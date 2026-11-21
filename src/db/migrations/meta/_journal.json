@@ -15,6 +15,13 @@
       "when": 1795288950096,
       "tag": "0001_add_projects",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795291721973,
+      "tag": "0002_add_user_cv",
+      "breakpoints": true
     }
   ]
 }

@@ -16,6 +16,7 @@ import {
   Layers,
   CheckCircle2,
   FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import { SocialIcon } from "@/components/social-icon";
@@ -106,6 +107,26 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
                 <SocialIcon platform={link.platform} className="h-4 w-4" />
               </a>
             ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>View CV</span>
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Download</span>
+                </a>
+              </>
+            )}
             <div className="ml-auto text-xs text-zinc-500 font-mono">
               @{portfolio.handle}
             </div>

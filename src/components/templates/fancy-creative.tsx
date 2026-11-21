@@ -15,6 +15,7 @@ import {
   Sparkle,
   Zap,
   FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
 import { SocialIcon } from "@/components/social-icon";
@@ -97,6 +98,26 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
                   <SocialIcon platform={link.platform} className="h-4 w-4" />
                 </a>
               ))}
+              {portfolio.cvUrl && (
+                <>
+                  <a
+                    href={`/${portfolio.handle}/cv`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>View CV</span>
+                  </a>
+                  <a
+                    href={`/${portfolio.handle}/cv?download=1`}
+                    className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Download</span>
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>

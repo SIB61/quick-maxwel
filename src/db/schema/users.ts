@@ -8,6 +8,7 @@ export const users = pgTable("users", {
   handle: text("handle").notNull().unique(),
   name: text("name").notNull(),
   avatarUrl: text("avatar_url"),
+  cvUrl: text("cv_url"), // public URL of the CV PDF stored at <handle>/cv
   headline: text("headline"),
   bio: text("bio"),
   location: text("location"),

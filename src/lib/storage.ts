@@ -1,6 +1,6 @@
-// Server-side only: reads storage credentials from the environment.
+// Server-side only: reads storage credentials from the environment (S3-compatible).
 import { randomUUID } from "node:crypto";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 
 /** Upload categories and what each one accepts. */
 export const UPLOAD_KINDS = {
@@ -12,6 +12,12 @@ export const UPLOAD_KINDS = {
       "image/webp": "webp",
       "image/gif": "gif",
       "image/avif": "avif",
+    },
+  },
+  pdf: {
+    maxBytes: 4 * 1024 * 1024,
+    types: {
+      "application/pdf": "pdf",
     },
   },
   document: {
@@ -79,17 +85,8 @@ function matchesSignature(bytes: Uint8Array, mime: string): boolean {
   }
 }
 
-export async function uploadFile({
-  file,
-  userId,
-  folder,
-  kind,
-}: {
-  file: File;
-  userId: string;
-  folder: UploadFolder;
-  kind: UploadKind;
-}): Promise<{ url: string; key: string }> {
+/** Validates type, size and contents; returns the bytes and file extension. */
+async function readValidatedFile(file: File, kind: UploadKind) {
   const rules = UPLOAD_KINDS[kind];
   const ext = (rules.types as Record<string, string>)[file.type];
   if (!ext) {
@@ -106,7 +103,21 @@ export async function uploadFile({
   if (!matchesSignature(body, file.type)) {
     throw new UploadError("The file contents don't match its type.");
   }
+  return { body, ext };
+}
 
+export async function uploadFile({
+  file,
+  userId,
+  folder,
+  kind,
+}: {
+  file: File;
+  userId: string;
+  folder: UploadFolder;
+  kind: UploadKind;
+}): Promise<{ url: string; key: string }> {
+  const { body, ext } = await readValidatedFile(file, kind);
   const { bucket, publicBaseUrl } = getConfig();
   const key = `${folder}/${userId}/${randomUUID()}.${ext}`;
 
@@ -122,4 +133,60 @@ export async function uploadFile({
   );
 
   return { url: `${publicBaseUrl}/${key}`, key };
+}
+
+// ---------------------------------------------------------------------------
+// CV: one PDF per user at the fixed key `<handle>/cv`, so its link never changes.
+// ---------------------------------------------------------------------------
+
+function cvKey(handle: string) {
+  if (!/^[a-z0-9_-]+$/i.test(handle)) throw new UploadError("Invalid handle.");
+  return `${handle.toLowerCase()}/cv`;
+}
+
+/** Public bucket URL of a user's CV (stable across re-uploads). */
+export function cvPublicUrl(handle: string) {
+  return `${getConfig().publicBaseUrl}/${cvKey(handle)}`;
+}
+
+export async function uploadCv({ file, handle, name }: { file: File; handle: string; name: string }) {
+  const { body } = await readValidatedFile(file, "pdf");
+  const { bucket } = getConfig();
+
+  await getClient().send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Key: cvKey(handle),
+      Body: body,
+      ContentType: "application/pdf",
+      ContentDisposition: `inline; filename="${cvFileName(name)}"`,
+      // Same key is overwritten on re-upload, so caches must revalidate.
+      CacheControl: "public, no-cache",
+    })
+  );
+
+  return { url: cvPublicUrl(handle) };
+}
+
+export async function deleteCv(handle: string) {
+  const { bucket } = getConfig();
+  await getClient().send(new DeleteObjectCommand({ Bucket: bucket, Key: cvKey(handle) }));
+}
+
+/** Fetches the CV object for streaming, or null if it doesn't exist. */
+export async function getCvObject(handle: string) {
+  const { bucket } = getConfig();
+  try {
+    const res = await getClient().send(new GetObjectCommand({ Bucket: bucket, Key: cvKey(handle) }));
+    return res.Body ? { body: res.Body.transformToWebStream(), size: res.ContentLength } : null;
+  } catch (err) {
+    if (err instanceof Error && (err.name === "NoSuchKey" || err.name === "NotFound")) return null;
+    throw err;
+  }
+}
+
+/** "Sarah Jenkins" -> "Sarah-Jenkins-CV.pdf" (ASCII only, safe for headers). */
+export function cvFileName(name: string) {
+  const base = name.normalize("NFKD").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return `${base || "CV"}-CV.pdf`;
 }

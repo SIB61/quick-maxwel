@@ -25,6 +25,7 @@ export default async function DashboardProfilePage() {
         bio: user.bio,
         location: user.location,
         avatarUrl: user.avatarUrl,
+        cvUrl: user.cvUrl,
         socialLinks: user.socialLinks,
       }}
     />
