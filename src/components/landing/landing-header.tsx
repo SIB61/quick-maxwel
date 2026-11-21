@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X, ArrowRight, LogIn, UserPlus } from "lucide-react";
@@ -55,6 +56,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle className="h-10 w-10 rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-700" />
           {sessionUser ? (
             <Button
               asChild
@@ -92,6 +94,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
 
         {/* Mobile Hamburger Button */}
         <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 text-zinc-400 hover:text-white" />
           {sessionUser ? (
             <Button
               asChild

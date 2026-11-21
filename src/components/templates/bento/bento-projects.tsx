@@ -39,7 +39,7 @@ export function BentoProjects({ portfolio, handle }: { portfolio: PortfolioUser;
             <div className="p-7 sm:p-8 space-y-4 flex-1">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">{project.timeline}</span>
-                <span className="px-3 py-1 rounded-xl text-xs font-bold font-mono border" style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "rgba(0,0,0,0.4)" }}>
+                <span className="px-3 py-1 rounded-xl text-xs font-bold font-mono border" style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "var(--badge-backdrop)" }}>
                   {PROJECT_STATUS_LABELS[project.status] ?? project.status}
                 </span>
               </div>

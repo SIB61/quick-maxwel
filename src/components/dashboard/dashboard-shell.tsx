@@ -23,6 +23,7 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface DashboardShellProps {
   user: {
@@ -180,6 +181,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               <ExternalLink className="h-3 w-3" />
             </a>
 
+            <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white" />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -268,6 +270,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             </div>
 
             <div className="flex items-center gap-3">
+              <ThemeToggle className="h-8 w-8 rounded-lg border border-zinc-700 bg-zinc-800/60 text-zinc-300 hover:text-white hover:bg-zinc-800" iconClassName="h-3.5 w-3.5" />
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs">
                 <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
                 <span className="text-zinc-400">Live Address:</span>

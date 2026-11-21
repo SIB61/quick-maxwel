@@ -24,10 +24,12 @@ export default async function PortfolioLayout({
 
   return (
     <div
-      className={`min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between ${fontClass}`}
+      data-portfolio-root
+      className={`min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between overflow-x-clip ${fontClass}`}
       style={
         {
-          "--theme-accent": paletteConfig.accentHex,
+          // globals.css derives --theme-accent from this (deepened in light mode).
+          "--theme-accent-base": paletteConfig.accentHex,
           "--theme-accent-glow": paletteConfig.glowRgba,
           "--theme-primary": paletteConfig.primaryHex,
         } as React.CSSProperties

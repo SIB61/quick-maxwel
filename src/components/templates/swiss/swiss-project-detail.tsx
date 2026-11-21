@@ -78,7 +78,7 @@ export function SwissProjectDetail({
       <div className="pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-wider">
           {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="border border-white px-5 py-2.5 text-white hover:bg-white hover:text-black transition-all font-bold inline-flex items-center gap-1.5">
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="border border-white px-5 py-2.5 text-white hover:bg-white hover:text-zinc-950 transition-all font-bold inline-flex items-center gap-1.5">
               <span>LIVE</span>
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
@@ -92,7 +92,7 @@ export function SwissProjectDetail({
         </div>
         <Link
           href={`/${handle}/contact?subject=${encodeURIComponent(`Project: ${project.title}`)}`}
-          className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
+          className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
         >
           <span>CONTACT {portfolio.name.split(" ")[0].toUpperCase()}</span>
           <ArrowUpRight className="h-4 w-4" />

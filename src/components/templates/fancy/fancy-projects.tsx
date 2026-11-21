@@ -45,7 +45,7 @@ export function FancyProjects({ portfolio, handle }: { portfolio: PortfolioUser;
                   {project.title.charAt(0)}
                 </div>
               )}
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-black/60 backdrop-blur border border-white/10 text-white">
+              <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-zinc-950/70 backdrop-blur border border-white/10 text-white">
                 {PROJECT_STATUS_LABELS[project.status] ?? project.status}
               </span>
               <span className="absolute top-4 right-4 h-9 w-9 rounded-full flex items-center justify-center text-black opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: "var(--theme-accent)" }}>

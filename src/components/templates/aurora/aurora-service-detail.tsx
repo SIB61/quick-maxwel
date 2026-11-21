@@ -59,7 +59,7 @@ export function AuroraServiceDetail({
                 style={{
                   borderColor: "var(--theme-accent)",
                   color: "var(--theme-accent)",
-                  backgroundColor: "rgba(0,0,0,0.5)",
+                  backgroundColor: "var(--badge-backdrop)",
                 }}
               >
                 {service.price}

@@ -93,7 +93,7 @@ export function SwissServiceDetail({
 
         <Link
           href={`/${handle}/contact?subject=${encodeURIComponent(`Engagement: ${service.title}`)}`}
-          className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
+          className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
         >
           <span>TRANSMIT PROPOSAL</span>
           <ArrowUpRight className="h-4 w-4" />

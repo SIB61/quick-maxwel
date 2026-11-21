@@ -48,7 +48,7 @@ export function TerminalProjects({ portfolio, handle }: { portfolio: PortfolioUs
                   </div>
                   <span
                     className="px-3 py-1 rounded text-xs font-bold border w-fit"
-                    style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "rgba(0,0,0,0.4)" }}
+                    style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "var(--badge-backdrop)" }}
                   >
                     [{project.status}]
                   </span>

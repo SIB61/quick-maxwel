@@ -40,7 +40,7 @@ export function FancyProjectDetail({
             {project.techStack && project.techStack.length > 0 && (
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {project.techStack.map((tech) => (
-                  <span key={tech} className="px-3 py-1 rounded-full text-xs font-semibold border" style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "rgba(0,0,0,0.4)" }}>{tech}</span>
+                  <span key={tech} className="px-3 py-1 rounded-full text-xs font-semibold border" style={{ borderColor: "var(--theme-accent)", color: "var(--theme-accent)", backgroundColor: "var(--badge-backdrop)" }}>{tech}</span>
                 ))}
               </div>
             )}

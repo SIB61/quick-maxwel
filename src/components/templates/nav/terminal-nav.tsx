@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Terminal as TerminalIcon } from "lucide-react";
 
 export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -56,14 +57,15 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
           ))}
         </nav>
 
-        <div className="shrink-0 hidden md:block">
+        <div className="shrink-0 flex items-center gap-2">
+          <ThemeToggle className="h-7 w-7 rounded border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white" iconClassName="h-3.5 w-3.5" />
           <Link
             href={`/${handle}/contact`}
-            className="px-3 py-1 text-[11px] font-bold rounded border transition-all"
+            className="hidden md:inline-block px-3 py-1 text-[11px] font-bold rounded border transition-all"
             style={{
               borderColor: "var(--theme-accent)",
               color: "var(--theme-accent)",
-              backgroundColor: "rgba(0,0,0,0.5)",
+              backgroundColor: "var(--badge-backdrop)",
             }}
           >
             ./contact.sh

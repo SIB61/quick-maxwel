@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -56,7 +57,8 @@ export function AuroraNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
             ))}
           </nav>
 
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center gap-2">
+            <ThemeToggle className="h-9 w-9 rounded-full border border-white/10 bg-zinc-900/40 text-zinc-300 hover:text-white hover:border-white/25 backdrop-blur-md" iconClassName="h-4 w-4" />
             <Link
               href={`/${handle}/contact`}
               className="px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:scale-105 flex items-center gap-1.5"

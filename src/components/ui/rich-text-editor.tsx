@@ -104,7 +104,7 @@ export function RichTextEditor({
       attributes: {
         id: id || name,
         class:
-          "prose prose-invert max-w-none text-zinc-100 p-4 sm:p-5 focus:outline-none leading-normal prose-p:my-1 prose-li:my-0.5 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-zinc-100 prose-h1:text-2xl sm:prose-h1:text-3xl prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-a:text-sky-400 prose-blockquote:border-l-2 prose-blockquote:border-sky-500/60 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-zinc-300 prose-pre:bg-zinc-950/90 prose-pre:border prose-pre:border-zinc-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:text-sky-300 prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-hr:border-zinc-800",
+          "prose dark:prose-invert max-w-none text-zinc-100 p-4 sm:p-5 focus:outline-none leading-normal prose-p:my-1 prose-li:my-0.5 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-zinc-100 prose-h1:text-2xl sm:prose-h1:text-3xl prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-a:text-sky-400 prose-blockquote:border-l-2 prose-blockquote:border-sky-500/60 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-zinc-300 prose-pre:bg-zinc-950/90 prose-pre:border prose-pre:border-zinc-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:text-sky-300 prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-hr:border-zinc-800",
         style: `min-height: ${minHeight};`,
       },
       handlePaste: (_view, event) => {

@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import React from "react";
 
@@ -15,12 +16,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
-          <Link
-            href="/"
-            className="text-xs text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-1.5"
-          >
-            <span>← Back to Home</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="text-xs text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-1.5"
+            >
+              <span>← Back to Home</span>
+            </Link>
+            <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:text-white" />
+          </div>
         </div>
       </header>
 

@@ -102,7 +102,7 @@ export function FileUploadField({
           <button
             type="button"
             onClick={() => setValue("")}
-            className="absolute top-1.5 right-1.5 h-6 w-6 rounded-full bg-black/70 text-zinc-200 hover:text-white flex items-center justify-center cursor-pointer"
+            className="absolute top-1.5 right-1.5 h-6 w-6 rounded-full bg-zinc-950/70 text-zinc-200 hover:text-white flex items-center justify-center cursor-pointer"
             aria-label="Remove file"
           >
             <X className="h-3.5 w-3.5" />

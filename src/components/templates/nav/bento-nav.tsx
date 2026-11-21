@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { LayoutGrid, Send } from "lucide-react";
 
 export function BentoNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -39,14 +40,17 @@ export function BentoNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
             ))}
           </nav>
 
-          <Link
-            href={`/${handle}/contact`}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-black transition-all hover:opacity-90 flex items-center gap-1.5 shadow-sm"
-            style={{ backgroundColor: "var(--theme-accent)" }}
-          >
-            <Send className="h-3 w-3" />
-            <span>Contact</span>
-          </Link>
+          <div className="flex items-center gap-2 shrink-0">
+            <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:text-white hover:border-zinc-700" iconClassName="h-4 w-4" />
+            <Link
+              href={`/${handle}/contact`}
+              className="px-4 py-2 rounded-xl text-xs font-bold text-black transition-all hover:opacity-90 flex items-center gap-1.5 shadow-sm"
+              style={{ backgroundColor: "var(--theme-accent)" }}
+            >
+              <Send className="h-3 w-3" />
+              <span>Contact</span>
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Horizontal Bento Nav Strip */}

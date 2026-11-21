@@ -87,7 +87,7 @@ export function SwissArticleDetail({
 
         <Link
           href={`/${handle}/contact?subject=${encodeURIComponent(`Discussion: ${article.title}`)}`}
-          className="border border-white px-5 py-2.5 text-white hover:bg-white hover:text-black transition-all inline-flex items-center gap-1.5"
+          className="border border-white px-5 py-2.5 text-white hover:bg-white hover:text-zinc-950 transition-all inline-flex items-center gap-1.5"
         >
           <span>DISPATCH FEEDBACK</span>
           <ArrowUpRight className="h-3 w-3" />

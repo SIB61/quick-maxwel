@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -53,14 +54,17 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
           ))}
         </nav>
 
-        <Link
-          href={`/${handle}/contact`}
-          className="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
-          style={{ backgroundColor: "var(--theme-accent)" }}
-        >
-          <Sparkles className="h-3 w-3" />
-          <span>Get in Touch</span>
-        </Link>
+        <div className="flex items-center gap-2 shrink-0">
+          <ThemeToggle className="h-9 w-9 rounded-full border border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:text-white hover:border-zinc-600 backdrop-blur" iconClassName="h-4 w-4" />
+          <Link
+            href={`/${handle}/contact`}
+            className="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
+            style={{ backgroundColor: "var(--theme-accent)" }}
+          >
+            <Sparkles className="h-3 w-3" />
+            <span>Get in Touch</span>
+          </Link>
+        </div>
       </div>
 
       {/* Mobile Horizontal Fancy Nav Strip */}

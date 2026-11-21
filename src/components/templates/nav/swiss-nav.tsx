@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { ArrowUpRight } from "lucide-react";
 
 export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -48,7 +49,7 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-xs font-mono tracking-wider">
+        <nav className="hidden xl:flex items-center gap-6 text-xs font-mono tracking-wider">
           {navLinks.map((item) => (
             <Link
               key={item.href}
@@ -63,10 +64,11 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
           ))}
         </nav>
 
-        <div className="shrink-0">
+        <div className="shrink-0 flex items-center gap-2">
+          <ThemeToggle className="h-8 w-8 border border-zinc-700 text-zinc-300 hover:text-white hover:border-white" iconClassName="h-3.5 w-3.5" />
           <Link
             href={`/${handle}/contact`}
-            className="px-3 sm:px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white text-white hover:bg-white hover:text-black transition-all flex items-center gap-1.5"
+            className="px-3 sm:px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white text-white hover:bg-white hover:text-zinc-950 transition-all flex items-center gap-1.5"
           >
             <span>DISPATCH</span>
             <ArrowUpRight className="h-3 w-3" />
@@ -75,7 +77,7 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
       </div>
 
       {/* Mobile Sub-Navigation Strip */}
-      <div className="md:hidden border-t border-zinc-800/80 px-4 py-2 flex items-center gap-4 overflow-x-auto text-[11px] font-mono no-scrollbar bg-zinc-950/90">
+      <div className="xl:hidden border-t border-zinc-800/80 px-4 py-2 flex items-center gap-4 overflow-x-auto text-[11px] font-mono no-scrollbar bg-zinc-950/90">
         {navLinks.map((item) => (
           <Link
             key={item.href}
