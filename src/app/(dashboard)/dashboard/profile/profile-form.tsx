@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, AlertCircle, CheckCircle2, Loader2, Save, MapPin, Globe, Sparkles } from "lucide-react";
-import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import type { StoredSocialLinks } from "@/lib/social-platforms";
+import { SocialLinksEditor } from "./social-links-editor";
 
 interface ProfileFormProps {
   user: {
@@ -21,18 +22,12 @@ interface ProfileFormProps {
     bio?: string | null;
     location?: string | null;
     avatarUrl?: string | null;
-    socialLinks?: {
-      github?: string;
-      twitter?: string;
-      linkedin?: string;
-      website?: string;
-    } | null;
+    socialLinks?: StoredSocialLinks;
   };
 }
 
 export default function ProfileForm({ user }: ProfileFormProps) {
   const [state, formAction, isPending] = useActionState(updateProfileAction, undefined);
-  const socials = user.socialLinks || {};
 
   return (
     <div className="w-full space-y-8">
@@ -160,71 +155,11 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 <span>Social Profiles & Contact Links</span>
               </h3>
               <p className="text-xs text-zinc-400">
-                These will render as one-click badges on your portfolio header and bento cards.
+                Add every place people can find you: code, design, writing, video, and more. Links appear on your portfolio in this order.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="github" className="text-xs text-zinc-400 flex items-center gap-1.5">
-                  <GithubIcon className="h-3.5 w-3.5" />
-                  <span>GitHub Profile</span>
-                </Label>
-                <Input
-                  id="github"
-                  name="github"
-                  type="url"
-                  defaultValue={socials.github || ""}
-                  placeholder="https://github.com/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="twitter" className="text-xs text-zinc-400 flex items-center gap-1.5">
-                  <TwitterIcon className="h-3.5 w-3.5" />
-                  <span>Twitter / X Profile</span>
-                </Label>
-                <Input
-                  id="twitter"
-                  name="twitter"
-                  type="url"
-                  defaultValue={socials.twitter || ""}
-                  placeholder="https://twitter.com/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="linkedin" className="text-xs text-zinc-400 flex items-center gap-1.5">
-                  <LinkedinIcon className="h-3.5 w-3.5" />
-                  <span>LinkedIn Profile</span>
-                </Label>
-                <Input
-                  id="linkedin"
-                  name="linkedin"
-                  type="url"
-                  defaultValue={socials.linkedin || ""}
-                  placeholder="https://linkedin.com/in/username"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="website" className="text-xs text-zinc-400 flex items-center gap-1.5">
-                  <Globe className="h-3.5 w-3.5" />
-                  <span>Personal Website / Blog</span>
-                </Label>
-                <Input
-                  id="website"
-                  name="website"
-                  type="url"
-                  defaultValue={socials.website || ""}
-                  placeholder="https://yourdomain.com"
-                  className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
-                />
-              </div>
-            </div>
+            <SocialLinksEditor initial={user.socialLinks} />
           </div>
 
           {/* Action Row */}

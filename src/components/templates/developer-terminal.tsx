@@ -23,6 +23,8 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { useState } from "react";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
@@ -40,7 +42,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
   const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
 
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   const handleCopyCommand = () => {
     navigator.clipboard.writeText(`ssh ${portfolio.handle}@portfolio.dev`);
@@ -156,50 +158,17 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                 {/* Social execution row */}
                 <div className="pt-2 border-t border-zinc-800/60 flex flex-wrap items-center gap-2.5 text-xs">
                   <span className="text-zinc-500">Links:</span>
-                  {socials.github && (
+                  {socials.map((link) => (
                     <a
-                      href={socials.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      key={link.platform}
+                      href={link.url}
+                      {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
                     >
-                      <GithubIcon className="h-3 w-3" />
-                      <span>github</span>
+                      <SocialIcon platform={link.platform} className="h-3 w-3" />
+                      <span>{link.platform}</span>
                     </a>
-                  )}
-                  {socials.twitter && (
-                    <a
-                      href={socials.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <TwitterIcon className="h-3 w-3" />
-                      <span>twitter</span>
-                    </a>
-                  )}
-                  {socials.linkedin && (
-                    <a
-                      href={socials.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <LinkedinIcon className="h-3 w-3" />
-                      <span>linkedin</span>
-                    </a>
-                  )}
-                  {socials.website && (
-                    <a
-                      href={socials.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <Globe className="h-3 w-3" />
-                      <span>website</span>
-                    </a>
-                  )}
+                  ))}
                 </div>
               </div>
             </div>

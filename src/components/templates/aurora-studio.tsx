@@ -18,6 +18,8 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -28,7 +30,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
   const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 3);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-28 relative">
@@ -109,50 +111,17 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
           {/* Social Glass Capsules */}
           <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/10">
-            {socials.github && (
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
               >
-                <GithubIcon className="h-3.5 w-3.5" />
-                <span>GitHub</span>
+                <SocialIcon platform={link.platform} className="h-3.5 w-3.5" />
+                <span>{SOCIAL_PLATFORM_MAP[link.platform].label}</span>
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <TwitterIcon className="h-3.5 w-3.5" />
-                <span>Twitter / X</span>
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <LinkedinIcon className="h-3.5 w-3.5" />
-                <span>LinkedIn</span>
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <Globe className="h-3.5 w-3.5" />
-                <span>Website</span>
-              </a>
-            )}
+            ))}
           </div>
         </div>
       </section>

@@ -33,12 +33,13 @@ async function seed() {
       headline: "Principal Distributed Systems Architect & Tech Speaker",
       bio: "Crafting resilient cloud-native architectures, high-throughput microservices, and developer infrastructure. Dedicated open-source maintainer and international tech speaker.",
       location: "San Francisco, CA",
-      socialLinks: {
-        github: "https://github.com",
-        twitter: "https://twitter.com",
-        linkedin: "https://linkedin.com",
-        website: "https://sarahjenkins.dev",
-      },
+      socialLinks: [
+        { platform: "github", url: "https://github.com" },
+        { platform: "linkedin", url: "https://linkedin.com" },
+        { platform: "twitter", url: "https://x.com" },
+        { platform: "medium", url: "https://medium.com" },
+        { platform: "website", url: "https://sarahjenkins.dev" },
+      ],
     })
     .returning();
 

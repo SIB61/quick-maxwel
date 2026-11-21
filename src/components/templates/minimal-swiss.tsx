@@ -16,6 +16,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -26,7 +28,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
   const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-32 font-sans text-zinc-100">
@@ -72,50 +74,17 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
           {/* Minimalist Meta Links */}
           <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-zinc-800/80 text-xs font-mono uppercase tracking-wider text-zinc-400">
-            {socials.github && (
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="hover:text-white inline-flex items-center gap-1 transition-colors group"
               >
-                <span>GH / REPOSITORIES</span>
+                <span>{SOCIAL_PLATFORM_MAP[link.platform].short} / {SOCIAL_PLATFORM_MAP[link.platform].label.toUpperCase()}</span>
                 <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>TW / BROADCASTS</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>LI / NETWORK</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>WEB / DISPATCH</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            )}
+            ))}
           </div>
         </div>
       </section>

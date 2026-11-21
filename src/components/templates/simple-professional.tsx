@@ -16,6 +16,8 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -26,7 +28,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 2);
   const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20">
@@ -63,51 +65,19 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
             )}
 
             {/* Social Links */}
-            <div className="flex items-center gap-2 pt-1">
-              {socials.github && (
+            <div className="flex items-center gap-2 pt-1 flex-wrap">
+              {socials.map((link) => (
                 <a
-                  href={socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={link.platform}
+                  href={link.url}
+                  {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="GitHub Profile"
+                  aria-label={SOCIAL_PLATFORM_MAP[link.platform].label}
+                  title={SOCIAL_PLATFORM_MAP[link.platform].label}
                 >
-                  <GithubIcon className="h-4 w-4" />
+                  <SocialIcon platform={link.platform} className="h-4 w-4" />
                 </a>
-              )}
-              {socials.twitter && (
-                <a
-                  href={socials.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="Twitter Profile"
-                >
-                  <TwitterIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.linkedin && (
-                <a
-                  href={socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="LinkedIn Profile"
-                >
-                  <LinkedinIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.website && (
-                <a
-                  href={socials.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="Personal Website"
-                >
-                  <Globe className="h-4 w-4" />
-                </a>
-              )}
+              ))}
             </div>
           </div>
         </div>

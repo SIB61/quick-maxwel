@@ -6,6 +6,12 @@ import { requireAuth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import {
+  MAX_SOCIAL_LINKS,
+  SOCIAL_PLATFORM_MAP,
+  socialHref,
+  type SocialLink,
+} from "@/lib/social-platforms";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -13,10 +19,6 @@ const profileSchema = z.object({
   bio: z.string().optional(),
   location: z.string().optional(),
   avatarUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  github: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  twitter: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  linkedin: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  website: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
 export type ProfileActionState = {
@@ -36,10 +38,6 @@ export async function updateProfileAction(
     bio: (formData.get("bio") as string) || "",
     location: (formData.get("location") as string) || "",
     avatarUrl: (formData.get("avatarUrl") as string) || "",
-    github: (formData.get("github") as string) || "",
-    twitter: (formData.get("twitter") as string) || "",
-    linkedin: (formData.get("linkedin") as string) || "",
-    website: (formData.get("website") as string) || "",
   };
 
   const parsed = profileSchema.safeParse(rawData);
@@ -47,12 +45,11 @@ export async function updateProfileAction(
     return { error: parsed.error.issues[0].message };
   }
 
-  const socialLinks = {
-    ...(parsed.data.github ? { github: parsed.data.github } : {}),
-    ...(parsed.data.twitter ? { twitter: parsed.data.twitter } : {}),
-    ...(parsed.data.linkedin ? { linkedin: parsed.data.linkedin } : {}),
-    ...(parsed.data.website ? { website: parsed.data.website } : {}),
-  };
+  const socialResult = parseSocialLinks(formData);
+  if ("error" in socialResult) {
+    return { error: socialResult.error };
+  }
+  const socialLinks = socialResult.links;
 
   await db
     .update(users)
@@ -79,4 +76,39 @@ export async function updateProfileAction(
   revalidatePath(`/${user.handle}/contact`);
 
   return { success: true };
+}
+
+/** Reads the ordered `socialPlatform` / `socialUrl` pairs submitted by the profile form. */
+function parseSocialLinks(formData: FormData): { links: SocialLink[] } | { error: string } {
+  const platforms = formData.getAll("socialPlatform").map(String);
+  const urls = formData.getAll("socialUrl").map(String);
+  const links: SocialLink[] = [];
+  const seen = new Set<string>();
+
+  for (let i = 0; i < platforms.length; i++) {
+    const platformId = platforms[i];
+    const raw = (urls[i] ?? "").trim();
+    if (!raw) continue; // empty rows are simply dropped
+
+    const platform = SOCIAL_PLATFORM_MAP[platformId];
+    if (!platform) return { error: "Unknown social platform." };
+    if (seen.has(platformId)) return { error: `${platform.label} was added more than once.` };
+
+    const href = socialHref(platformId, raw);
+    if (!href) {
+      return {
+        error:
+          platform.scheme === "mailto"
+            ? "Please enter a valid email address."
+            : `${platform.label} link must be a full URL starting with https://`,
+      };
+    }
+    seen.add(platformId);
+    links.push({ platform: platformId, url: platform.scheme === "mailto" ? href.replace(/^mailto:/, "") : href });
+  }
+
+  if (links.length > MAX_SOCIAL_LINKS) {
+    return { error: `You can add up to ${MAX_SOCIAL_LINKS} links.` };
+  }
+  return { links };
 }

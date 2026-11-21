@@ -18,6 +18,8 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -40,7 +42,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured);
   const topEvent = featuredEvents[0] || portfolio.events[0];
 
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   // Extract all unique skills across experiences
   const allSkills = Array.from(
@@ -91,51 +93,19 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
           </div>
 
           {/* Social icons row */}
-          <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/60">
-            {socials.github && (
+          <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/60 flex-wrap">
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="GitHub"
+                aria-label={SOCIAL_PLATFORM_MAP[link.platform].label}
+                title={SOCIAL_PLATFORM_MAP[link.platform].label}
               >
-                <GithubIcon className="h-4 w-4" />
+                <SocialIcon platform={link.platform} className="h-4 w-4" />
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="Twitter"
-              >
-                <TwitterIcon className="h-4 w-4" />
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon className="h-4 w-4" />
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="Website"
-              >
-                <Globe className="h-4 w-4" />
-              </a>
-            )}
+            ))}
             <div className="ml-auto text-xs text-zinc-500 font-mono">
               @{portfolio.handle}
             </div>
