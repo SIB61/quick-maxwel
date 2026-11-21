@@ -74,7 +74,7 @@ export function SimpleFooter({ portfolio, handle }: { portfolio: PortfolioUser; 
           </Link>
           <span>•</span>
           <Link href="/" className="hover:text-zinc-200 transition-colors">
-            PortfolioBuilder
+            PortfoliooSite
           </Link>
         </div>
       </div>

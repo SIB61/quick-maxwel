@@ -151,7 +151,7 @@ export default async function HomePage() {
               </h1>
 
               <p className="text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl mx-auto sm:mx-0">
-                Single-page sites reduce years of craft to a superficial summary. PortfolioBuilder gives you an end-to-end multi-page platform with dedicated spaces for your writings, career timeline, consulting packages, verified achievements, and speaking appearances—backed by 6 signature design templates and a personal dashboard.
+                Single-page sites reduce years of craft to a superficial summary. PortfoliooSite gives you an end-to-end multi-page platform with dedicated spaces for your writings, career timeline, consulting packages, verified achievements, and speaking appearances—backed by 6 signature design templates and a personal dashboard.
               </p>
             </div>
 
@@ -250,7 +250,7 @@ export default async function HomePage() {
                 <div className="flex items-center gap-3">
                   <span className="h-3 w-3 rounded-full bg-sky-400 animate-pulse" />
                   <span className="font-mono text-sm text-zinc-300">
-                    portfoliobuilder.dev/<strong className="text-sky-400">{demoHandle}</strong>
+                    portfolioosite.dev/<strong className="text-sky-400">{demoHandle}</strong>
                   </span>
                 </div>
 
@@ -592,7 +592,7 @@ export default async function HomePage() {
             <div className="h-6 w-6 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-extrabold text-xs">
               P
             </div>
-            <span className="font-bold text-zinc-200">PortfolioBuilder</span>
+            <span className="font-bold text-zinc-200">PortfoliooSite</span>
             <span>— The Multi-Page Personal Brand Engine</span>
           </div>
 

@@ -94,7 +94,7 @@ export function FancyFooter({ portfolio, handle }: { portfolio: PortfolioUser; h
           </Link>
           <span>•</span>
           <Link href="/" className="hover:text-white transition-colors">
-            PortfolioBuilder
+            PortfoliooSite
           </Link>
         </div>
       </div>

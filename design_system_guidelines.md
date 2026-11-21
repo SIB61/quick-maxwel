@@ -1,4 +1,4 @@
-# Portfolio Builder — UI/UX Design System & Spacing Guidelines
+# PortfoliooSite — UI/UX Design System & Spacing Guidelines
 
 A unified, mathematically consistent design language built for modern web applications. This specification standardizes spatial rhythm, component geometry, typography scales, and padding hierarchy across all layers of the application.
 

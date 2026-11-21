@@ -1,4 +1,4 @@
-# Portfolio Builder
+# PortfoliooSite
 
 A multi-tenant portfolio platform. Users sign up, manage their content (articles, experience, achievements, services, events) from a dashboard, choose one of six templates, and publish a public site at `/<handle>`.
 

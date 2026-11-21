@@ -12,7 +12,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               P
             </div>
             <span className="font-semibold tracking-tight text-base">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
           <Link
@@ -33,7 +33,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer */}
       <footer className="border-t border-zinc-900/80 py-6 px-6 text-center text-xs text-zinc-500">
-        Portfolio Builder • Secure Account Access
+        PortfoliooSite • Secure Account Access
       </footer>
     </div>
   );

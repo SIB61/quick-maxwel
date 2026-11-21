@@ -98,7 +98,7 @@ export function AuroraFooter({ portfolio, handle }: { portfolio: PortfolioUser; 
         <div className="space-y-1 text-center sm:text-left">
           <p className="font-semibold text-zinc-200">{`${portfolio.name} Studio`}</p>
           <p className="text-[11px] text-zinc-500">
-            Spatial experience powered by PortfolioBuilder Aurora.
+            Spatial experience powered by PortfoliooSite Aurora.
           </p>
         </div>
 

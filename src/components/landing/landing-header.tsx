@@ -31,8 +31,8 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
             P
           </div>
           <div className="flex flex-col">
-            <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center gap-1">
-              Portfolio<span className="text-sky-400">Builder</span>
+            <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center">
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
             <span className="text-[10px] text-zinc-400 -mt-1 hidden sm:inline">
               Multi-Page Personal Brand Engine

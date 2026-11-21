@@ -116,7 +116,7 @@ export function SwissFooter({ portfolio, handle }: { portfolio: PortfolioUser; h
           </Link>
           <span>/</span>
           <Link href="/" className="hover:text-white transition-colors">
-            PORTFOLIO BUILDER
+            PORTFOLIOOSITE
           </Link>
         </div>
       </div>

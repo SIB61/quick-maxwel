@@ -87,7 +87,7 @@ export function TerminalFooter({ portfolio, handle }: { portfolio: PortfolioUser
           <span>{`ssh ${handle}@portfolio.dev`}</span>
           <span>•</span>
           <Link href="/" className="hover:text-zinc-300 transition-colors">
-            PortfolioBuilder v2.4
+            PortfoliooSite v2.4
           </Link>
         </div>
       </div>

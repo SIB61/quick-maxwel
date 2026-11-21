@@ -70,7 +70,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               P
             </div>
             <span className="font-bold tracking-tight text-base text-zinc-100">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
         </div>
@@ -165,7 +165,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               P
             </div>
             <span className="font-bold text-sm text-zinc-100">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
 

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio Builder — Multi-Page Portfolio Platform",
+  title: "PortfoliooSite — Multi-Page Portfolio Platform",
   description: "Build, customize, and publish multi-page personal portfolios with Next.js, Postgres, and Drizzle.",
 };
 
