@@ -12,6 +12,34 @@ const VALID_TEMPLATES = [
   "simple_professional",
 ];
 
+const VALID_PALETTES = ["slate", "emerald", "neon", "terracotta", "ocean"];
+const VALID_FONTS = ["sans", "serif", "mono"];
+const STUDIO_COOKIE = "pb_studio_preview";
+
+/**
+ * Theme Studio preview: `?studio=1&template=…&palette=…&font=…` renders the
+ * portfolio with unsaved theme settings. The choice is remembered in a cookie
+ * that is only honoured for iframe loads (Sec-Fetch-Dest: iframe), so it never
+ * leaks into the owner's normal browsing tabs.
+ */
+function parseStudioPreview(value: string | null | undefined) {
+  if (!value) return null;
+  const [template, palette, font] = value.split(".");
+  if (!VALID_TEMPLATES.includes(template) || !VALID_PALETTES.includes(palette) || !VALID_FONTS.includes(font)) {
+    return null;
+  }
+  return { template, palette, font };
+}
+
+function withStudioHeaders(request: NextRequest, preview: { template: string; palette: string; font: string }) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-preview-template", preview.template);
+  requestHeaders.set("x-preview-palette", preview.palette);
+  requestHeaders.set("x-preview-font", preview.font);
+  requestHeaders.set("x-preview-studio", "1");
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const sessionCookie = request.cookies.get("pb_session")?.value;
@@ -52,6 +80,26 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();
+  }
+
+  // Theme Studio live preview (embedded in the dashboard)
+  if (searchParams.get("studio") === "1") {
+    const preview = parseStudioPreview(
+      `${searchParams.get("template")}.${searchParams.get("palette")}.${searchParams.get("font")}`
+    );
+    if (preview) {
+      const response = withStudioHeaders(request, preview);
+      response.cookies.set(STUDIO_COOKIE, `${preview.template}.${preview.palette}.${preview.font}`, {
+        path: "/",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 12,
+      });
+      return response;
+    }
+  }
+  if (request.headers.get("sec-fetch-dest") === "iframe" && !pathname.startsWith("/dashboard")) {
+    const preview = parseStudioPreview(request.cookies.get(STUDIO_COOKIE)?.value);
+    if (preview) return withStudioHeaders(request, preview);
   }
 
   // Handle template preview parameter on portfolio routes

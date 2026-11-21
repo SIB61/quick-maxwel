@@ -3,19 +3,8 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { headers, cookies } from "next/headers";
-import { TEMPLATES, TemplateId, ColorPalette, FontFamily } from "./templates";
+import { TEMPLATES, PALETTES, FONTS, TEMPLATE_SIGNATURE_STYLES, TemplateId, ColorPalette, FontFamily } from "./templates";
 
-const TEMPLATE_SIGNATURE_STYLES: Record<
-  TemplateId,
-  { palette: ColorPalette; font: FontFamily }
-> = {
-  developer_terminal: { palette: "emerald", font: "mono" },
-  minimal_swiss: { palette: "slate", font: "sans" },
-  aurora_studio: { palette: "ocean", font: "sans" },
-  bento_grid: { palette: "neon", font: "sans" },
-  fancy_creative: { palette: "terracotta", font: "sans" },
-  simple_professional: { palette: "slate", font: "serif" },
-};
 
 export async function getPortfolioData(handle: string, explicitTemplate?: string) {
   const cleanHandle = handle.toLowerCase().trim();
@@ -50,15 +39,19 @@ export async function getPortfolioData(handle: string, explicitTemplate?: string
     notFound();
   }
 
-  // Determine if a template preview is active
+  // Determine if a template preview is active (public template browsing or Theme Studio)
   let previewTemplate = explicitTemplate;
-  if (!previewTemplate) {
-    try {
-      const headerList = await headers();
-      previewTemplate = headerList.get("x-preview-template") || undefined;
-    } catch {
-      // In non-request contexts
-    }
+  let previewPalette: string | undefined;
+  let previewFont: string | undefined;
+  let isStudioPreview = false;
+  try {
+    const headerList = await headers();
+    previewTemplate ||= headerList.get("x-preview-template") || undefined;
+    previewPalette = headerList.get("x-preview-palette") || undefined;
+    previewFont = headerList.get("x-preview-font") || undefined;
+    isStudioPreview = headerList.get("x-preview-studio") === "1";
+  } catch {
+    // In non-request contexts
   }
   if (!previewTemplate) {
     try {
@@ -81,7 +74,9 @@ export async function getPortfolioData(handle: string, explicitTemplate?: string
 
   return {
     ...user,
-    isPreview,
+    // The Theme Studio renders its own controls, so it hides the public preview banner.
+    isPreview: isPreview && !isStudioPreview,
+    isStudioPreview: isPreview && isStudioPreview,
     previewTemplate: isPreview ? activeTemplateId : undefined,
     settings: {
       ...(user.settings || {
@@ -95,8 +90,20 @@ export async function getPortfolioData(handle: string, explicitTemplate?: string
         seoDescription: null,
       }),
       templateId: activeTemplateId,
-      colorPalette: isPreview ? signature.palette : (user.settings?.colorPalette || signature.palette),
-      fontFamily: isPreview ? signature.font : (user.settings?.fontFamily || signature.font),
+      // Studio previews use the chosen (unsaved) palette/font; public template
+      // previews show each template's signature look.
+      colorPalette:
+        isPreview && previewPalette && previewPalette in PALETTES
+          ? (previewPalette as ColorPalette)
+          : isPreview
+            ? signature.palette
+            : (user.settings?.colorPalette || signature.palette),
+      fontFamily:
+        isPreview && previewFont && previewFont in FONTS
+          ? (previewFont as FontFamily)
+          : isPreview
+            ? signature.font
+            : (user.settings?.fontFamily || signature.font),
     },
   };
 }

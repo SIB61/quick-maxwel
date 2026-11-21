@@ -159,6 +159,19 @@ export const FONTS: Record<FontFamily, { id: FontFamily; name: string; descripti
   },
 };
 
+/** Each template's recommended ("signature") palette and font. */
+export const TEMPLATE_SIGNATURE_STYLES: Record<
+  TemplateId,
+  { palette: ColorPalette; font: FontFamily }
+> = {
+  developer_terminal: { palette: "emerald", font: "mono" },
+  minimal_swiss: { palette: "slate", font: "sans" },
+  aurora_studio: { palette: "ocean", font: "sans" },
+  bento_grid: { palette: "neon", font: "sans" },
+  fancy_creative: { palette: "terracotta", font: "sans" },
+  simple_professional: { palette: "slate", font: "serif" },
+};
+
 export function getPaletteConfig(paletteId?: string | null): PaletteConfig {
   if (paletteId && paletteId in PALETTES) {
     return PALETTES[paletteId as ColorPalette];

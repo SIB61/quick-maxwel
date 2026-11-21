@@ -1,34 +1,38 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { updateThemeAction } from "@/actions/theme";
-import { TEMPLATES, PALETTES, FONTS, TemplateId, ColorPalette, FontFamily } from "@/lib/templates";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
-  Palette,
-  Check,
-  Sparkles,
-  Layout,
-  Type,
-  ExternalLink,
-  Save,
-  Loader2,
+  TEMPLATES,
+  PALETTES,
+  FONTS,
+  TEMPLATE_SIGNATURE_STYLES,
+  TemplateId,
+  ColorPalette,
+  FontFamily,
+} from "@/lib/templates";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
   AlertCircle,
-  CheckCircle2,
-  Eye,
-  Layers,
-  FileText,
-  Briefcase,
-  Star,
+  Check,
+  ChevronDown,
+  ExternalLink,
   Globe,
+  Layout,
+  Loader2,
+  Monitor,
+  Palette,
+  RefreshCw,
+  RotateCcw,
+  Save,
+  Smartphone,
+  Tablet,
+  Type,
+  Wand2,
 } from "lucide-react";
-import Link from "next/link";
 import { PortfolioSettings } from "@/db/schema";
+import { STUDIO_MESSAGE_SOURCE } from "@/components/templates/nav/studio-preview-bridge";
 
 interface ThemeStudioFormProps {
   settings: PortfolioSettings | null;
@@ -41,504 +45,498 @@ interface ThemeStudioFormProps {
   };
 }
 
+interface ThemeState {
+  templateId: TemplateId;
+  colorPalette: ColorPalette;
+  fontFamily: FontFamily;
+  seoTitle: string;
+  seoDescription: string;
+}
+
+const DEVICES = {
+  desktop: { label: "Desktop", width: 1280, icon: Monitor },
+  tablet: { label: "Tablet", width: 820, icon: Tablet },
+  mobile: { label: "Mobile", width: 390, icon: Smartphone },
+} as const;
+type Device = keyof typeof DEVICES;
+
+const PAGES = [
+  { label: "Home", path: "" },
+  { label: "Articles", path: "/articles" },
+  { label: "Projects", path: "/projects" },
+  { label: "Experience", path: "/experience" },
+  { label: "Achievements", path: "/achievements" },
+  { label: "Services", path: "/services" },
+  { label: "Events", path: "/events" },
+  { label: "Contact", path: "/contact" },
+];
+
+const FONT_SAMPLE_CLASS: Record<FontFamily, string> = { sans: "font-sans", serif: "font-serif", mono: "font-mono" };
+
+function sameTheme(a: ThemeState, b: ThemeState) {
+  return (
+    a.templateId === b.templateId &&
+    a.colorPalette === b.colorPalette &&
+    a.fontFamily === b.fontFamily &&
+    a.seoTitle === b.seoTitle &&
+    a.seoDescription === b.seoDescription
+  );
+}
+
 export default function ThemeStudioForm({ settings, user }: ThemeStudioFormProps) {
   const [state, formAction, isPending] = useActionState(updateThemeAction, undefined);
 
-  const [templateId, setTemplateId] = useState<TemplateId>(
-    (settings?.templateId as TemplateId) || "simple_professional"
-  );
-  const [colorPalette, setColorPalette] = useState<ColorPalette>(
-    (settings?.colorPalette as ColorPalette) || "slate"
-  );
-  const [fontFamily, setFontFamily] = useState<FontFamily>(
-    (settings?.fontFamily as FontFamily) || "sans"
-  );
-  const [seoTitle, setSeoTitle] = useState(settings?.seoTitle || "");
-  const [seoDescription, setSeoDescription] = useState(settings?.seoDescription || "");
+  const initial: ThemeState = {
+    templateId: (settings?.templateId as TemplateId) || "simple_professional",
+    colorPalette: (settings?.colorPalette as ColorPalette) || "slate",
+    fontFamily: (settings?.fontFamily as FontFamily) || "sans",
+    seoTitle: settings?.seoTitle || "",
+    seoDescription: settings?.seoDescription || "",
+  };
+  const [saved, setSaved] = useState<ThemeState>(initial);
+  const [theme, setTheme] = useState<ThemeState>(initial);
+  const submittedRef = useRef<ThemeState | null>(null);
+  const isDirty = !sameTheme(theme, saved);
 
-  const activePalette = PALETTES[colorPalette] || PALETTES.slate;
-  const activeTemplate = TEMPLATES[templateId] || TEMPLATES.simple_professional;
+  const update = (patch: Partial<ThemeState>) => setTheme((t) => ({ ...t, ...patch }));
+
+  // When a save succeeds, the submitted values become the new baseline.
+  useEffect(() => {
+    if (state?.success && submittedRef.current) {
+      setSaved(submittedRef.current);
+      submittedRef.current = null;
+    }
+  }, [state]);
+
+  // Warn before leaving with unsaved changes.
+  useEffect(() => {
+    if (!isDirty) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [isDirty]);
+
+  // ---------------------------------------------------------------- preview
+  const [device, setDevice] = useState<Device>("desktop");
+  const [pagePath, setPagePath] = useState("");
+  const [currentPath, setCurrentPath] = useState(`/${user.handle}`);
+  const [reloadKey, setReloadKey] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const previewUrl = useMemo(() => {
+    const params = new URLSearchParams({
+      studio: "1",
+      template: theme.templateId,
+      palette: theme.colorPalette,
+      font: theme.fontFamily,
+    });
+    return `/${user.handle}${pagePath}?${params}`;
+  }, [user.handle, pagePath, theme.templateId, theme.colorPalette, theme.fontFamily]);
+
+  // Debounce so clicking through options doesn't queue up reloads.
+  const [frame, setFrame] = useState({ src: previewUrl, reloadKey: 0 });
+  useEffect(() => {
+    if (frame.src === previewUrl && frame.reloadKey === reloadKey) return;
+    const t = setTimeout(() => {
+      // Changing the iframe key below remounts it, so onLoad always follows.
+      setFrame({ src: previewUrl, reloadKey });
+      setLoading(true);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [previewUrl, reloadKey, frame]);
+
+  // Track navigation inside the preview (reported by StudioPreviewBridge).
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      const data = event.data as { source?: string; type?: string; path?: string };
+      if (data?.source === STUDIO_MESSAGE_SOURCE && data.type === "location" && typeof data.path === "string") {
+        setCurrentPath(data.path);
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  const currentPage = PAGES.find((p) => `/${user.handle}${p.path}` === currentPath);
+
+  // Scale the device-width iframe down to fit the available space.
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [stage, setStage] = useState({ width: 0, height: 0 });
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setStage({ width: entry.contentRect.width, height: entry.contentRect.height });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const deviceWidth = DEVICES[device].width;
+  const scale = stage.width > 0 ? Math.min(1, stage.width / deviceWidth) : 1;
+  const frameHeight = stage.height > 0 ? stage.height / scale : 800;
+
+  const signature = TEMPLATE_SIGNATURE_STYLES[theme.templateId];
+  const usingSignature = signature.palette === theme.colorPalette && signature.font === theme.fontFamily;
+  const activePalette = PALETTES[theme.colorPalette];
 
   return (
-    <div className="w-full space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <form
+      action={(formData) => {
+        submittedRef.current = theme;
+        formAction(formData);
+      }}
+      className="w-full space-y-5"
+    >
+      <input type="hidden" name="templateId" value={theme.templateId} />
+      <input type="hidden" name="colorPalette" value={theme.colorPalette} />
+      <input type="hidden" name="fontFamily" value={theme.fontFamily} />
+
+      {/* Header + save bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50 flex items-center gap-2.5">
             <Palette className="h-7 w-7 text-purple-400" />
-            <span>Theme & Template Studio</span>
+            <span>Theme Studio</span>
           </h1>
           <p className="text-sm text-zinc-400 mt-1">
-            Customize layout architecture, color schemes, typography, and live brand presentation.
+            Pick a layout, colors and type. The preview shows your real portfolio before you publish.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button asChild variant="outline" className="h-11 px-4 rounded-xl border-zinc-800 text-xs font-semibold text-zinc-300">
-            <Link href={`/${user.handle}`} target="_blank">
-              <Eye className="h-4 w-4 mr-2" />
-              <span>Preview Live Portfolio</span>
-            </Link>
-          </Button>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className={`h-8 px-3 rounded-full text-xs font-medium inline-flex items-center gap-1.5 border ${
+              isDirty
+                ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                : "border-zinc-800 bg-zinc-900/60 text-zinc-400"
+            }`}
+            aria-live="polite"
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${isDirty ? "bg-amber-400" : "bg-emerald-400"}`} />
+            {isDirty ? "Unsaved changes" : "Published"}
+          </span>
+          {isDirty && (
+            <button
+              type="button"
+              onClick={() => setTheme(saved)}
+              className="h-10 px-3.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-300 inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Discard</span>
+            </button>
+          )}
+          <a
+            href={`/${user.handle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-10 px-3.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-300 inline-flex items-center gap-1.5"
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            <span>Live site</span>
+          </a>
+          <button
+            type="submit"
+            disabled={isPending || !isDirty}
+            className="h-10 px-5 rounded-xl bg-sky-500 hover:bg-sky-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black text-xs font-bold inline-flex items-center gap-1.5 shadow-lg shadow-sky-500/10 cursor-pointer disabled:cursor-not-allowed transition-colors"
+          >
+            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            <span>{isPending ? "Publishing…" : "Save & Publish"}</span>
+          </button>
         </div>
       </div>
 
-      <form action={formAction} className="space-y-8">
-        {/* Hidden inputs to pass state to server action */}
-        <input type="hidden" name="templateId" value={templateId} />
-        <input type="hidden" name="colorPalette" value={colorPalette} />
-        <input type="hidden" name="fontFamily" value={fontFamily} />
+      {state?.error && (
+        <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-2.5">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{state.error}</span>
+        </div>
+      )}
 
-        {state?.error && (
-          <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
-            <AlertCircle className="h-5 w-5 shrink-0" />
-            <span>{state.error}</span>
-          </div>
-        )}
-
-        {state?.success && (
-          <div className="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-sm flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 shrink-0" />
-            <span>Theme settings saved successfully! Your live portfolio has been updated.</span>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Controls Column (7 cols) */}
-          <div className="lg:col-span-7 space-y-8">
-            {/* Step 1: Layout Template Selection */}
-            <Card className="bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-6 gap-0 space-y-5">
-              <CardHeader className="p-0 space-y-1">
-                <CardTitle className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                  <Layout className="h-5 w-5 text-sky-400" />
-                  <span>1. Select Portfolio Layout</span>
-                </CardTitle>
-                <CardDescription className="text-xs text-zinc-400">
-                  Choose the structural blueprint for your public homepage and sections.
-                </CardDescription>
-              </CardHeader>
-
-              <div className="grid grid-cols-1 gap-3.5">
-                {(Object.keys(TEMPLATES) as TemplateId[]).map((id) => {
-                  const t = TEMPLATES[id];
-                  const isSelected = templateId === id;
-
-                  return (
-                    <div
-                      key={id}
-                      onClick={() => setTemplateId(id)}
-                      className={`cursor-pointer p-4 rounded-xl border transition-all text-left space-y-2 ${
-                        isSelected
-                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-lg"
-                          : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm text-zinc-100">{t.name}</span>
-                          <span className="text-xs text-zinc-400 hidden sm:inline">— {t.tagline}</span>
-                        </div>
-                        {isSelected ? (
-                          <div className="h-5 w-5 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
-                            <Check className="h-3 w-3 stroke-[3]" />
-                          </div>
-                        ) : (
-                          <div className="h-5 w-5 rounded-full border border-zinc-700 shrink-0" />
-                        )}
-                      </div>
-
-                      <p className="text-xs text-zinc-400 leading-relaxed">
-                        {t.description}
-                      </p>
-
-                      <div className="flex items-center gap-1.5 flex-wrap pt-1">
-                        {t.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </Card>
-
-            {/* Step 2: Color Palette Selection */}
-            <Card className="bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-6 gap-0 space-y-5">
-              <CardHeader className="p-0 space-y-1">
-                <CardTitle className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                  <Palette className="h-5 w-5 text-purple-400" />
-                  <span>2. Color Palette & Lighting</span>
-                </CardTitle>
-                <CardDescription className="text-xs text-zinc-400">
-                  Sets the primary background tones, glowing accents, badges, and button highlights.
-                </CardDescription>
-              </CardHeader>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {(Object.keys(PALETTES) as ColorPalette[]).map((id) => {
-                  const p = PALETTES[id];
-                  const isSelected = colorPalette === id;
-
-                  return (
-                    <div
-                      key={id}
-                      onClick={() => setColorPalette(id)}
-                      className={`cursor-pointer p-3.5 rounded-xl border transition-all text-left space-y-2.5 ${
-                        isSelected
-                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-md"
-                          : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          {/* Color Swatch */}
-                          <div
-                            className="h-6 w-6 rounded-lg shadow-inner border border-white/10 shrink-0"
-                            style={{ backgroundColor: p.accentHex }}
-                          />
-                          <span className="font-bold text-xs text-zinc-100">{p.name}</span>
-                        </div>
-                        {isSelected && (
-                          <div className="h-4 w-4 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
-                            <Check className="h-2.5 w-2.5 stroke-[3]" />
-                          </div>
-                        )}
-                      </div>
-
-                      <p className="text-[11px] text-zinc-400 leading-snug">
-                        {p.description}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </Card>
-
-            {/* Step 3: Typography Selection */}
-            <Card className="bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-6 gap-0 space-y-5">
-              <CardHeader className="p-0 space-y-1">
-                <CardTitle className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                  <Type className="h-5 w-5 text-blue-400" />
-                  <span>3. Typography Aesthetic</span>
-                </CardTitle>
-                <CardDescription className="text-xs text-zinc-400">
-                  Select font family pairing applied across your headings and body text.
-                </CardDescription>
-              </CardHeader>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {(Object.keys(FONTS) as FontFamily[]).map((id) => {
-                  const f = FONTS[id];
-                  const isSelected = fontFamily === id;
-
-                  return (
-                    <div
-                      key={id}
-                      onClick={() => setFontFamily(id)}
-                      className={`cursor-pointer p-3.5 rounded-xl border transition-all text-left space-y-1.5 ${
-                        isSelected
-                          ? "bg-zinc-800/80 border-sky-500/80 ring-1 ring-sky-500/50 shadow-md"
-                          : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-xs text-zinc-100">{f.name}</span>
-                        {isSelected && (
-                          <div className="h-4 w-4 rounded-full bg-sky-500 text-black flex items-center justify-center shrink-0">
-                            <Check className="h-2.5 w-2.5 stroke-[3]" />
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-zinc-400 leading-tight">
-                        {f.description}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </Card>
-
-            {/* Step 4: SEO Metadata */}
-            <Card className="bg-zinc-900/60 border-zinc-800/80 rounded-2xl p-6 py-6 gap-0 space-y-4">
-              <CardHeader className="p-0 space-y-1">
-                <CardTitle className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                  <Globe className="h-5 w-5 text-amber-400" />
-                  <span>4. SEO & Social Meta</span>
-                </CardTitle>
-                <CardDescription className="text-xs text-zinc-400">
-                  Search engine title and OpenGraph description.
-                </CardDescription>
-              </CardHeader>
-
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="seoTitle" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-                    SEO Meta Title
-                  </Label>
-                  <Input
-                    id="seoTitle"
-                    name="seoTitle"
-                    type="text"
-                    value={seoTitle}
-                    onChange={(e) => setSeoTitle(e.target.value)}
-                    placeholder={`${user.name} — Portfolio & Architectural Insights`}
-                    className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="seoDescription" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-                    SEO Meta Description
-                  </Label>
-                  <Textarea
-                    id="seoDescription"
-                    name="seoDescription"
-                    rows={3}
-                    value={seoDescription}
-                    onChange={(e) => setSeoDescription(e.target.value)}
-                    placeholder="Brief 1-2 sentence description displayed on Google searches and social share cards..."
-                    className="p-3.5 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 resize-y"
-                  />
-                </div>
-              </div>
-            </Card>
-
-            {/* Save Button */}
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="h-11 px-8 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-sm font-semibold shadow-lg shadow-sky-500/10 cursor-pointer"
-              >
-                {isPending ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving Theme...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Save className="h-4 w-4" />
-                    Save Theme & Layout
-                  </span>
-                )}
-              </Button>
-            </div>
-          </div>
-
-          {/* Live Preview Column (5 cols) */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="sticky top-24 space-y-3">
-              <div className="flex items-center justify-between text-xs text-zinc-400">
-                <span className="font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                  <Eye className="h-3.5 w-3.5 text-zinc-400" />
-                  <span>Real-Time Mini Preview</span>
-                </span>
-                <span className="text-[11px] font-mono text-zinc-500 capitalize">
-                  {templateId.replace("_", " ")} • {colorPalette}
-                </span>
-              </div>
-
-              {/* Simulated Device Frame */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 shadow-2xl space-y-4 overflow-hidden relative">
-                {/* Simulated Glow */}
-                <div
-                  className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-20 pointer-events-none"
-                  style={{ backgroundColor: activePalette.accentHex }}
-                />
-
-                {/* Simulated Nav */}
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-900">
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-300">
-                      {user.name.charAt(0)}
-                    </div>
-                    <span className="text-xs font-bold text-zinc-200">{user.name}</span>
-                  </div>
-                  <div
-                    className="h-6 px-2.5 rounded-full text-[10px] font-bold text-black flex items-center"
-                    style={{ backgroundColor: activePalette.accentHex }}
+      <div className="grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-5 items-start">
+        {/* ------------------------------------------------------- Controls */}
+        <div className="space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1 scrollbar-none">
+          {/* Layout */}
+          <section className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+              <Layout className="h-3.5 w-3.5 text-sky-400" />
+              <span>Layout</span>
+            </h2>
+            <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Layout template">
+              {(Object.keys(TEMPLATES) as TemplateId[]).map((id) => {
+                const t = TEMPLATES[id];
+                const selected = theme.templateId === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    onClick={() => update({ templateId: id })}
+                    title={t.description}
+                    className={`relative p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                      selected
+                        ? "border-sky-500/80 bg-sky-500/10 ring-1 ring-sky-500/40"
+                        : "border-zinc-800 bg-zinc-950/60 hover:border-zinc-700"
+                    }`}
                   >
-                    Contact
-                  </div>
-                </div>
-
-                {/* Simulated Hero based on selected template */}
-                {templateId === "simple_professional" && (
-                  <div className="space-y-3 py-2">
-                    <div className="space-y-1">
-                      <div className="text-sm font-extrabold text-zinc-100">{user.name}</div>
-                      <div className="text-xs font-semibold" style={{ color: activePalette.accentHex }}>
-                        {user.headline || "Staff Software Architect"}
-                      </div>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-zinc-900/60 border border-zinc-800 text-[11px] text-zinc-400">
-                      {user.bio ? user.bio.slice(0, 90) + "..." : "Building mission-critical distributed systems..."}
-                    </div>
-                    {/* Simulated Timeline */}
-                    <div className="space-y-2 pt-1 border-t border-zinc-900">
-                      <div className="text-[10px] font-bold uppercase text-zinc-500">Timeline</div>
-                      <div className="pl-3 border-l-2 space-y-2 text-[10px]" style={{ borderColor: activePalette.accentHex }}>
-                        <div className="text-zinc-200 font-semibold">Principal Architect</div>
-                        <div className="text-zinc-400">Senior Distributed Systems Lead</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {templateId === "fancy_creative" && (
-                  <div className="space-y-3 py-2">
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-[9px] font-semibold">
-                      <span className="h-1.5 w-1.5 rounded-full animate-ping" style={{ backgroundColor: activePalette.accentHex }} />
-                      <span className="text-zinc-300">Available</span>
-                    </div>
-                    <div className="space-y-1">
-                      <div
-                        className="text-base font-black bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 to-white"
-                        style={{ backgroundImage: `linear-gradient(to right, #ffffff, ${activePalette.accentHex})` }}
-                      >
-                        {user.name}
-                      </div>
-                      <div className="text-xs font-semibold text-zinc-300">
-                        {user.headline || "Staff Software Architect"}
-                      </div>
-                    </div>
-                    {/* Glass card simulation */}
-                    <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-700/60 shadow-lg text-[10px] text-zinc-300">
-                      High-impact architectures, distributed consensus, and resilience engineering.
-                    </div>
-                  </div>
-                )}
-
-                {templateId === "bento_grid" && (
-                  <div className="space-y-2.5 py-1">
-                    {/* Bento Mini Grid */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 space-y-1">
-                        <div className="text-xs font-bold text-zinc-200">{user.name}</div>
-                        <div className="text-[9px] font-semibold" style={{ color: activePalette.accentHex }}>
-                          {user.headline?.slice(0, 24) || "Architect"}
-                        </div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 flex flex-col justify-between">
-                        <div className="text-[9px] uppercase font-bold text-zinc-500">Status</div>
-                        <div className="text-[10px] font-bold text-zinc-200">Open to Work</div>
-                      </div>
-                      <div className="col-span-2 p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 space-y-1">
-                        <div className="flex items-center justify-between text-[9px]">
-                          <span className="text-zinc-400 font-bold uppercase">Writing Spotlight</span>
-                          <span style={{ color: activePalette.accentHex }}>Read &rarr;</span>
-                        </div>
-                        <div className="text-[10px] font-bold text-zinc-200 truncate">
-                          Designing Zero-Downtime Migration Pipelines
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {templateId === "developer_terminal" && (
-                  <div className="space-y-2 py-1 font-mono text-[10px]">
-                    <div className="flex items-center gap-1.5 pb-1 border-b border-zinc-900">
-                      <div className="h-2 w-2 rounded-full bg-[#ff5f56]" />
-                      <div className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
-                      <div className="h-2 w-2 rounded-full bg-[#27c93f]" />
-                      <span className="text-[9px] text-zinc-500 font-mono ml-1">terminal (zsh)</span>
-                    </div>
-                    <div className="space-y-1 text-zinc-300">
-                      <div className="flex items-center gap-1 text-[9px]">
-                        <span style={{ color: activePalette.accentHex }}>➜</span>
-                        <span className="text-cyan-400">~</span>
-                        <span>whoami --detailed</span>
-                      </div>
-                      <div className="p-2 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-0.5">
-                        <div className="font-bold text-zinc-100">{user.name}</div>
-                        <div className="text-[9px]" style={{ color: activePalette.accentHex }}>
-                          {user.headline || "Systems Engineer"}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 text-[9px] pt-1">
-                        <span style={{ color: activePalette.accentHex }}>➜</span>
-                        <span className="text-cyan-400">~/writings</span>
-                        <span>ls -lh</span>
-                      </div>
-                      <div className="text-[9px] text-zinc-500 pl-2">
-                        -rw-r--r-- 1 {user.handle} articles.log
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {templateId === "minimal_swiss" && (
-                  <div className="space-y-2.5 py-1 text-[10px]">
-                    <div className="flex items-center justify-between text-[8px] font-mono text-zinc-500 uppercase border-b border-zinc-800 pb-1">
-                      <span>FOLIO // VOL. 26</span>
-                      <span>BASE: GLOBAL</span>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-sm font-black uppercase tracking-tighter text-zinc-100">
-                        {user.name}
-                      </div>
-                      <div className="text-[9px] font-light tracking-tight" style={{ color: activePalette.accentHex }}>
-                        {user.headline || "Staff Architect"}
-                      </div>
-                    </div>
-                    <div className="border-t border-zinc-800 pt-1.5 space-y-1">
-                      <div className="flex items-center justify-between text-[8px] font-mono uppercase text-zinc-500">
-                        <span>01 // ESSAYS</span>
-                        <span style={{ color: activePalette.accentHex }}>INDEX →</span>
-                      </div>
-                      <div className="text-[9px] font-bold text-zinc-200">
-                        Zero-Downtime Distributed Architecture
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {templateId === "aurora_studio" && (
-                  <div className="space-y-2 py-1 text-[10px] relative">
-                    <div
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full blur-xl opacity-30 pointer-events-none"
-                      style={{ background: `radial-gradient(circle, ${activePalette.accentHex}, #8b5cf6)` }}
+                    <span
+                      className="block h-1.5 w-8 rounded-full mb-2"
+                      style={{ backgroundColor: PALETTES[TEMPLATE_SIGNATURE_STYLES[id].palette].accentHex }}
                     />
-                    <div className="relative p-2.5 rounded-xl bg-zinc-900/40 border border-white/10 backdrop-blur-md space-y-1.5 shadow-lg">
-                      <div className="flex items-center justify-between text-[8px]">
-                        <span className="flex items-center gap-1 text-zinc-300">
-                          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activePalette.accentHex }} />
-                          <span>Spatial Studio</span>
-                        </span>
-                        <span className="text-[8px] font-mono text-zinc-500">ENGAGEMENTS OPEN</span>
-                      </div>
-                      <div className="space-y-0.5">
-                        <div className="font-extrabold text-xs text-white tracking-tight">{user.name}</div>
-                        <div className="text-[9px] font-medium" style={{ color: activePalette.accentHex }}>
-                          {user.headline || "Strategic Architect"}
-                        </div>
-                      </div>
-                      <div className="pt-1 border-t border-white/10 flex items-center justify-between text-[8px] text-zinc-400">
-                        <span>High-Leverage Systems</span>
-                        <span style={{ color: activePalette.accentHex }}>Explore &rarr;</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    <span className="block text-xs font-bold text-zinc-100 leading-tight">{t.name}</span>
+                    <span className="block text-[10px] text-zinc-500 mt-0.5 leading-snug line-clamp-2">{t.tagline}</span>
+                    {selected && (
+                      <span className="absolute top-2 right-2 h-4 w-4 rounded-full bg-sky-500 text-black flex items-center justify-center">
+                        <Check className="h-2.5 w-2.5 stroke-[3]" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {!usingSignature && (
+              <button
+                type="button"
+                onClick={() => update({ colorPalette: signature.palette, fontFamily: signature.font })}
+                className="w-full h-8 rounded-lg border border-dashed border-zinc-700 hover:border-sky-500/50 text-[11px] text-zinc-400 hover:text-sky-300 inline-flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Wand2 className="h-3 w-3" />
+                <span>
+                  Use {TEMPLATES[theme.templateId].name}&apos;s recommended style ({PALETTES[signature.palette].name} ·{" "}
+                  {FONTS[signature.font].name.split(" ").pop()})
+                </span>
+              </button>
+            )}
+          </section>
 
-                {/* Footer preview note */}
-                <div className="pt-2 border-t border-zinc-900 flex items-center justify-between text-[10px] text-zinc-500">
-                  <span>Font: {fontFamily}</span>
-                  <span className="font-mono" style={{ color: activePalette.accentHex }}>
-                    {activePalette.accentHex}
+          {/* Colors */}
+          <section className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+              <Palette className="h-3.5 w-3.5 text-purple-400" />
+              <span>Accent color</span>
+            </h2>
+            <div className="flex items-center justify-between gap-2" role="radiogroup" aria-label="Accent color">
+              {(Object.keys(PALETTES) as ColorPalette[]).map((id) => {
+                const p = PALETTES[id];
+                const selected = theme.colorPalette === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    aria-label={p.name}
+                    title={p.name}
+                    onClick={() => update({ colorPalette: id })}
+                    className={`h-10 w-10 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                      selected ? "ring-2 ring-offset-2 ring-offset-zinc-900 ring-white/80 scale-105" : "hover:scale-105"
+                    }`}
+                    style={{ backgroundColor: p.accentHex }}
+                  >
+                    {selected && <Check className="h-4 w-4 stroke-[3]" style={{ color: p.accentForeground }} />}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-zinc-400 leading-snug">
+              <span className="font-semibold text-zinc-200">{activePalette.name}.</span> {activePalette.description}
+            </p>
+          </section>
+
+          {/* Typography */}
+          <section className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+              <Type className="h-3.5 w-3.5 text-blue-400" />
+              <span>Typography</span>
+            </h2>
+            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Typography">
+              {(Object.keys(FONTS) as FontFamily[]).map((id) => {
+                const f = FONTS[id];
+                const selected = theme.fontFamily === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    title={f.description}
+                    onClick={() => update({ fontFamily: id })}
+                    className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                      selected
+                        ? "border-sky-500/80 bg-sky-500/10 ring-1 ring-sky-500/40"
+                        : "border-zinc-800 bg-zinc-950/60 hover:border-zinc-700"
+                    }`}
+                  >
+                    <span className={`block text-xl text-zinc-100 ${FONT_SAMPLE_CLASS[id]}`}>Aa</span>
+                    <span className="block text-[10px] text-zinc-400 mt-1">{f.name.split(" ").pop()}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* SEO */}
+          <details className="group rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4" open={Boolean(theme.seoTitle || theme.seoDescription) || undefined}>
+            <summary className="list-none cursor-pointer flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-400">
+              <span className="flex items-center gap-2">
+                <Globe className="h-3.5 w-3.5 text-amber-400" />
+                <span>Search &amp; sharing</span>
+              </span>
+              <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+            </summary>
+            <div className="space-y-3 pt-3">
+              <div className="space-y-1">
+                <div className="flex justify-between text-[11px] text-zinc-400">
+                  <label htmlFor="seoTitle">Page title</label>
+                  <span className={theme.seoTitle.length > 60 ? "text-amber-400" : ""}>{theme.seoTitle.length}/60</span>
+                </div>
+                <Input
+                  id="seoTitle"
+                  name="seoTitle"
+                  value={theme.seoTitle}
+                  onChange={(e) => update({ seoTitle: e.target.value })}
+                  placeholder={`${user.name} — Portfolio`}
+                  className="h-9 rounded-lg bg-zinc-950/80 border-zinc-800 text-xs text-zinc-100 placeholder:text-zinc-600"
+                />
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between text-[11px] text-zinc-400">
+                  <label htmlFor="seoDescription">Description</label>
+                  <span className={theme.seoDescription.length > 160 ? "text-amber-400" : ""}>
+                    {theme.seoDescription.length}/160
                   </span>
                 </div>
+                <Textarea
+                  id="seoDescription"
+                  name="seoDescription"
+                  rows={3}
+                  value={theme.seoDescription}
+                  onChange={(e) => update({ seoDescription: e.target.value })}
+                  placeholder="One or two sentences shown in search results and link previews."
+                  className="p-2.5 rounded-lg bg-zinc-950/80 border-zinc-800 text-xs text-zinc-100 placeholder:text-zinc-600 resize-y"
+                />
+              </div>
+              {/* Search result snippet */}
+              <div className="p-3 rounded-lg bg-zinc-950/80 border border-zinc-800 space-y-0.5">
+                <p className="text-[10px] text-zinc-500 truncate">portfolioosite.dev › {user.handle}</p>
+                <p className="text-sm text-sky-300 truncate">{theme.seoTitle || `${user.name} — Portfolio`}</p>
+                <p className="text-[11px] text-zinc-400 line-clamp-2">
+                  {theme.seoDescription || user.headline || "Add a description to control how your portfolio appears in search."}
+                </p>
               </div>
             </div>
+          </details>
+        </div>
+
+        {/* -------------------------------------------------------- Preview */}
+        <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/40 overflow-hidden flex flex-col lg:sticky lg:top-20 h-[70vh] lg:h-[calc(100vh-6rem)] min-h-[520px]">
+          {/* Browser-style toolbar */}
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-800/80 bg-zinc-900/80">
+            <div className="hidden sm:flex items-center gap-1.5 pr-1">
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+            </div>
+            <div className="relative flex-1 min-w-0">
+              <select
+                value={currentPage?.path ?? "__custom"}
+                onChange={(e) => {
+                  setPagePath(e.target.value);
+                  setCurrentPath(`/${user.handle}${e.target.value}`);
+                  setReloadKey((k) => k + 1);
+                }}
+                aria-label="Preview page"
+                className="w-full h-8 pl-3 pr-8 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 font-mono appearance-none truncate focus:outline-none focus:ring-1 focus:ring-sky-500/50"
+              >
+                {!currentPage && <option value="__custom">{currentPath}</option>}
+                {PAGES.map((p) => (
+                  <option key={p.label} value={p.path}>
+                    /{user.handle}
+                    {p.path} · {p.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="h-3.5 w-3.5 text-zinc-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+            <div className="flex items-center rounded-lg border border-zinc-800 bg-zinc-950 p-0.5" role="radiogroup" aria-label="Preview device">
+              {(Object.keys(DEVICES) as Device[]).map((d) => {
+                const Icon = DEVICES[d].icon;
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    role="radio"
+                    aria-checked={device === d}
+                    aria-label={DEVICES[d].label}
+                    title={`${DEVICES[d].label} (${DEVICES[d].width}px)`}
+                    onClick={() => setDevice(d)}
+                    className={`h-7 w-8 rounded-md flex items-center justify-center cursor-pointer transition-colors ${
+                      device === d ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-200"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={() => setReloadKey((k) => k + 1)}
+              title="Reload preview"
+              aria-label="Reload preview"
+              className="h-8 w-8 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white flex items-center justify-center cursor-pointer"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
+            </button>
+          </div>
+
+          {/* Stage */}
+          <div ref={stageRef} className="relative flex-1 min-h-0 bg-zinc-950 overflow-hidden">
+            {stage.width > 0 && (
+              <div
+                className="absolute top-0 left-1/2 origin-top"
+                style={{
+                  width: deviceWidth,
+                  height: frameHeight,
+                  transform: `translateX(-50%) scale(${scale})`,
+                }}
+              >
+                <iframe
+                  key={`${frame.src}#${frame.reloadKey}`}
+                  src={frame.src}
+                  title="Portfolio preview"
+                  onLoad={() => setLoading(false)}
+                  className={`w-full h-full bg-zinc-950 ${device !== "desktop" ? "border-x border-zinc-800" : ""}`}
+                />
+              </div>
+            )}
+            {loading && (
+              <div className="absolute inset-0 flex items-start justify-center pt-24 bg-zinc-950/40 backdrop-blur-[1px] pointer-events-none">
+                <div className="px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 inline-flex items-center gap-2 shadow-lg">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-sky-400" />
+                  <span>Updating preview…</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="px-3 py-1.5 border-t border-zinc-800/80 bg-zinc-900/80 text-[11px] text-zinc-500 flex items-center justify-between gap-2">
+            <span className="truncate">
+              {isDirty ? "Previewing unsaved changes. Visitors still see your published theme." : "This is what visitors see."}
+            </span>
+            <span className="shrink-0 font-mono">
+              {DEVICES[device].width}px · {Math.round(scale * 100)}%
+            </span>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+
+      {state?.success && !isDirty && (
+        <p className="sr-only" role="status">
+          Theme published.
+        </p>
+      )}
+    </form>
   );
 }

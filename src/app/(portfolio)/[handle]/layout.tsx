@@ -3,6 +3,7 @@ import { getPaletteConfig, FONTS, FontFamily, TemplateId } from "@/lib/templates
 import TemplateNavbar from "@/components/templates/nav/template-navbar";
 import TemplateFooter from "@/components/templates/nav/template-footer";
 import { TemplatePreviewBanner } from "@/components/templates/nav/template-preview-banner";
+import { StudioPreviewBridge } from "@/components/templates/nav/studio-preview-bridge";
 import React from "react";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +40,8 @@ export default async function PortfolioLayout({
           handle={handle}
         />
       )}
+
+      {portfolio.isStudioPreview && <StudioPreviewBridge />}
 
       {/* Template-Specific Navbar */}
       <TemplateNavbar portfolio={portfolio} handle={handle} />
