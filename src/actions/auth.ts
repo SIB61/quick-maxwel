@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { users, portfolioSettings } from "@/db/schema";
 import { createSession, destroySession, isHandleReserved } from "@/lib/auth";
+import { isBlockedDemoAccount } from "@/lib/demo-account";
 import bcrypt from "bcryptjs";
 import { eq, or } from "drizzle-orm";
 import { redirect } from "next/navigation";
@@ -119,6 +120,12 @@ export async function loginAction(prevState: ActionState | undefined, formData: 
   }
 
   const { email, password } = parsed.data;
+
+  // The public demo account can't be signed into in production. Same generic
+  // error as a wrong password, so it reveals nothing about the account.
+  if (isBlockedDemoAccount(email)) {
+    return { error: "Invalid email or password." };
+  }
 
   const user = await db.query.users.findFirst({
     where: eq(users.email, email.toLowerCase().trim()),

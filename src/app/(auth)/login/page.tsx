@@ -46,21 +46,18 @@ export default function LoginPage() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="sarah@example.com"
+                placeholder="you@example.com"
+                autoComplete="email"
                 required
-                defaultValue="sarah@example.com"
                 className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-                Password
-              </Label>
-              <span className="text-[11px] text-zinc-500">Demo: password123</span>
-            </div>
+            <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              Password
+            </Label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
               <Input
@@ -68,8 +65,8 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 placeholder="••••••••"
+                autoComplete="current-password"
                 required
-                defaultValue="password123"
                 className="h-11 pl-10 pr-4 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40 focus-visible:border-sky-500"
               />
             </div>

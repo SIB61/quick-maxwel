@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { getSessionKey } from "@/lib/session-secret";
+import { isBlockedDemoAccount } from "@/lib/demo-account";
 
 const VALID_TEMPLATES = [
   "developer_terminal",
@@ -55,21 +56,32 @@ export async function proxy(request: NextRequest) {
   }
 
   let isAuthenticated = false;
+  // A session for the public demo account is invalid in production; clear it
+  // so /login and /dashboard don't bounce between each other.
+  let clearDemoSession = false;
   if (sessionCookie) {
     try {
-      await jwtVerify(sessionCookie, getSessionKey(), { algorithms: ["HS256"] });
-      isAuthenticated = true;
+      const { payload } = await jwtVerify(sessionCookie, getSessionKey(), { algorithms: ["HS256"] });
+      if (isBlockedDemoAccount(typeof payload.email === "string" ? payload.email : null)) {
+        clearDemoSession = true;
+      } else {
+        isAuthenticated = true;
+      }
     } catch {
       isAuthenticated = false;
     }
   }
+  const withSessionCleanup = (response: NextResponse) => {
+    if (clearDemoSession) response.cookies.delete("pb_session");
+    return response;
+  };
 
   // Protected dashboard routes
   if (pathname.startsWith("/dashboard")) {
     if (!isAuthenticated) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(loginUrl);
+      return withSessionCleanup(NextResponse.redirect(loginUrl));
     }
     return NextResponse.next();
   }
@@ -79,7 +91,7 @@ export async function proxy(request: NextRequest) {
     if (isAuthenticated) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
-    return NextResponse.next();
+    return withSessionCleanup(NextResponse.next());
   }
 
   // Theme Studio live preview (embedded in the dashboard)

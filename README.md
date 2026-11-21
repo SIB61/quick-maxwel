@@ -17,6 +17,8 @@ pnpm dev                          # http://localhost:3000
 
 Demo login (seeded, development only): `sarah@example.com` / `password123`. Public demo portfolio: <http://localhost:3000/sarah>.
 
+In production (`NODE_ENV=production`) the demo account cannot be signed into: logins are refused and existing demo sessions are ignored, while its public portfolio stays online. Seeding with `NODE_ENV=production` gives it a random password (or `DEMO_USER_PASSWORD` if set). Set `ALLOW_DEMO_LOGIN=true` only on a private staging server if you need to sign in as the demo user there.
+
 ## Templates
 
 `developer_terminal`, `minimal_swiss`, `aurora_studio`, `bento_grid`, `fancy_creative`, `simple_professional`.

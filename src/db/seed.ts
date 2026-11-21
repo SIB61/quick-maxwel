@@ -4,6 +4,7 @@ dotenv.config({ path: ".env" });
 import { db } from "./index";
 import { users, portfolioSettings, articles, experiences, achievements, services, projects, events, contacts } from "./schema";
 import bcrypt from "bcryptjs";
+import { randomBytes } from "node:crypto";
 import { estimateReadTime } from "../lib/rich-text";
 import { eq } from "drizzle-orm";
 
@@ -21,7 +22,13 @@ async function seed() {
   }
 
   // 1. Create Demo User
-  const hashedPassword = await bcrypt.hash("password123", 10);
+  // Development keeps the well-known "password123" for convenience. In production
+  // the demo account only powers the public showcase: use DEMO_USER_PASSWORD if
+  // set, otherwise a random password nobody knows (login is also blocked there).
+  const demoPassword =
+    process.env.DEMO_USER_PASSWORD ||
+    (process.env.NODE_ENV === "production" ? randomBytes(32).toString("base64url") : "password123");
+  const hashedPassword = await bcrypt.hash(demoPassword, 10);
   const [user] = await db
     .insert(users)
     .values({
