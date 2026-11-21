@@ -1,3 +1,5 @@
+import sanitizeHtmlLib from "sanitize-html";
+
 /**
  * Utility functions for rich-text handling, markdown-to-HTML conversion,
  * and safe content rendering across visual editors and public templates.
@@ -101,4 +103,42 @@ export function markdownToHtml(md: string): string {
   });
 
   return formattedBlocks.filter(Boolean).join("\n");
+}
+
+/**
+ * Strips scripts, event handlers, and unsafe URLs from user-authored HTML.
+ * Every piece of rich content rendered on a public portfolio passes through
+ * here, so one user can never inject executable markup into their page.
+ */
+export function sanitizeRichHtml(html: string): string {
+  if (!html) return "";
+  return sanitizeHtmlLib(html, {
+    allowedTags: [
+      "p", "br", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
+      "strong", "b", "em", "i", "u", "s", "del", "mark", "sub", "sup",
+      "ul", "ol", "li", "blockquote", "code", "pre", "a", "span", "div", "img",
+    ],
+    allowedAttributes: {
+      a: ["href", "target", "rel", "title"],
+      img: ["src", "alt", "title", "width", "height"],
+      code: ["class"],
+      ol: ["start"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+    allowedSchemesByTag: { img: ["http", "https"] },
+    allowProtocolRelative: false,
+    transformTags: {
+      a: (tagName, attribs) => ({
+        tagName,
+        attribs: attribs.target
+          ? { ...attribs, target: "_blank", rel: "noopener noreferrer" }
+          : attribs,
+      }),
+    },
+  });
+}
+
+/** Converts markdown (or passes through HTML) and sanitizes the result. */
+export function renderRichContent(content: string): string {
+  return sanitizeRichHtml(markdownToHtml(content));
 }

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { markdownToHtml } from "@/lib/rich-text";
+import { renderRichContent } from "@/lib/rich-text";
 
 interface RichContentDisplayProps {
   content?: string | null;
@@ -13,7 +13,7 @@ interface RichContentDisplayProps {
 export function RichContentDisplay({ content, className = "" }: RichContentDisplayProps) {
   const html = useMemo(() => {
     if (!content) return "";
-    return markdownToHtml(content);
+    return renderRichContent(content);
   }, [content]);
 
   if (!html) return null;

@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Builder
 
-## Getting Started
+A multi-tenant portfolio platform. Users sign up, manage their content (articles, experience, achievements, services, events) from a dashboard, choose one of six templates, and publish a public site at `/<handle>`.
 
-First, run the development server:
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · PostgreSQL 16 · Drizzle ORM · TipTap · JWT sessions (`jose`)
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env              # then set JWT_SECRET (openssl rand -base64 48)
+docker compose up -d db           # Postgres on localhost:5434
+pnpm install
+pnpm db:push                      # create the schema
+pnpm db:seed                      # demo user "sarah"
+pnpm dev                          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Demo login (seeded, development only): `sarah@example.com` / `password123`. Public demo portfolio: <http://localhost:3000/sarah>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Templates
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`developer_terminal`, `minimal_swiss`, `aurora_studio`, `bento_grid`, `fancy_creative`, `simple_professional`.
 
-## Learn More
+Preview any portfolio in another template with `?template=<id>` (persists for 24h via cookie; clear it with `?exit_preview=true`), or open `/preview/<id>` to see the demo user in that template. Switch a user's saved template from the CLI:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm tsx scripts/set-template.ts sarah aurora_studio ocean
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project layout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | Purpose |
+|---|---|
+| `src/app/(auth)` | Login / register |
+| `src/app/(dashboard)/dashboard` | Authenticated CRUD for all content, profile, theme studio, inbox |
+| `src/app/(portfolio)/[handle]` | Public portfolio pages and detail routes |
+| `src/actions` | Server Actions (zod-validated, scoped to the signed-in user) |
+| `src/db/schema` | Drizzle tables; every content table belongs to a user |
+| `src/components/templates` | Template components and per-template subpages |
+| `src/proxy.ts` | Route protection and template-preview handling (Next 16 `proxy`) |
+| `src/lib/rich-text.ts` | Markdown → HTML conversion and HTML sanitizing for user content |
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command | Description |
+|---|---|
+| `pnpm dev` / `build` / `start` | Next.js dev server, production build, production server |
+| `pnpm lint` | ESLint |
+| `pnpm db:push` | Sync schema to the database |
+| `pnpm db:generate` / `db:migrate` | Generate / apply SQL migrations |
+| `pnpm db:seed` | Reset and seed the demo user |
+| `pnpm db:studio` | Drizzle Studio |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Security notes
+
+- `JWT_SECRET` is required in production (minimum 32 characters); the app refuses to sign or verify sessions without it. Development falls back to an insecure placeholder with a warning.
+- All user-authored rich text is sanitized (`sanitize-html`) before rendering, so scripts, event handlers and `javascript:` URLs are stripped.
+
+## Docker
+
+`docker compose up -d` builds and runs the app (standalone output) alongside Postgres. It reads `.env` and fails fast if `JWT_SECRET` is not set.

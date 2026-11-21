@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
-
-const SECRET_KEY = process.env.JWT_SECRET || "super-secret-jwt-key-for-portfolio-builder-2026-secure-random";
-const encodedKey = new TextEncoder().encode(SECRET_KEY);
+import { getSessionKey } from "@/lib/session-secret";
 
 const VALID_TEMPLATES = [
   "developer_terminal",
@@ -14,7 +12,7 @@ const VALID_TEMPLATES = [
   "simple_professional",
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const sessionCookie = request.cookies.get("pb_session")?.value;
 
@@ -31,7 +29,7 @@ export async function middleware(request: NextRequest) {
   let isAuthenticated = false;
   if (sessionCookie) {
     try {
-      await jwtVerify(sessionCookie, encodedKey, { algorithms: ["HS256"] });
+      await jwtVerify(sessionCookie, getSessionKey(), { algorithms: ["HS256"] });
       isAuthenticated = true;
     } catch {
       isAuthenticated = false;

@@ -8,7 +8,7 @@ export default defineConfig({
   out: "./src/db/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/portfolio_builder",
+    url: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5434/portfolio_builder",
   },
   verbose: true,
   strict: true,

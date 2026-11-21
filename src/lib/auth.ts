@@ -4,9 +4,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-const SECRET_KEY = process.env.JWT_SECRET || "super-secret-jwt-key-for-portfolio-builder-2026-secure-random";
-const encodedKey = new TextEncoder().encode(SECRET_KEY);
+import { getSessionKey } from "./session-secret";
 
 const COOKIE_NAME = "pb_session";
 const SESSION_EXPIRATION = "7d";
@@ -25,16 +23,16 @@ export async function signSessionToken(payload: SessionPayload): Promise<string>
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(SESSION_EXPIRATION)
-    .sign(encodedKey);
+    .sign(getSessionKey());
 }
 
 export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, encodedKey, {
+    const { payload } = await jwtVerify(token, getSessionKey(), {
       algorithms: ["HS256"],
     });
     return payload as unknown as SessionPayload;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
