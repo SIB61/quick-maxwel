@@ -4,10 +4,11 @@ dotenv.config();
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
+import { getDatabaseUrl } from "./database-url";
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5434/portfolio_builder";
+const connectionString = getDatabaseUrl();
 
-// Disable prefetch as it is not supported for "Transaction" pool mode if using PgBouncer, safe for standard postgres
+// One shared client per server instance (reused across hot reloads in development).
 const globalForDb = globalThis as unknown as {
   conn: postgres.Sql | undefined;
 };
