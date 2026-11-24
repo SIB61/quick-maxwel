@@ -77,7 +77,7 @@ export function SwissEventDetail({
             href={event.eventUrl}
             target="_blank"
             rel="noreferrer"
-            className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
+            className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
           >
             <span>ACCESS REGISTRATION</span>
             <ArrowUpRight className="h-4 w-4" />
@@ -85,7 +85,7 @@ export function SwissEventDetail({
         ) : (
           <Link
             href={`/${handle}/contact?subject=${encodeURIComponent(`Keynote Inquiry: ${event.title}`)}`}
-            className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
+            className="border border-white px-8 py-3.5 text-sm font-mono uppercase tracking-wider text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold inline-flex items-center gap-2"
           >
             <span>INQUIRE ABOUT SESSION</span>
           </Link>

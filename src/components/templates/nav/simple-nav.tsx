@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { ArrowUpRight } from "lucide-react";
 
 export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -7,6 +8,7 @@ export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
     { label: "Overview", href: `/${handle}`, show: true },
     { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "Experience", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Projects", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "Achievements", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
     { label: "Events", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
@@ -33,13 +35,16 @@ export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
           ))}
         </nav>
 
-        <Link
-          href={`/${handle}/contact`}
-          className="text-xs font-bold text-black px-4 py-2 rounded-lg transition-all hover:opacity-90 shadow-sm"
-          style={{ backgroundColor: "var(--theme-accent)" }}
-        >
-          Contact
-        </Link>
+        <div className="flex items-center gap-2 shrink-0">
+          <ThemeToggle className="h-8 w-8 rounded-lg border border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900" iconClassName="h-4 w-4" />
+          <Link
+            href={`/${handle}/contact`}
+            className="text-xs font-bold text-black px-4 py-2 rounded-lg transition-all hover:opacity-90 shadow-sm"
+            style={{ backgroundColor: "var(--theme-accent)" }}
+          >
+            Contact
+          </Link>
+        </div>
       </div>
 
       {/* Mobile Horizontal Simple Nav Strip */}
@@ -73,7 +78,7 @@ export function SimpleFooter({ portfolio, handle }: { portfolio: PortfolioUser; 
           </Link>
           <span>•</span>
           <Link href="/" className="hover:text-zinc-200 transition-colors">
-            PortfolioBuilder
+            PortfoliooSite
           </Link>
         </div>
       </div>

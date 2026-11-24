@@ -1,6 +1,6 @@
 import { requireAuth } from "@/lib/auth";
 import { db } from "@/db";
-import { articles, experiences, achievements, services, events, contacts, portfolioSettings } from "@/db/schema";
+import { articles, experiences, achievements, services, projects, events, contacts, portfolioSettings } from "@/db/schema";
 import { eq, count, desc } from "drizzle-orm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import {
   Inbox,
   Layout,
   Layers,
+  FolderKanban,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -34,6 +35,7 @@ export default async function DashboardOverviewPage() {
     [experiencesCount],
     [achievementsCount],
     [servicesCount],
+    [projectsCount],
     [eventsCount],
     [inquiriesCount],
     userSettings,
@@ -43,6 +45,7 @@ export default async function DashboardOverviewPage() {
     db.select({ count: count() }).from(experiences).where(eq(experiences.userId, user.id)),
     db.select({ count: count() }).from(achievements).where(eq(achievements.userId, user.id)),
     db.select({ count: count() }).from(services).where(eq(services.userId, user.id)),
+    db.select({ count: count() }).from(projects).where(eq(projects.userId, user.id)),
     db.select({ count: count() }).from(events).where(eq(events.userId, user.id)),
     db.select({ count: count() }).from(contacts).where(eq(contacts.userId, user.id)),
     db.query.portfolioSettings.findFirst({
@@ -73,6 +76,15 @@ export default async function DashboardOverviewPage() {
       color: "text-sky-400",
       bg: "bg-sky-500/10 border-sky-500/20",
       addHref: "/dashboard/experience/new",
+    },
+    {
+      title: "Projects",
+      count: projectsCount?.count || 0,
+      icon: FolderKanban,
+      href: "/dashboard/projects",
+      color: "text-emerald-400",
+      bg: "bg-emerald-500/10 border-emerald-500/20",
+      addHref: "/dashboard/projects/new",
     },
     {
       title: "Achievements",
@@ -187,7 +199,7 @@ export default async function DashboardOverviewPage() {
           <span className="text-xs text-zinc-400 font-mono">6 Categories Active</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 gap-3 sm:gap-4">
           {stats.map((item) => {
             const Icon = item.icon;
             return (
@@ -335,7 +347,7 @@ export default async function DashboardOverviewPage() {
           Quick Content Actions
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
           <Button
             asChild
             variant="outline"
@@ -355,6 +367,17 @@ export default async function DashboardOverviewPage() {
             <Link href="/dashboard/experience/new">
               <Plus className="h-4 w-4 mr-2 text-sky-400" />
               <span>Add Career Milestone</span>
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="outline"
+            className="h-11 rounded-xl border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 justify-start px-4 text-xs font-semibold text-zinc-200"
+          >
+            <Link href="/dashboard/projects/new">
+              <Plus className="h-4 w-4 mr-2 text-emerald-400" />
+              <span>Showcase a Project</span>
             </Link>
           </Button>
 

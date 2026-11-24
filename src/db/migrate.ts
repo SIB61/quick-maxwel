@@ -4,16 +4,24 @@ dotenv.config({ path: ".env" });
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { getDatabaseUrl } from "./database-url";
+
+// Arbitrary constant: concurrent deployments take turns instead of racing.
+const MIGRATION_LOCK_ID = 727274;
 
 async function runMigrate() {
   console.log("⏳ Running migrations...");
-  const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5434/portfolio_builder";
-  const migrationClient = postgres(connectionString, { max: 1 });
-  const migrationDb = drizzle(migrationClient);
+  // A single direct connection: the session-level lock below must stay on one connection.
+  const migrationClient = postgres(getDatabaseUrl({ direct: true }), { max: 1, onnotice: () => {} });
 
-  await migrate(migrationDb, { migrationsFolder: "./src/db/migrations" });
-  console.log("✓ Migrations applied successfully!");
-  await migrationClient.end();
+  try {
+    await migrationClient`select pg_advisory_lock(${MIGRATION_LOCK_ID})`;
+    await migrate(drizzle(migrationClient), { migrationsFolder: "./src/db/migrations" });
+    console.log("✓ Migrations applied successfully!");
+  } finally {
+    await migrationClient`select pg_advisory_unlock(${MIGRATION_LOCK_ID})`.catch(() => {});
+    await migrationClient.end();
+  }
   process.exit(0);
 }
 

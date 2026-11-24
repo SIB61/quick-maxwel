@@ -88,7 +88,7 @@ export function AuroraExperience({ portfolio, handle }: { portfolio: PortfolioUs
                   style={{
                     borderColor: "var(--theme-accent)",
                     color: "var(--theme-accent)",
-                    backgroundColor: "rgba(0,0,0,0.4)",
+                    backgroundColor: "var(--badge-backdrop)",
                   }}
                 >
                   {exp.startDate} — {exp.endDate || "Present"}

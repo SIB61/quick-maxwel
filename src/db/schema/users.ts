@@ -1,3 +1,4 @@
+import type { StoredSocialLinks } from "../../lib/social-platforms";
 import { pgTable, uuid, text, timestamp, jsonb } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -7,17 +8,11 @@ export const users = pgTable("users", {
   handle: text("handle").notNull().unique(),
   name: text("name").notNull(),
   avatarUrl: text("avatar_url"),
+  cvUrl: text("cv_url"), // public URL of the CV PDF stored at <handle>/cv
   headline: text("headline"),
   bio: text("bio"),
   location: text("location"),
-  socialLinks: jsonb("social_links").$type<{
-    github?: string;
-    twitter?: string;
-    linkedin?: string;
-    youtube?: string;
-    website?: string;
-    instagram?: string;
-  }>().default({}),
+  socialLinks: jsonb("social_links").$type<StoredSocialLinks>().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

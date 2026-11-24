@@ -15,8 +15,12 @@ import {
   Zap,
   CheckCircle2,
   Compass,
+  FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -25,8 +29,9 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 3);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-28 relative">
@@ -107,53 +112,86 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
           {/* Social Glass Capsules */}
           <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/10">
-            {socials.github && (
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
               >
-                <GithubIcon className="h-3.5 w-3.5" />
-                <span>GitHub</span>
+                <SocialIcon platform={link.platform} className="h-3.5 w-3.5" />
+                <span>{SOCIAL_PLATFORM_MAP[link.platform].label}</span>
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <TwitterIcon className="h-3.5 w-3.5" />
-                <span>Twitter / X</span>
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <LinkedinIcon className="h-3.5 w-3.5" />
-                <span>LinkedIn</span>
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
-              >
-                <Globe className="h-3.5 w-3.5" />
-                <span>Website</span>
-              </a>
+            ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>View CV</span>
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950/50 border border-white/10 hover:border-white/25 text-xs text-zinc-300 hover:text-white transition-all hover:scale-105 shadow-sm"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>Download CV</span>
+                </a>
+              </>
             )}
           </div>
         </div>
       </section>
+
+      {/* Featured Projects: Studio Works */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-8 relative z-10">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
+                <FolderKanban className="h-4 w-4" />
+                <span>Studio Works</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Featured Projects</h2>
+            </div>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-semibold px-4 py-2 rounded-xl bg-zinc-900/60 border border-white/10 hover:border-white/20 text-zinc-300 hover:text-white flex items-center gap-1.5 transition-all"
+            >
+              <span>View all ({portfolio.projects.length})</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {featuredProjects.map((project) => (
+              <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                <div className="rounded-3xl bg-zinc-900/30 border border-white/10 hover:border-white/25 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl flex flex-col h-full overflow-hidden group">
+                  {project.coverImageUrl && (
+                    <img src={project.coverImageUrl} alt="" className="w-full aspect-[16/9] object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                  )}
+                  <div className="p-7 space-y-3 flex-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">{project.timeline || project.role}</span>
+                    <h3 className="font-extrabold text-lg text-white">{project.title}</h3>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-3">{project.summary}</p>
+                    {project.techStack && project.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.techStack.slice(0, 3).map((tech) => (
+                          <span key={tech} className="px-2.5 py-0.5 rounded-full text-[11px] bg-zinc-950/50 border border-white/10 text-zinc-300">{tech}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured Services: Floating Studio Packages */}
       {featuredServices.length > 0 && (

@@ -133,9 +133,9 @@
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-text-fill-color: #f4f4f5 !important;
-    -webkit-box-shadow: 0 0 0 1000px #09090b inset !important;
-    box-shadow: 0 0 0 1000px #09090b inset !important;
+    -webkit-text-fill-color: var(--color-zinc-100) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-zinc-950) inset !important;
+    box-shadow: 0 0 0 1000px var(--color-zinc-950) inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
 }
@@ -154,7 +154,7 @@
   font-size: 1.875rem !important; /* 30px */
   line-height: 2.25rem !important;
   font-weight: 700 !important;
-  color: #f4f4f5 !important;
+  color: var(--color-zinc-100) !important;
   margin-top: 1.25rem !important;
   margin-bottom: 0.5rem !important;
   letter-spacing: -0.025em !important;
@@ -165,7 +165,7 @@
   font-size: 1.5rem !important; /* 24px */
   line-height: 2rem !important;
   font-weight: 700 !important;
-  color: #f4f4f5 !important;
+  color: var(--color-zinc-100) !important;
   margin-top: 1rem !important;
   margin-bottom: 0.375rem !important;
   letter-spacing: -0.02em !important;
@@ -176,7 +176,7 @@
   font-size: 1.25rem !important; /* 20px */
   line-height: 1.75rem !important;
   font-weight: 600 !important;
-  color: #f4f4f5 !important;
+  color: var(--color-zinc-100) !important;
   margin-top: 0.75rem !important;
   margin-bottom: 0.25rem !important;
 }
@@ -186,7 +186,7 @@
   margin-top: 0.25rem !important;
   margin-bottom: 0.25rem !important;
   line-height: 1.5 !important;
-  color: #e4e4e7 !important;
+  color: var(--color-zinc-200) !important;
 }
 
 .ProseMirror p:first-child,
@@ -222,12 +222,12 @@
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1.5 !important;
-  color: #e4e4e7 !important;
+  color: var(--color-zinc-200) !important;
 }
 
 .ProseMirror ul li::marker,
 .rich-content ul li::marker {
-  color: #38bdf8 !important; /* sky-400 */
+  color: var(--color-sky-400) !important; /* sky-400 */
 }
 
 .ProseMirror ol,
@@ -247,32 +247,32 @@
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1.5 !important;
-  color: #e4e4e7 !important;
+  color: var(--color-zinc-200) !important;
 }
 
 .ProseMirror ol li::marker,
 .rich-content ol li::marker {
-  color: #38bdf8 !important; /* sky-400 */
+  color: var(--color-sky-400) !important; /* sky-400 */
   font-weight: 600 !important;
 }
 
 .ProseMirror blockquote,
 .rich-content blockquote {
-  border-left: 3px solid #38bdf8 !important;
+  border-left: 3px solid var(--color-sky-400) !important;
   background: rgba(56, 189, 248, 0.05) !important;
   padding: 0.625rem 1rem !important;
   margin-top: 0.75rem !important;
   margin-bottom: 0.75rem !important;
   border-radius: 0 0.5rem 0.5rem 0 !important;
   font-style: italic !important;
-  color: #d4d4d8 !important;
+  color: var(--color-zinc-300) !important;
 }
 
 .ProseMirror code:not(pre code),
 .rich-content code:not(pre code) {
-  background: #18181b !important;
-  color: #38bdf8 !important;
-  border: 1px solid #27272a !important;
+  background: var(--color-zinc-900) !important;
+  color: var(--color-sky-400) !important;
+  border: 1px solid var(--color-zinc-800) !important;
   padding: 0.125rem 0.375rem !important;
   border-radius: 0.375rem !important;
   font-family: var(--font-mono, monospace) !important;
@@ -281,8 +281,8 @@
 
 .ProseMirror pre,
 .rich-content pre {
-  background: #09090b !important;
-  border: 1px solid #27272a !important;
+  background: var(--color-zinc-950) !important;
+  border: 1px solid var(--color-zinc-800) !important;
   padding: 1rem !important;
   border-radius: 0.75rem !important;
   overflow-x: auto !important;
@@ -295,14 +295,14 @@
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-  color: #e4e4e7 !important;
+  color: var(--color-zinc-200) !important;
   font-family: var(--font-mono, monospace) !important;
   font-size: 0.875rem !important;
 }
 
 .ProseMirror a,
 .rich-content a {
-  color: #38bdf8 !important;
+  color: var(--color-sky-400) !important;
   text-decoration: underline !important;
   text-underline-offset: 3px !important;
   font-weight: 500 !important;
@@ -311,7 +311,7 @@
 .ProseMirror hr,
 .rich-content hr {
   border: none !important;
-  border-top: 1px solid #27272a !important;
+  border-top: 1px solid var(--color-zinc-800) !important;
   margin-top: 1.5rem !important;
   margin-bottom: 1.5rem !important;
 }
@@ -319,7 +319,146 @@
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: #71717a;
+  color: var(--color-zinc-500);
   pointer-events: none;
   height: 0;
+}
+.ProseMirror img,
+.rich-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto !important;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-zinc-800);
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid var(--color-sky-400);
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   Light / dark mode
+   The UI is authored with dark-first zinc utilities. Light mode remaps the
+   palette tokens those utilities read (zinc scale, white, bright text hues),
+   so every page and template switches together without per-class overrides.
+   ========================================================================== */
+html.light {
+  color-scheme: light;
+
+  /* Inverted zinc scale: page bg (950) -> near white, cards (900) -> white,
+     borders (800) -> light grey, light text (100-400) -> dark text. */
+  --color-zinc-950: oklch(98.4% 0.002 286);
+  --color-zinc-900: oklch(100% 0 0);
+  --color-zinc-800: oklch(92% 0.004 286.32);
+  --color-zinc-700: oklch(87.1% 0.006 286.286);
+  --color-zinc-600: oklch(70.5% 0.015 286.067);
+  --color-zinc-500: oklch(53% 0.016 285.938);
+  --color-zinc-400: oklch(44.2% 0.017 285.786);
+  --color-zinc-300: oklch(37% 0.013 285.805);
+  --color-zinc-200: oklch(27.4% 0.006 286.033);
+  --color-zinc-100: oklch(21% 0.006 285.885);
+  --color-zinc-50: oklch(14.1% 0.005 285.823);
+  /* "White" text/borders become ink; black stays black (text on accents). */
+  --color-white: oklch(18% 0.006 285.885);
+
+  /* Bright 300/400 hues are tuned for dark backgrounds; deepen them on light. */
+  --color-sky-300: var(--color-sky-700);
+  --color-sky-400: var(--color-sky-600);
+  --color-emerald-400: var(--color-emerald-600);
+  --color-amber-300: var(--color-amber-700);
+  --color-amber-400: var(--color-amber-600);
+  --color-red-300: var(--color-red-700);
+  --color-red-400: var(--color-red-600);
+  --color-rose-300: var(--color-rose-700);
+  --color-rose-400: var(--color-rose-600);
+  --color-blue-400: var(--color-blue-600);
+  --color-purple-400: var(--color-purple-600);
+  --color-cyan-400: var(--color-cyan-600);
+  --color-teal-300: var(--color-teal-700);
+
+  /* Translucent backdrop behind accent-colored badges and price tags. */
+  --badge-backdrop: rgba(255, 255, 255, 0.75);
+}
+
+html.dark {
+  color-scheme: dark;
+  --badge-backdrop: rgba(0, 0, 0, 0.45);
+}
+
+/* Portfolio accent: deepen slightly in light mode for legible text. */
+[data-portfolio-root] {
+  --theme-accent: var(--theme-accent-base);
+}
+html.light [data-portfolio-root] {
+  --theme-accent: color-mix(in oklab, var(--theme-accent-base) 78%, black);
+}
+
+/* Landing showcase cards: same light-mode deepening for accent-colored text. */
+[data-showcase-card] {
+  --card-accent-text: var(--card-accent);
+}
+html.light [data-showcase-card] {
+  --card-accent-text: color-mix(in oklab, var(--card-accent) 72%, black);
+}
+
+/* Soft shadows read better than dark-mode glows on light surfaces. */
+html.light .shadow-2xl,
+html.light .shadow-xl {
+  --tw-shadow-color: rgb(24 24 27 / 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Mode switch animation
+   Uses the View Transitions API: the new theme is revealed as a circle that
+   grows from the toggle (the clip-path is animated from JS). Browsers without
+   it get a short cross-fade of colors instead.
+   -------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 450ms ease,
+    border-color 450ms ease,
+    color 450ms ease,
+    fill 450ms ease,
+    stroke 450ms ease !important;
+}
+
+/* Toggle icon: sun and moon swap with a rotate + scale morph. */
+.theme-toggle-icon {
+  transition:
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 300ms ease;
+}
+html.dark .theme-toggle-sun,
+html.light .theme-toggle-moon {
+  transform: rotate(-90deg) scale(0.3);
+  opacity: 0;
+}
+html.dark .theme-toggle-moon,
+html.light .theme-toggle-sun {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-icon {
+    transition: none;
+  }
 }

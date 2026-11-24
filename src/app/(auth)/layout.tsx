@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandMark } from "@/components/brand-mark";
 import Link from "next/link";
 import React from "react";
 
@@ -8,19 +10,20 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <header className="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-base transition-transform group-hover:scale-105">
-              P
-            </div>
+            <BrandMark className="h-8 w-8 shadow-md shadow-sky-500/20 rounded-lg" />
             <span className="font-semibold tracking-tight text-base">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
-          <Link
-            href="/"
-            className="text-xs text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-1.5"
-          >
-            <span>← Back to Home</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="text-xs text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-1.5"
+            >
+              <span>← Back to Home</span>
+            </Link>
+            <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:text-white" />
+          </div>
         </div>
       </header>
 
@@ -33,7 +36,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer */}
       <footer className="border-t border-zinc-900/80 py-6 px-6 text-center text-xs text-zinc-500">
-        Portfolio Builder • Secure Account Access
+        PortfoliooSite • Secure Account Access
       </footer>
     </div>
   );

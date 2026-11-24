@@ -91,7 +91,7 @@ export function SwissServices({ portfolio, handle }: { portfolio: PortfolioUser;
 
                 <Link
                   href={`/${handle}/contact?subject=${encodeURIComponent(`Inquiry: ${service.title}`)}`}
-                  className="border border-white px-3.5 py-1.5 text-white hover:bg-white hover:text-black transition-all font-bold"
+                  className="border border-white px-3.5 py-1.5 text-white hover:bg-white hover:text-zinc-950 transition-all font-bold"
                 >
                   ENGAGE
                 </Link>

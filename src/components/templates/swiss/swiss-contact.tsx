@@ -53,7 +53,7 @@ export function SwissContact({ handle }: { handle: string }) {
           <div className="pt-4">
             <Link
               href={`/${handle}`}
-              className="border border-white px-8 py-3 text-xs font-mono uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all font-bold inline-block"
+              className="border border-white px-8 py-3 text-xs font-mono uppercase tracking-widest text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold inline-block"
             >
               RETURN TO FOLIO
             </Link>
@@ -132,7 +132,7 @@ export function SwissContact({ handle }: { handle: string }) {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-full h-11 rounded-none text-xs font-mono uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all font-bold flex items-center justify-center gap-2"
+            className="w-full h-11 rounded-none text-xs font-mono uppercase tracking-widest text-zinc-950 bg-white hover:bg-zinc-200 transition-all font-bold flex items-center justify-center gap-2"
           >
             {isPending ? (
               <span>DISPATCHING TRANSMISSION...</span>

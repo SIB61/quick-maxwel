@@ -1,5 +1,6 @@
 import { PortfolioUser } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; handle: string }) {
@@ -7,6 +8,7 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
     { label: "Overview", href: `/${handle}`, show: true },
     { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "Experience", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Projects", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "Achievements", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
     { label: "Events", href: `/${handle}/events`, show: (portfolio.events?.length || 0) > 0 },
@@ -52,14 +54,17 @@ export function FancyNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
           ))}
         </nav>
 
-        <Link
-          href={`/${handle}/contact`}
-          className="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
-          style={{ backgroundColor: "var(--theme-accent)" }}
-        >
-          <Sparkles className="h-3 w-3" />
-          <span>Get in Touch</span>
-        </Link>
+        <div className="flex items-center gap-2 shrink-0">
+          <ThemeToggle className="h-9 w-9 rounded-full border border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:text-white hover:border-zinc-600 backdrop-blur" iconClassName="h-4 w-4" />
+          <Link
+            href={`/${handle}/contact`}
+            className="px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg transition-all hover:opacity-90 flex items-center gap-1.5"
+            style={{ backgroundColor: "var(--theme-accent)" }}
+          >
+            <Sparkles className="h-3 w-3" />
+            <span>Get in Touch</span>
+          </Link>
+        </div>
       </div>
 
       {/* Mobile Horizontal Fancy Nav Strip */}
@@ -93,7 +98,7 @@ export function FancyFooter({ portfolio, handle }: { portfolio: PortfolioUser; h
           </Link>
           <span>•</span>
           <Link href="/" className="hover:text-white transition-colors">
-            PortfolioBuilder
+            PortfoliooSite
           </Link>
         </div>
       </div>

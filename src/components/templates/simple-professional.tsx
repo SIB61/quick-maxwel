@@ -13,8 +13,12 @@ import {
   ExternalLink,
   Globe,
   ChevronRight,
+  FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -23,8 +27,9 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 2);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20">
@@ -61,50 +66,38 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
             )}
 
             {/* Social Links */}
-            <div className="flex items-center gap-2 pt-1">
-              {socials.github && (
+            <div className="flex items-center gap-2 pt-1 flex-wrap">
+              {socials.map((link) => (
                 <a
-                  href={socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={link.platform}
+                  href={link.url}
+                  {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="GitHub Profile"
+                  aria-label={SOCIAL_PLATFORM_MAP[link.platform].label}
+                  title={SOCIAL_PLATFORM_MAP[link.platform].label}
                 >
-                  <GithubIcon className="h-4 w-4" />
+                  <SocialIcon platform={link.platform} className="h-4 w-4" />
                 </a>
-              )}
-              {socials.twitter && (
-                <a
-                  href={socials.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="Twitter Profile"
-                >
-                  <TwitterIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.linkedin && (
-                <a
-                  href={socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="LinkedIn Profile"
-                >
-                  <LinkedinIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.website && (
-                <a
-                  href={socials.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors"
-                  aria-label="Personal Website"
-                >
-                  <Globe className="h-4 w-4" />
-                </a>
+              ))}
+              {portfolio.cvUrl && (
+                <>
+                  <a
+                    href={`/${portfolio.handle}/cv`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>View CV</span>
+                  </a>
+                  <a
+                    href={`/${portfolio.handle}/cv?download=1`}
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Download</span>
+                  </a>
+                </>
               )}
             </div>
           </div>
@@ -219,6 +212,55 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
                     {article.excerpt}
                   </p>
                 )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+              <FolderKanban className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
+              <span>Selected Projects</span>
+            </h2>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-semibold flex items-center gap-1 transition-colors hover:underline"
+              style={{ color: "var(--theme-accent)" }}
+            >
+              <span>View All ({portfolio.projects.length})</span>
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {featuredProjects.map((project) => (
+              <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                <Card className="bg-zinc-900/40 border-zinc-800 hover:border-zinc-700 transition-all p-6 rounded-2xl h-full flex flex-col justify-between py-6 gap-0 space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-bold text-base text-zinc-100">{project.title}</h3>
+                      {project.timeline && <span className="text-xs font-mono text-zinc-500 shrink-0">{project.timeline}</span>}
+                    </div>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                    {project.techStack && project.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.techStack.slice(0, 4).map((tech) => (
+                          <Badge key={tech} variant="outline" className="text-[10px] border-zinc-700 text-zinc-300">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-xs font-semibold flex items-center gap-1 pt-2" style={{ color: "var(--theme-accent)" }}>
+                    <span>Case Study</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
+                </Card>
               </Link>
             ))}
           </div>

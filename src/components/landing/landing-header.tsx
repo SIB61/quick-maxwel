@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandMark } from "@/components/brand-mark";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X, ArrowRight, LogIn, UserPlus } from "lucide-react";
@@ -16,6 +18,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
+    { label: "Showcase", href: "#showcase" },
     { label: "Features", href: "#features" },
     { label: "Templates", href: "#templates" },
     { label: "Why Multi-Page", href: "#why-multipage" },
@@ -27,12 +30,10 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-black font-extrabold text-lg shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
-            P
-          </div>
+          <BrandMark className="h-9 w-9 shadow-md shadow-sky-500/20 rounded-xl" />
           <div className="flex flex-col">
-            <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center gap-1">
-              Portfolio<span className="text-sky-400">Builder</span>
+            <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center">
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
             <span className="text-[10px] text-zinc-400 -mt-1 hidden sm:inline">
               Multi-Page Personal Brand Engine
@@ -55,6 +56,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle className="h-10 w-10 rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-700" />
           {sessionUser ? (
             <Button
               asChild
@@ -92,6 +94,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
 
         {/* Mobile Hamburger Button */}
         <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 text-zinc-400 hover:text-white" />
           {sessionUser ? (
             <Button
               asChild

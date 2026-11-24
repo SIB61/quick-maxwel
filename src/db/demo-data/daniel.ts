@@ -1,0 +1,190 @@
+import type { DemoProfile } from "./types";
+
+/** Structural & civil engineer: delivered infrastructure, licenses, consulting. */
+export const daniel: DemoProfile = {
+  user: {
+    handle: "daniel",
+    name: "Daniel Okafor, PE",
+    avatarUrl: "https://randomuser.me/api/portraits/men/75.jpg",
+    headline: "Structural & Civil Engineer · Bridges, Resilient Infrastructure",
+    bio: "Licensed Professional Engineer with 12 years designing bridges, transit structures, and flood-resilient public works. I lead multidisciplinary teams from feasibility to construction support, and I'm passionate about mass timber and low-carbon concrete.",
+    location: "Houston, TX",
+    socialLinks: [
+      { platform: "linkedin", url: "https://linkedin.com" },
+      { platform: "researchgate", url: "https://researchgate.net" },
+      { platform: "youtube", url: "https://youtube.com" },
+      { platform: "website", url: "https://okafor-engineering.example.com" },
+    ],
+  },
+  settings: {
+    templateId: "aurora_studio",
+    colorPalette: "ocean",
+    primaryColor: "#0c4a6e",
+    accentColor: "#22d3ee",
+    fontFamily: "sans",
+    seoTitle: "Daniel Okafor, PE — Structural & Civil Engineer",
+    seoDescription: "Bridges, resilient infrastructure, and engineering consulting by Daniel Okafor, PE.",
+    seoKeywords: "structural engineer, civil engineer, bridges, infrastructure, Houston",
+  },
+  articles: [
+    {
+      title: "Designing Bridges for the Next 100-Year Flood",
+      slug: "bridges-next-100-year-flood",
+      excerpt: "Why historical flood data is no longer enough, and how we design for the climate ahead.",
+      content: `# Designing Bridges for the Next 100-Year Flood
+
+The "100-year flood" is a statistical estimate built on past records. In many Gulf Coast watersheds, those records no longer describe the future.
+
+## What we do differently now
+1. Use **forward-looking rainfall projections** alongside historical data.
+2. Raise low chords with a **climate freeboard** above code minimums.
+3. Design scour countermeasures for higher velocities.
+4. Choose details that are **easy to inspect and repair** after a storm.`,
+      coverImageUrl: null,
+      tags: ["Resilience", "Bridges", "Climate"],
+      isFeatured: true,
+      isPublished: true,
+    },
+    {
+      title: "Low-Carbon Concrete: What Actually Works on Site",
+      slug: "low-carbon-concrete-on-site",
+      excerpt: "Field notes from three projects using supplementary cementitious materials.",
+      content: `# Low-Carbon Concrete: What Actually Works on Site
+
+Across three projects we cut embodied carbon in concrete by **28–41%** using slag and calcined clay blends. The biggest lessons were about curing schedules and early coordination with suppliers, not the mix itself.`,
+      coverImageUrl: null,
+      tags: ["Sustainability", "Materials"],
+      isFeatured: true,
+      isPublished: true,
+    },
+  ],
+  experiences: [
+    {
+      company: "Meridian Infrastructure Partners",
+      role: "Senior Structural Engineer & Project Manager",
+      location: "Houston, TX",
+      employmentType: "Full-time",
+      startDate: "2019-02",
+      endDate: "Present",
+      isCurrent: true,
+      description: "Lead structural design for transportation and flood-control projects worth $420M+. Manage teams of 10–15 engineers and coordinate with agencies and contractors.",
+      skills: ["Bridge Design", "AASHTO LRFD", "Project Management", "CSiBridge"],
+      companyUrl: "https://meridian.example.com",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      company: "Gulf State Department of Transportation",
+      role: "Bridge Design Engineer",
+      location: "Austin, TX",
+      employmentType: "Full-time",
+      startDate: "2014-06",
+      endDate: "2019-01",
+      isCurrent: false,
+      description: "Designed and load-rated highway bridges; led post-hurricane inspection teams.",
+      skills: ["Load Rating", "Inspection", "MicroStation", "Revit"],
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
+  achievements: [
+    {
+      title: "Professional Engineer (PE), Civil",
+      issuer: "Texas Board of Professional Engineers",
+      issueDate: "2018",
+      description: "Licensed Professional Engineer in Texas and Louisiana.",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      title: "Envision Sustainability Professional (ENV SP)",
+      issuer: "Institute for Sustainable Infrastructure",
+      issueDate: "2021",
+      description: "Credential for planning and delivering sustainable infrastructure.",
+      isFeatured: true,
+      orderIndex: 1,
+    },
+    {
+      title: "Young Engineer of the Year",
+      issuer: "ASCE Texas Section",
+      issueDate: "2020",
+      description: "For leadership on the Brays Bayou crossing replacement.",
+      isFeatured: false,
+      orderIndex: 2,
+    },
+  ],
+  services: [
+    {
+      title: "Structural Design & Peer Review",
+      slug: "structural-design-review",
+      shortDescription: "Independent design checks and peer review for bridges and public structures.",
+      pricingType: "quote",
+      price: "Scope-based",
+      deliverables: ["Calculation review", "Drawing markups", "Signed review letter"],
+      icon: "Ruler",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      title: "Flood Resilience Assessment",
+      slug: "flood-resilience-assessment",
+      shortDescription: "Assess how existing structures will perform under future flood conditions.",
+      fullDescription: "Site visit, hydraulic review, vulnerability scoring, and a prioritized retrofit plan with cost ranges.",
+      pricingType: "fixed",
+      price: "From $8,500",
+      deliverables: ["Vulnerability report", "Retrofit options", "Cost ranges"],
+      icon: "ShieldCheck",
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
+  projects: [
+    {
+      title: "Brays Bayou Crossing Replacement",
+      slug: "brays-bayou-crossing",
+      summary: "Replacement of a flood-damaged four-lane bridge with a raised, scour-resistant structure.",
+      description: "<p>Raised the deck 1.8 m above the previous low chord and introduced a precast superstructure to shorten closures to 9 weeks.</p>",
+      role: "Lead Structural Engineer",
+      status: "completed",
+      timeline: "2020 – 2022",
+      techStack: ["Precast Girders", "Drilled Shafts", "CSiBridge"],
+      highlights: ["$38M project, on budget", "Road closure cut from 9 months to 9 weeks", "Zero lost-time incidents"],
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      title: "Greenway Mass-Timber Pedestrian Bridge",
+      slug: "greenway-mass-timber-bridge",
+      summary: "A 46 m glulam pedestrian bridge linking two parks across a drainage channel.",
+      role: "Design Lead",
+      status: "in_progress",
+      timeline: "2024 – Present",
+      techStack: ["Glulam", "CLT Deck", "Life-Cycle Assessment"],
+      highlights: ["62% lower embodied carbon than steel option"],
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
+  events: [
+    {
+      title: "ASCE Structures Congress: Resilient Bridge Design",
+      slug: "asce-structures-congress",
+      eventType: "Speaking",
+      date: "May 14, 2026",
+      location: "Denver, CO",
+      description: "Case study of designing for forward-looking flood risk on the Brays Bayou crossing.",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      title: "Student Mentorship Night",
+      slug: "student-mentorship-night",
+      eventType: "Workshop",
+      date: "Oct 21, 2026",
+      location: "University of Houston",
+      description: "Career Q&A and portfolio reviews for civil engineering students.",
+      isFeatured: false,
+      orderIndex: 1,
+    },
+  ],
+};

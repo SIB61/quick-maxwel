@@ -20,13 +20,17 @@ import {
   Copy,
   Check,
   CheckCircle2,
+  FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { useState } from "react";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
-type TabId = "all" | "articles" | "experience" | "services" | "events";
+type TabId = "all" | "articles" | "experience" | "projects" | "services" | "events";
 
 export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const [activeTab, setActiveTab] = useState<TabId>("all");
@@ -36,9 +40,10 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
 
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   const handleCopyCommand = () => {
     navigator.clipboard.writeText(`ssh ${portfolio.handle}@portfolio.dev`);
@@ -73,8 +78,9 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
             { id: "all", label: "00_overview.sh", icon: TerminalIcon },
             { id: "articles", label: "01_writings.md", icon: FileText },
             { id: "experience", label: "02_career.log", icon: Briefcase },
-            { id: "services", label: "03_services.json", icon: Sparkles },
-            { id: "events", label: "04_events.sh", icon: Calendar },
+            { id: "projects", label: "03_projects/", icon: FolderKanban },
+            { id: "services", label: "04_services.json", icon: Sparkles },
+            { id: "events", label: "05_events.sh", icon: Calendar },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -153,49 +159,36 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                 {/* Social execution row */}
                 <div className="pt-2 border-t border-zinc-800/60 flex flex-wrap items-center gap-2.5 text-xs">
                   <span className="text-zinc-500">Links:</span>
-                  {socials.github && (
+                  {socials.map((link) => (
                     <a
-                      href={socials.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      key={link.platform}
+                      href={link.url}
+                      {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
                     >
-                      <GithubIcon className="h-3 w-3" />
-                      <span>github</span>
+                      <SocialIcon platform={link.platform} className="h-3 w-3" />
+                      <span>{link.platform}</span>
                     </a>
-                  )}
-                  {socials.twitter && (
-                    <a
-                      href={socials.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <TwitterIcon className="h-3 w-3" />
-                      <span>twitter</span>
-                    </a>
-                  )}
-                  {socials.linkedin && (
-                    <a
-                      href={socials.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <LinkedinIcon className="h-3 w-3" />
-                      <span>linkedin</span>
-                    </a>
-                  )}
-                  {socials.website && (
-                    <a
-                      href={socials.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
-                    >
-                      <Globe className="h-3 w-3" />
-                      <span>website</span>
-                    </a>
+                  ))}
+                  {portfolio.cvUrl && (
+                    <>
+                      <a
+                        href={`/${portfolio.handle}/cv`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <FileText className="h-3 w-3" />
+                        <span>cv.pdf</span>
+                      </a>
+                      <a
+                        href={`/${portfolio.handle}/cv?download=1`}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <Download className="h-3 w-3" />
+                        <span>wget cv.pdf</span>
+                      </a>
+                    </>
                   )}
                 </div>
               </div>
@@ -309,6 +302,52 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
                       </div>
                     )}
                   </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Section: Projects */}
+          {(activeTab === "all" || activeTab === "projects") && featuredProjects.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-zinc-400">
+                <div className="flex items-center gap-2">
+                  <span style={{ color: "var(--theme-accent)" }}>➜</span>
+                  <span className="text-cyan-400">~/projects</span>
+                  <span className="text-zinc-100">ls -la</span>
+                </div>
+                <Link
+                  href={`/${portfolio.handle}/projects`}
+                  className="text-xs hover:underline flex items-center gap-1"
+                  style={{ color: "var(--theme-accent)" }}
+                >
+                  <span>all projects</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {featuredProjects.map((project) => (
+                  <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                    <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition-all space-y-3 h-full flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-sm text-zinc-100">./{project.slug}</span>
+                          <span className="text-[11px] font-mono text-zinc-500">[{project.status}]</span>
+                        </div>
+                        <p className="text-xs text-zinc-400 leading-relaxed">{project.summary}</p>
+                        {project.techStack && project.techStack.length > 0 && (
+                          <p className="text-[11px] text-zinc-500">
+                            stack: <span style={{ color: "var(--theme-accent)" }}>{project.techStack.join(", ")}</span>
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-xs font-semibold flex items-center gap-1 pt-1" style={{ color: "var(--theme-accent)" }}>
+                        <span>cat README.md</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
             </div>

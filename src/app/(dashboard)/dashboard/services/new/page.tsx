@@ -10,16 +10,19 @@ import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft, Sparkles, Loader2, Save } from "lucide-react";
 import Link from "next/link";
+import { slugify } from "@/lib/utils";
 
 export default function NewServicePage() {
   const [state, formAction, isPending] = useActionState(createServiceAction, undefined);
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  // Keep the slug in sync with the title until the user edits the slug by hand.
+  const [slugEdited, setSlugEdited] = useState(false);
 
   const handleTitleChange = (val: string) => {
     setTitle(val);
-    if (!slug || slug === title.toLowerCase().replace(/[^a-z0-9]+/g, "-")) {
-      setSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
+    if (!slugEdited) {
+      setSlug(slugify(val));
     }
   };
 
@@ -78,7 +81,11 @@ export default function NewServicePage() {
                 name="slug"
                 type="text"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                onChange={(e) => {
+                  const next = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
+                  setSlug(next);
+                  setSlugEdited(next !== "");
+                }}
                 placeholder="cloud-scalability-audit"
                 required
                 className="h-11 rounded-xl bg-zinc-950/80 border-zinc-800 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-sky-500/40"

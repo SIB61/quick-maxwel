@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LandingHeader } from "@/components/landing/landing-header";
+import { ProfessionShowcase, type ShowcaseProfile } from "@/components/landing/profession-showcase";
+import { DEMO_ACCOUNTS, DEMO_USER_HANDLE } from "@/lib/demo-account";
+import { getPaletteConfig, getTemplateConfig } from "@/lib/templates";
+import { inArray } from "drizzle-orm";
 import {
   Sparkles,
   ArrowRight,
@@ -24,6 +28,7 @@ import {
   ShieldCheck,
   Layout,
   Globe,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -33,7 +38,7 @@ export default async function HomePage() {
   let demoUser = null;
   try {
     demoUser = await db.query.users.findFirst({
-      where: (table, { eq }) => eq(table.handle, "sarah"),
+      where: (table, { eq }) => eq(table.handle, DEMO_USER_HANDLE),
       with: {
         settings: true,
         articles: true,
@@ -65,7 +70,52 @@ export default async function HomePage() {
     }
   }
 
-  const demoHandle = demoUser?.handle || "sarah";
+  const demoHandle = demoUser?.handle || DEMO_USER_HANDLE;
+
+  // Demo portfolios across professions for the showcase gallery (only seeded ones appear).
+  let showcaseProfiles: ShowcaseProfile[] = [];
+  try {
+    const rows = await db.query.users.findMany({
+      where: inArray(
+        users.handle,
+        DEMO_ACCOUNTS.map((a) => a.handle)
+      ),
+      columns: { handle: true, name: true, avatarUrl: true, location: true },
+      with: {
+        settings: { columns: { templateId: true, colorPalette: true } },
+        articles: { columns: { id: true } },
+        projects: { columns: { id: true } },
+        services: { columns: { id: true } },
+        experiences: { columns: { id: true } },
+      },
+    });
+    const byHandle = new Map(rows.map((r) => [r.handle, r]));
+    showcaseProfiles = DEMO_ACCOUNTS.flatMap((account) => {
+      const row = byHandle.get(account.handle);
+      if (!row) return [];
+      return [
+        {
+          handle: account.handle,
+          name: row.name,
+          profession: account.profession,
+          discipline: account.discipline,
+          pitch: account.pitch,
+          avatarUrl: row.avatarUrl,
+          location: row.location,
+          templateName: getTemplateConfig(row.settings?.templateId).name,
+          accentHex: getPaletteConfig(row.settings?.colorPalette).accentHex,
+          stats: [
+            { label: "projects", count: row.projects.length },
+            { label: "articles", count: row.articles.length },
+            { label: "services", count: row.services.length },
+            { label: "roles", count: row.experiences.length },
+          ],
+        },
+      ];
+    });
+  } catch (error) {
+    console.error("Failed to load demo showcase", error);
+  }
 
   const templatesList = [
     {
@@ -151,7 +201,7 @@ export default async function HomePage() {
               </h1>
 
               <p className="text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl mx-auto sm:mx-0">
-                Single-page sites reduce years of craft to a superficial summary. PortfolioBuilder gives you an end-to-end multi-page platform with dedicated spaces for your writings, career timeline, consulting packages, verified achievements, and speaking appearances—backed by 6 signature design templates and a personal dashboard.
+                Single-page sites reduce years of craft to a superficial summary. PortfoliooSite gives you an end-to-end multi-page platform with dedicated spaces for your writings, career timeline, consulting packages, verified achievements, and speaking appearances—backed by 6 signature design templates and a personal dashboard.
               </p>
             </div>
 
@@ -184,9 +234,9 @@ export default async function HomePage() {
                 variant="outline"
                 className="w-full sm:w-auto h-12 px-7 rounded-xl border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-200 text-sm font-semibold transition-all"
               >
-                <Link href={`/${demoHandle}`}>
-                  <span>Explore Live Showcase (@{demoHandle})</span>
-                  <ExternalLink className="h-4 w-4 ml-2 text-sky-400" />
+                <Link href={showcaseProfiles.length > 1 ? "#showcase" : `/${demoHandle}?exit_preview=true`}>
+                  <span>{showcaseProfiles.length > 1 ? "See Demo Portfolios" : `Explore Live Showcase (@${demoHandle})`}</span>
+                  <ArrowRight className="h-4 w-4 ml-2 text-sky-400" />
                 </Link>
               </Button>
             </div>
@@ -228,6 +278,29 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* DEMO PORTFOLIOS ACROSS PROFESSIONS */}
+        {showcaseProfiles.length > 0 && (
+          <section id="showcase" className="py-16 sm:py-20 border-b border-zinc-800/60 scroll-mt-16">
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-sky-400">
+                  <Users className="h-3.5 w-3.5" />
+                  <span>Built for every discipline</span>
+                </div>
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                  See real portfolios for your profession.
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
+                  Doctors, designers, researchers, engineers, photographers, and consultants all need a credible home on the web.
+                  Explore {showcaseProfiles.length} live demo portfolios, each with its own template, content, and story.
+                </p>
+              </div>
+
+              <ProfessionShowcase profiles={showcaseProfiles} />
+            </div>
+          </section>
+        )}
+
         {/* LIVE MULTI-PAGE SHOWCASE SECTION */}
         <section id="demo" className="py-16 sm:py-20 border-b border-zinc-800/60 bg-zinc-950/60">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -250,7 +323,7 @@ export default async function HomePage() {
                 <div className="flex items-center gap-3">
                   <span className="h-3 w-3 rounded-full bg-sky-400 animate-pulse" />
                   <span className="font-mono text-sm text-zinc-300">
-                    portfoliobuilder.dev/<strong className="text-sky-400">{demoHandle}</strong>
+                    portfolioosite.dev/<strong className="text-sky-400">{demoHandle}</strong>
                   </span>
                 </div>
 
@@ -259,7 +332,7 @@ export default async function HomePage() {
                   size="sm"
                   className="w-fit h-9 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs border border-zinc-700"
                 >
-                  <Link href={`/${demoHandle}`}>
+                  <Link href={`/${demoHandle}?exit_preview=true`}>
                     <span>Launch Full Portfolio</span>
                     <ExternalLink className="h-3 w-3 ml-1.5 text-sky-400" />
                   </Link>
@@ -592,7 +665,7 @@ export default async function HomePage() {
             <div className="h-6 w-6 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-extrabold text-xs">
               P
             </div>
-            <span className="font-bold text-zinc-200">PortfolioBuilder</span>
+            <span className="font-bold text-zinc-200">PortfoliooSite</span>
             <span>— The Multi-Page Personal Brand Engine</span>
           </div>
 

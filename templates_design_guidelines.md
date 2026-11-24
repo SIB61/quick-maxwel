@@ -1,6 +1,6 @@
 # Portfolio Templates Design Guidelines & Specifications
 
-This document defines the architectural requirements, visual design rules, responsive layouts, and interactive behaviors for all templates in the **PortfolioBuilder** ecosystem.
+This document defines the architectural requirements, visual design rules, responsive layouts, and interactive behaviors for all templates in the **PortfoliooSite** ecosystem.
 
 Each template represents a distinct aesthetic philosophy inspired by award-winning portfolios on Awwwards, Dribbble, GitHub, and modern engineering platforms.
 

@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import { TextSelection } from "@tiptap/pm/state";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 import {
   Bold,
   Italic,
@@ -29,8 +31,11 @@ import {
   Check,
   X,
   Sparkles,
+  ImagePlus,
+  Loader2,
 } from "lucide-react";
 import { markdownToHtml } from "@/lib/rich-text";
+import { UPLOAD_ACCEPT, uploadToStorage, type UploadFolder } from "@/lib/upload-client";
 
 interface RichTextEditorProps {
   id?: string;
@@ -41,6 +46,8 @@ interface RichTextEditorProps {
   required?: boolean;
   className?: string;
   onChange?: (html: string) => void;
+  /** When set, enables image upload (toolbar, paste, drag & drop) into this storage folder. */
+  imageUploadFolder?: UploadFolder;
 }
 
 export function RichTextEditor({
@@ -52,10 +59,19 @@ export function RichTextEditor({
   required = false,
   className = "",
   onChange,
+  imageUploadFolder,
 }: RichTextEditorProps) {
-  const [htmlValue, setHtmlValue] = useState("");
+  // Seed with the initial content so an untouched editor still submits it.
+  const [htmlValue, setHtmlValue] = useState(() =>
+    defaultValue ? markdownToHtml(defaultValue) : ""
+  );
   const [isLinkPromptOpen, setIsLinkPromptOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
+  const [pendingUploads, setPendingUploads] = useState(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  // Lets editor paste/drop handlers (created once) call the latest upload function.
+  const insertImagesRef = useRef<(files: File[]) => void>(() => {});
 
   const editor = useEditor({
     extensions: [
@@ -79,6 +95,8 @@ export function RichTextEditor({
       Placeholder.configure({
         placeholder,
       }),
+      // Always registered so existing images in content survive editing.
+      Image.configure({ inline: false, allowBase64: false }),
     ],
     content: defaultValue ? markdownToHtml(defaultValue) : "",
     immediatelyRender: false,
@@ -86,8 +104,27 @@ export function RichTextEditor({
       attributes: {
         id: id || name,
         class:
-          "prose prose-invert max-w-none text-zinc-100 p-4 sm:p-5 focus:outline-none leading-normal prose-p:my-1 prose-li:my-0.5 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-zinc-100 prose-h1:text-2xl sm:prose-h1:text-3xl prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-a:text-sky-400 prose-blockquote:border-l-2 prose-blockquote:border-sky-500/60 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-zinc-300 prose-pre:bg-zinc-950/90 prose-pre:border prose-pre:border-zinc-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:text-sky-300 prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-hr:border-zinc-800",
+          "prose dark:prose-invert max-w-none text-zinc-100 p-4 sm:p-5 focus:outline-none leading-normal prose-p:my-1 prose-li:my-0.5 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-zinc-100 prose-h1:text-2xl sm:prose-h1:text-3xl prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-a:text-sky-400 prose-blockquote:border-l-2 prose-blockquote:border-sky-500/60 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-zinc-300 prose-pre:bg-zinc-950/90 prose-pre:border prose-pre:border-zinc-800 prose-pre:p-4 prose-pre:rounded-xl prose-code:text-sky-300 prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-hr:border-zinc-800",
         style: `min-height: ${minHeight};`,
+      },
+      handlePaste: (_view, event) => {
+        const files = imageFilesFrom(event.clipboardData?.files);
+        if (!imageUploadFolder || files.length === 0) return false;
+        event.preventDefault();
+        insertImagesRef.current(files);
+        return true;
+      },
+      handleDrop: (view, event, _slice, moved) => {
+        const files = imageFilesFrom(event.dataTransfer?.files);
+        if (moved || !imageUploadFolder || files.length === 0) return false;
+        event.preventDefault();
+        // Place the caret where the files were dropped so images land there.
+        const coords = view.posAtCoords({ left: event.clientX, top: event.clientY });
+        if (coords) {
+          view.dispatch(view.state.tr.setSelection(TextSelection.near(view.state.doc.resolve(coords.pos))));
+        }
+        insertImagesRef.current(files);
+        return true;
       },
     },
     onUpdate: ({ editor }) => {
@@ -95,6 +132,48 @@ export function RichTextEditor({
       setHtmlValue(html);
       onChange?.(html);
     },
+  });
+
+  // Uploads images in parallel, then inserts the successful ones (in order) at the caret.
+  const insertImages = async (files: File[]) => {
+    if (!editor || !imageUploadFolder || files.length === 0) return;
+    setUploadError(null);
+    setPendingUploads((n) => n + files.length);
+
+    const results = await Promise.allSettled(files.map((file) => uploadToStorage(file, imageUploadFolder, "image")));
+    setPendingUploads((n) => n - files.length);
+
+    const images = results.flatMap((r, i) =>
+      r.status === "fulfilled"
+        ? [{ type: "image", attrs: { src: r.value, alt: files[i].name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ") } }]
+        : []
+    );
+    const failures = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
+    if (failures.length > 0) {
+      const reason = failures[0].reason instanceof Error ? failures[0].reason.message : "Upload failed.";
+      setUploadError(failures.length === 1 ? reason : `${failures.length} images failed to upload. ${reason}`);
+    }
+    if (images.length === 0 || editor.isDestroyed) return;
+
+    // Insert after the current block (not replacing a selected image), followed by
+    // an empty paragraph so writing can continue below the images.
+    // An empty paragraph at the caret is replaced instead of leaving a blank gap.
+    const { $to } = editor.state.selection;
+    const block = $to.depth > 0 ? $to.node(1) : null;
+    const insertAt =
+      block && block.isTextblock && block.content.size === 0
+        ? { from: $to.before(1), to: $to.after(1) }
+        : $to.depth > 0
+          ? $to.after(1)
+          : $to.pos;
+    editor
+      .chain()
+      .focus()
+      .insertContentAt(insertAt, [...images, { type: "paragraph" }])
+      .run();
+  };
+  useEffect(() => {
+    insertImagesRef.current = (files) => void insertImages(files);
   });
 
   // Keep internal state aligned if defaultValue changes
@@ -460,6 +539,38 @@ export function RichTextEditor({
           )}
         </div>
 
+        {/* Images */}
+        {imageUploadFolder && (
+          <div className="flex items-center gap-1 px-2 border-r border-zinc-800">
+            <button
+              type="button"
+              title="Insert Images (or paste / drag & drop)"
+              disabled={!editor}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                imageInputRef.current?.click();
+              }}
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              {pendingUploads > 0 ? <Loader2 className="h-4 w-4 animate-spin text-sky-400" /> : <ImagePlus className="h-4 w-4" />}
+              {pendingUploads > 0 && <span className="text-[11px] text-sky-400">Uploading {pendingUploads}…</span>}
+            </button>
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept={UPLOAD_ACCEPT.image}
+              multiple
+              className="hidden"
+              aria-label="Upload images into content"
+              onChange={(e) => {
+                const files = imageFilesFrom(e.target.files);
+                e.target.value = "";
+                void insertImages(files);
+              }}
+            />
+          </div>
+        )}
+
         {/* History & Clear */}
         <div className="flex items-center gap-1 pl-2">
           <button
@@ -545,6 +656,15 @@ export function RichTextEditor({
         </div>
       )}
 
+      {uploadError && (
+        <div className="px-3 py-2 bg-red-500/10 border-b border-red-500/30 text-xs text-red-400 flex items-center justify-between gap-2">
+          <span>{uploadError}</span>
+          <button type="button" onClick={() => setUploadError(null)} className="text-red-300 hover:text-white cursor-pointer" aria-label="Dismiss">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Tiptap Editor Content Area */}
       <div className="relative flex-1">
         <EditorContent editor={editor} />
@@ -554,4 +674,8 @@ export function RichTextEditor({
       <input type="hidden" name={name} value={htmlValue} required={required} />
     </div>
   );
+}
+
+function imageFilesFrom(list: FileList | null | undefined): File[] {
+  return Array.from(list ?? []).filter((f) => f.type.startsWith("image/"));
 }

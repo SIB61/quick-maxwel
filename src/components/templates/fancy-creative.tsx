@@ -14,8 +14,12 @@ import {
   Globe,
   Sparkle,
   Zap,
+  FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -24,8 +28,9 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 3);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20 relative">
@@ -80,50 +85,38 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
             )}
 
             {/* Social pills */}
-            <div className="flex items-center justify-center sm:justify-start gap-3 pt-2">
-              {socials.github && (
+            <div className="flex items-center justify-center sm:justify-start gap-3 pt-2 flex-wrap">
+              {socials.map((link) => (
                 <a
-                  href={socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={link.platform}
+                  href={link.url}
+                  {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur"
-                  aria-label="GitHub"
+                  aria-label={SOCIAL_PLATFORM_MAP[link.platform].label}
+                  title={SOCIAL_PLATFORM_MAP[link.platform].label}
                 >
-                  <GithubIcon className="h-4 w-4" />
+                  <SocialIcon platform={link.platform} className="h-4 w-4" />
                 </a>
-              )}
-              {socials.twitter && (
-                <a
-                  href={socials.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur"
-                  aria-label="Twitter"
-                >
-                  <TwitterIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.linkedin && (
-                <a
-                  href={socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur"
-                  aria-label="LinkedIn"
-                >
-                  <LinkedinIcon className="h-4 w-4" />
-                </a>
-              )}
-              {socials.website && (
-                <a
-                  href={socials.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur"
-                  aria-label="Website"
-                >
-                  <Globe className="h-4 w-4" />
-                </a>
+              ))}
+              {portfolio.cvUrl && (
+                <>
+                  <a
+                    href={`/${portfolio.handle}/cv`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>View CV</span>
+                  </a>
+                  <a
+                    href={`/${portfolio.handle}/cv?download=1`}
+                    className="p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-zinc-100 transition-all hover:scale-105 shadow-lg backdrop-blur inline-flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Download</span>
+                  </a>
+                </>
               )}
             </div>
           </div>
@@ -135,6 +128,54 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
           </div>
         )}
       </section>
+
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
+                <FolderKanban className="h-4 w-4" />
+                <span>Recent Work</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-100">Featured Projects</h2>
+            </div>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-semibold px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 flex items-center gap-1.5 transition-all"
+            >
+              <span>See all work</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {featuredProjects.map((project) => (
+              <Link key={project.id} href={`/${portfolio.handle}/projects/${project.slug}`}>
+                <div className="group relative rounded-3xl bg-zinc-900/50 border border-zinc-800 hover:border-zinc-600 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col h-full overflow-hidden">
+                  <div className="aspect-[16/9] overflow-hidden bg-zinc-950">
+                    {project.coverImageUrl ? (
+                      <img src={project.coverImageUrl} alt="" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-5xl font-black text-zinc-800" style={{ background: "radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--theme-accent) 25%, transparent), transparent 70%)" }}>
+                        {project.title.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 sm:p-7 space-y-2">
+                    <h3 className="font-extrabold text-lg text-zinc-100 group-hover:text-white">{project.title}</h3>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                    <div className="flex items-center gap-1.5 text-xs font-bold pt-2" style={{ color: "var(--theme-accent)" }}>
+                      <span>View project</span>
+                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured Services with Glowing Price Tags */}
       {featuredServices.length > 0 && (

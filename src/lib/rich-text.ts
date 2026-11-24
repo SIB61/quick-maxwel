@@ -1,3 +1,5 @@
+import sanitizeHtmlLib from "sanitize-html";
+
 /**
  * Utility functions for rich-text handling, markdown-to-HTML conversion,
  * and safe content rendering across visual editors and public templates.
@@ -101,4 +103,60 @@ export function markdownToHtml(md: string): string {
   });
 
   return formattedBlocks.filter(Boolean).join("\n");
+}
+
+/**
+ * Strips scripts, event handlers, and unsafe URLs from user-authored HTML.
+ * Every piece of rich content rendered on a public portfolio passes through
+ * here, so one user can never inject executable markup into their page.
+ */
+export function sanitizeRichHtml(html: string): string {
+  if (!html) return "";
+  return sanitizeHtmlLib(html, {
+    allowedTags: [
+      "p", "br", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
+      "strong", "b", "em", "i", "u", "s", "del", "mark", "sub", "sup",
+      "ul", "ol", "li", "blockquote", "code", "pre", "a", "span", "div", "img",
+    ],
+    allowedAttributes: {
+      a: ["href", "target", "rel", "title"],
+      img: ["src", "alt", "title", "width", "height"],
+      code: ["class"],
+      ol: ["start"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+    allowedSchemesByTag: { img: ["http", "https"] },
+    allowProtocolRelative: false,
+    transformTags: {
+      a: (tagName, attribs) => ({
+        tagName,
+        attribs: attribs.target
+          ? { ...attribs, target: "_blank", rel: "noopener noreferrer" }
+          : attribs,
+      }),
+    },
+  });
+}
+
+/** Converts markdown (or passes through HTML) and sanitizes the result. */
+export function renderRichContent(content: string): string {
+  return sanitizeRichHtml(markdownToHtml(content));
+}
+
+/** Average adult silent-reading speed for technical prose. */
+const WORDS_PER_MINUTE = 200;
+
+/** Counts readable words in HTML or Markdown content (tags and syntax ignored). */
+export function countWords(content: string): number {
+  if (!content) return 0;
+  const text = markdownToHtml(content)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&[a-z0-9#]+;/gi, " ");
+  return text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
+}
+
+/** Estimates reading time from content, e.g. "4 min read" (minimum 1 minute). */
+export function estimateReadTime(content: string): string {
+  const minutes = Math.max(1, Math.ceil(countWords(content) / WORDS_PER_MINUTE));
+  return `${minutes} min read`;
 }

@@ -57,7 +57,7 @@ export function FancyEvents({ portfolio, handle }: { portfolio: PortfolioUser; h
                   style={{
                     borderColor: "var(--theme-accent)",
                     color: "var(--theme-accent)",
-                    backgroundColor: "rgba(0,0,0,0.4)",
+                    backgroundColor: "var(--badge-backdrop)",
                   }}
                 >
                   {event.eventType}

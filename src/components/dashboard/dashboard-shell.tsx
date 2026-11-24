@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BrandMark } from "@/components/brand-mark";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/actions/auth";
@@ -20,8 +21,10 @@ import {
   X,
   Copy,
   Check,
+  FolderKanban,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface DashboardShellProps {
   user: {
@@ -42,6 +45,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
     { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { label: "Articles", href: "/dashboard/articles", icon: FileText },
     { label: "Experience", href: "/dashboard/experience", icon: Briefcase },
+    { label: "Projects", href: "/dashboard/projects", icon: FolderKanban },
     { label: "Achievements", href: "/dashboard/achievements", icon: Award },
     { label: "Services", href: "/dashboard/services", icon: Sparkles },
     { label: "Events", href: "/dashboard/events", icon: Calendar },
@@ -64,11 +68,9 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         {/* Brand Header */}
         <div className="h-16 px-6 border-b border-zinc-800/80 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-base transition-transform group-hover:scale-105">
-              P
-            </div>
+            <BrandMark className="h-8 w-8 shadow-md shadow-sky-500/20 rounded-lg" />
             <span className="font-bold tracking-tight text-base text-zinc-100">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
         </div>
@@ -159,11 +161,9 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       <div className="md:hidden sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-xl">
         <div className="h-16 px-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-sm">
-              P
-            </div>
+            <BrandMark className="h-8 w-8 shadow-md shadow-sky-500/20 rounded-lg" />
             <span className="font-bold text-sm text-zinc-100">
-              Portfolio<span className="text-sky-400">Builder</span>
+              Portfolioo<span className="text-sky-400">Site</span>
             </span>
           </Link>
 
@@ -178,6 +178,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               <ExternalLink className="h-3 w-3" />
             </a>
 
+            <ThemeToggle className="h-9 w-9 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white" />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -266,6 +267,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             </div>
 
             <div className="flex items-center gap-3">
+              <ThemeToggle className="h-8 w-8 rounded-lg border border-zinc-700 bg-zinc-800/60 text-zinc-300 hover:text-white hover:bg-zinc-800" iconClassName="h-3.5 w-3.5" />
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs">
                 <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
                 <span className="text-zinc-400">Live Address:</span>

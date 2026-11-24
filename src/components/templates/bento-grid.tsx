@@ -15,8 +15,12 @@ import {
   Clock,
   Layers,
   CheckCircle2,
+  FolderKanban,
+  Download,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -33,10 +37,13 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
   const featuredServices = portfolio.services.filter((s) => s.isFeatured);
   const primaryService = featuredServices[0] || portfolio.services[0];
 
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured);
+  const topProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 3);
+
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured);
   const topEvent = featuredEvents[0] || portfolio.events[0];
 
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   // Extract all unique skills across experiences
   const allSkills = Array.from(
@@ -87,50 +94,38 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
           </div>
 
           {/* Social icons row */}
-          <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/60">
-            {socials.github && (
+          <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/60 flex-wrap">
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="GitHub"
+                aria-label={SOCIAL_PLATFORM_MAP[link.platform].label}
+                title={SOCIAL_PLATFORM_MAP[link.platform].label}
               >
-                <GithubIcon className="h-4 w-4" />
+                <SocialIcon platform={link.platform} className="h-4 w-4" />
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="Twitter"
-              >
-                <TwitterIcon className="h-4 w-4" />
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon className="h-4 w-4" />
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors"
-                aria-label="Website"
-              >
-                <Globe className="h-4 w-4" />
-              </a>
+            ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>View CV</span>
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="p-2 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-400 hover:text-zinc-100 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Download</span>
+                </a>
+              </>
             )}
             <div className="ml-auto text-xs text-zinc-500 font-mono">
               @{portfolio.handle}
@@ -378,6 +373,48 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
             <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
+
+        {/* TILE 8b: Projects Showcase (Spans 4 cols / Full width) */}
+        {topProjects.length > 0 && (
+          <div className="md:col-span-2 lg:col-span-4 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FolderKanban className="h-4 w-4" style={{ color: "var(--theme-accent)" }} />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Project Showcase</span>
+              </div>
+              <Link
+                href={`/${portfolio.handle}/projects`}
+                className="text-xs font-bold flex items-center gap-1 hover:underline"
+                style={{ color: "var(--theme-accent)" }}
+              >
+                <span>All {portfolio.projects.length}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {topProjects.map((project) => (
+                <Link
+                  key={project.id}
+                  href={`/${portfolio.handle}/projects/${project.slug}`}
+                  className="p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800 hover:border-zinc-700 transition-all space-y-2 group"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-bold text-sm text-zinc-100 group-hover:text-white">{project.title}</h3>
+                    {project.timeline && <span className="text-[11px] font-mono text-zinc-500 shrink-0">{project.timeline}</span>}
+                  </div>
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+                  {project.techStack && project.techStack.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {project.techStack.slice(0, 3).map((tech) => (
+                        <span key={tech} className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900 border border-zinc-800 text-zinc-300">{tech}</span>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* TILE 9: Skills & Competencies Cloud (Spans 4 cols / Full width) */}
         {allSkills.length > 0 && (

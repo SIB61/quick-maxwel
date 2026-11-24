@@ -14,8 +14,11 @@ import {
   Globe,
   CornerDownRight,
   CheckCircle2,
+  ArrowDown,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/icons";
+import { SocialIcon } from "@/components/social-icon";
+import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platforms";
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
@@ -24,8 +27,9 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
   const featuredAchievements = portfolio.achievements.filter((a) => a.isFeatured).slice(0, 3);
   const featuredServices = portfolio.services.filter((s) => s.isFeatured).slice(0, 3);
+  const featuredProjects = portfolio.projects.filter((p) => p.isFeatured).slice(0, 4);
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
-  const socials = portfolio.socialLinks || {};
+  const socials = normalizeSocialLinks(portfolio.socialLinks);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-32 font-sans text-zinc-100">
@@ -71,49 +75,36 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
           {/* Minimalist Meta Links */}
           <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-zinc-800/80 text-xs font-mono uppercase tracking-wider text-zinc-400">
-            {socials.github && (
+            {socials.map((link) => (
               <a
-                href={socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={link.platform}
+                href={link.url}
+                {...(link.url.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                 className="hover:text-white inline-flex items-center gap-1 transition-colors group"
               >
-                <span>GH / REPOSITORIES</span>
+                <span>{SOCIAL_PLATFORM_MAP[link.platform].short} / {SOCIAL_PLATFORM_MAP[link.platform].label.toUpperCase()}</span>
                 <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
-            )}
-            {socials.twitter && (
-              <a
-                href={socials.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>TW / BROADCASTS</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            )}
-            {socials.linkedin && (
-              <a
-                href={socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>LI / NETWORK</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            )}
-            {socials.website && (
-              <a
-                href={socials.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white inline-flex items-center gap-1 transition-colors group"
-              >
-                <span>WEB / DISPATCH</span>
-                <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+            ))}
+            {portfolio.cvUrl && (
+              <>
+                <a
+                  href={`/${portfolio.handle}/cv`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white inline-flex items-center gap-1 transition-colors group"
+                >
+                  <span>CV / VIEW</span>
+                  <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+                <a
+                  href={`/${portfolio.handle}/cv?download=1`}
+                  className="hover:text-white inline-flex items-center gap-1 transition-colors group"
+                >
+                  <span>CV / DOWNLOAD</span>
+                  <ArrowDown className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </>
             )}
           </div>
         </div>
@@ -231,6 +222,45 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
                   </div>
                 )}
               </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Selected Works */}
+      {featuredProjects.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
+            <div>
+              <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SELECTED WORKS</span>
+              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-zinc-50">Projects</h2>
+            </div>
+            <Link
+              href={`/${portfolio.handle}/projects`}
+              className="text-xs font-mono uppercase tracking-wider hover:underline flex items-center gap-1"
+              style={{ color: "var(--theme-accent)" }}
+            >
+              <span>INDEX ({portfolio.projects.length})</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="divide-y divide-zinc-800">
+            {featuredProjects.map((project, pIdx) => (
+              <Link
+                key={project.id}
+                href={`/${portfolio.handle}/projects/${project.slug}`}
+                className="grid grid-cols-12 gap-4 py-5 group"
+              >
+                <span className="col-span-2 sm:col-span-1 text-xs font-mono text-zinc-500 pt-1">0{pIdx + 1}</span>
+                <div className="col-span-10 sm:col-span-8 space-y-1">
+                  <h3 className="text-lg font-bold uppercase tracking-tight text-zinc-100 group-hover:text-white">{project.title}</h3>
+                  <p className="text-xs text-zinc-400 font-light leading-relaxed line-clamp-2">{project.summary}</p>
+                </div>
+                <span className="hidden sm:block col-span-3 text-right text-xs font-mono uppercase tracking-wider text-zinc-500 pt-1">
+                  {project.timeline}
+                </span>
+              </Link>
             ))}
           </div>
         </section>
