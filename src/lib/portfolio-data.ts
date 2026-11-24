@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { headers, cookies } from "next/headers";
+import { headers } from "next/headers";
 import { TEMPLATES, PALETTES, FONTS, TEMPLATE_SIGNATURE_STYLES, TemplateId, ColorPalette, FontFamily } from "./templates";
 
 
@@ -53,15 +53,6 @@ export async function getPortfolioData(handle: string, explicitTemplate?: string
   } catch {
     // In non-request contexts
   }
-  if (!previewTemplate) {
-    try {
-      const cookieStore = await cookies();
-      previewTemplate = cookieStore.get("pb_preview_template")?.value;
-    } catch {
-      // In non-request contexts
-    }
-  }
-
   const isPreview = Boolean(previewTemplate && previewTemplate in TEMPLATES);
   const activeTemplateId = isPreview
     ? (previewTemplate as TemplateId)

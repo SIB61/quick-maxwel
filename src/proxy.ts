@@ -16,6 +16,7 @@ const VALID_TEMPLATES = [
 const VALID_PALETTES = ["slate", "emerald", "neon", "terracotta", "ocean"];
 const VALID_FONTS = ["sans", "serif", "mono"];
 const STUDIO_COOKIE = "pb_studio_preview";
+const PREVIEW_COOKIE = "pb_preview_template";
 
 /**
  * Theme Studio preview: `?studio=1&template=…&palette=…&font=…` renders the
@@ -51,7 +52,7 @@ export async function proxy(request: NextRequest) {
     cleanUrl.searchParams.delete("exit_preview");
     cleanUrl.searchParams.delete("template");
     const response = NextResponse.redirect(cleanUrl);
-    response.cookies.delete("pb_preview_template");
+    response.cookies.delete(PREVIEW_COOKIE);
     return response;
   }
 
@@ -114,31 +115,35 @@ export async function proxy(request: NextRequest) {
     if (preview) return withStudioHeaders(request, preview);
   }
 
-  // Handle template preview parameter on portfolio routes
+  // Template preview (`?template=<id>`, used by the public template gallery).
+  // It is tied to the single profile it was started on (the cookie stores
+  // "<handle>:<template>"), so previewing one profile never changes how any
+  // other profile renders. It ends with the browser session or via exit_preview.
+  const profileHandle = pathname.split("/")[1]?.toLowerCase() || "";
   const templateParam = searchParams.get("template");
-  if (templateParam && VALID_TEMPLATES.includes(templateParam)) {
+  if (profileHandle && templateParam && VALID_TEMPLATES.includes(templateParam)) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-preview-template", templateParam);
     const response = NextResponse.next({
       request: { headers: requestHeaders },
     });
-    response.cookies.set("pb_preview_template", templateParam, {
+    response.cookies.set(PREVIEW_COOKIE, `${profileHandle}:${templateParam}`, {
       path: "/",
-      maxAge: 60 * 60 * 24, // 24 hours
+      sameSite: "lax",
     });
     return response;
   }
 
-  // Forward existing preview template cookie if present
-  const previewCookie = request.cookies.get("pb_preview_template")?.value;
+  // Forward an existing preview only to the profile it belongs to.
+  const [previewHandle, previewTemplate] = (request.cookies.get(PREVIEW_COOKIE)?.value ?? "").split(":");
   if (
-    previewCookie &&
-    VALID_TEMPLATES.includes(previewCookie) &&
-    !pathname.startsWith("/dashboard") &&
-    pathname !== "/"
+    profileHandle &&
+    previewHandle === profileHandle &&
+    VALID_TEMPLATES.includes(previewTemplate) &&
+    !pathname.startsWith("/dashboard")
   ) {
     const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-preview-template", previewCookie);
+    requestHeaders.set("x-preview-template", previewTemplate);
     return NextResponse.next({
       request: { headers: requestHeaders },
     });

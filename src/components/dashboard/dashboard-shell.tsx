@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BrandMark } from "@/components/brand-mark";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/actions/auth";
@@ -67,9 +68,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         {/* Brand Header */}
         <div className="h-16 px-6 border-b border-zinc-800/80 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-base transition-transform group-hover:scale-105">
-              P
-            </div>
+            <BrandMark className="h-8 w-8 shadow-md shadow-sky-500/20 rounded-lg" />
             <span className="font-bold tracking-tight text-base text-zinc-100">
               Portfolioo<span className="text-sky-400">Site</span>
             </span>
@@ -162,9 +161,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       <div className="md:hidden sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-xl">
         <div className="h-16 px-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-sm">
-              P
-            </div>
+            <BrandMark className="h-8 w-8 shadow-md shadow-sky-500/20 rounded-lg" />
             <span className="font-bold text-sm text-zinc-100">
               Portfolioo<span className="text-sky-400">Site</span>
             </span>

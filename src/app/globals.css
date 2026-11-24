@@ -396,6 +396,14 @@ html.light [data-portfolio-root] {
   --theme-accent: color-mix(in oklab, var(--theme-accent-base) 78%, black);
 }
 
+/* Landing showcase cards: same light-mode deepening for accent-colored text. */
+[data-showcase-card] {
+  --card-accent-text: var(--card-accent);
+}
+html.light [data-showcase-card] {
+  --card-accent-text: color-mix(in oklab, var(--card-accent) 72%, black);
+}
+
 /* Soft shadows read better than dark-mode glows on light surfaces. */
 html.light .shadow-2xl,
 html.light .shadow-xl {

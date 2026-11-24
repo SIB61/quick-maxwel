@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandMark } from "@/components/brand-mark";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X, ArrowRight, LogIn, UserPlus } from "lucide-react";
@@ -17,6 +18,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
+    { label: "Showcase", href: "#showcase" },
     { label: "Features", href: "#features" },
     { label: "Templates", href: "#templates" },
     { label: "Why Multi-Page", href: "#why-multipage" },
@@ -28,9 +30,7 @@ export function LandingHeader({ sessionUser }: LandingHeaderProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-black font-extrabold text-lg shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
-            P
-          </div>
+          <BrandMark className="h-9 w-9 shadow-md shadow-sky-500/20 rounded-xl" />
           <div className="flex flex-col">
             <span className="font-extrabold tracking-tight text-base text-zinc-100 flex items-center">
               Portfolioo<span className="text-sky-400">Site</span>
