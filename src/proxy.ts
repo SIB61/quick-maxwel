@@ -59,7 +59,7 @@ function getConfiguredRootHost(): string | null {
   const value = process.env.NEXT_PUBLIC_APP_URL?.trim();
   if (!value) return null;
   try {
-    return new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`).hostname.toLowerCase();
+    return new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`).hostname.toLowerCase().replace(/^www\./, "");
   } catch {
     return null;
   }
