@@ -24,6 +24,9 @@ import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platform
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured);
   const primaryArticle = featuredArticles[0] || portfolio.articles[0];
@@ -50,10 +53,11 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
     new Set(portfolio.experiences.flatMap((e) => e.skills || []))
   ).slice(0, 14);
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6">
       {/* 4-column Bento Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-flow-dense gap-4">
         {/* TILE 1: Main Profile & Bio (Spans 2 cols, 2 rows on large screens) */}
         <div className="lg:col-span-2 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-5">
           <div className="space-y-4">
@@ -180,7 +184,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
 
         {/* TILE 4: Featured Writing Spotlight (Spans 2 cols) */}
         {primaryArticle && (
-          <Link
+          <Link style={sectionStyle("articles")}
             href={`/${portfolio.handle}/articles/${primaryArticle.slug}`}
             className="lg:col-span-2 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all group flex flex-col justify-between space-y-4"
           >
@@ -220,7 +224,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
 
         {/* TILE 5: Featured Service Tile (Spans 2 cols) */}
         {primaryService && (
-          <Link
+          <Link style={sectionStyle("services")}
             href={`/${portfolio.handle}/services/${primaryService.slug}`}
             className="lg:col-span-2 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all group flex flex-col justify-between space-y-4"
           >
@@ -273,7 +277,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
 
         {/* TILE 6: Recent Experience Timeline (Spans 2 cols) */}
         {topExperiences.length > 0 && (
-          <div className="lg:col-span-2 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
+          <div style={sectionStyle("experience")} className="lg:col-span-2 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -309,7 +313,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
         )}
 
         {/* TILE 7: Accolades & Achievements (Spans 1 col) */}
-        <div className="rounded-3xl p-5 sm:p-6 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
+        <div style={sectionStyle("achievements")} className="rounded-3xl p-5 sm:p-6 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
@@ -342,7 +346,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
         </div>
 
         {/* TILE 8: Speaking & Events (Spans 1 col) */}
-        <div className="rounded-3xl p-5 sm:p-6 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
+        <div style={sectionStyle("achievements")} className="rounded-3xl p-5 sm:p-6 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
@@ -376,7 +380,7 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
 
         {/* TILE 8b: Projects Showcase (Spans 4 cols / Full width) */}
         {topProjects.length > 0 && (
-          <div className="md:col-span-2 lg:col-span-4 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all space-y-4">
+          <div style={sectionStyle("projects")} className="md:col-span-2 lg:col-span-4 rounded-3xl p-5 sm:p-7 bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700/80 transition-all space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FolderKanban className="h-4 w-4" style={{ color: "var(--theme-accent)" }} />
@@ -416,9 +420,11 @@ export default function BentoGridTemplate({ portfolio }: { portfolio: PortfolioU
           </div>
         )}
 
+        <HomeEducation portfolio={portfolio} variant="bento" style={sectionStyle("education")} />
+
         {/* TILE 9: Skills & Competencies Cloud (Spans 4 cols / Full width) */}
         {allSkills.length > 0 && (
-          <div className="lg:col-span-4 rounded-3xl p-5 sm:p-6 bg-zinc-900/40 border border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div style={SECTION_LAST} className="lg:col-span-4 rounded-3xl p-5 sm:p-6 bg-zinc-900/40 border border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400 shrink-0">
               <Layers className="h-4 w-4" style={{ color: "var(--theme-accent)" }} />
               <span>Core Stack & Domains</span>

@@ -8,6 +8,7 @@ export function SwissNavbar({ portfolio, handle }: { portfolio: PortfolioUser; h
     { label: "OVERVIEW", href: `/${handle}`, show: true },
     { label: "ESSAYS", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "CHRONICLE", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "EDUCATION", href: `/${handle}/education`, show: (portfolio.education?.length || 0) > 0 },
     { label: "WORKS", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "HONORS", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "DISCIPLINES", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },

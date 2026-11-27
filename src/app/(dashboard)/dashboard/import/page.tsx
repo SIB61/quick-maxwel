@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requireAuth } from "@/lib/auth";
 import { db } from "@/db";
-import { achievements, experiences, projects } from "@/db/schema";
+import { achievements, education, experiences, projects } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { makeKey } from "@/lib/linkedin/parse";
 import { LinkedinIcon as Linkedin } from "@/components/icons";
@@ -10,8 +10,9 @@ import { ImportWizard } from "./import-wizard";
 export default async function ImportPage() {
   const user = await requireAuth();
 
-  const [exps, achs, projs] = await Promise.all([
+  const [exps, edus, achs, projs] = await Promise.all([
     db.select().from(experiences).where(eq(experiences.userId, user.id)),
+    db.select().from(education).where(eq(education.userId, user.id)),
     db.select().from(achievements).where(eq(achievements.userId, user.id)),
     db.select().from(projects).where(eq(projects.userId, user.id)),
   ]);
@@ -36,6 +37,7 @@ export default async function ImportPage() {
         }}
         existing={{
           experiences: exps.map((e) => makeKey(e.company, e.role, e.startDate)),
+          education: edus.map((e) => makeKey(e.institution, e.degree, e.startDate)),
           achievements: achs.map((a) => makeKey(a.title, a.issuer)),
           projects: projs.map((p) => makeKey(p.title)),
         }}

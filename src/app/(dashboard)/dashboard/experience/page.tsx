@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, Briefcase, Star, Trash2, Edit3, MapPin, Calendar } from "lucide-react";
 import Link from "next/link";
+import { SortableList } from "@/components/dashboard/sortable-list";
+import { ReorderButtons } from "@/components/dashboard/reorder-buttons";
+import { orderedBy } from "@/lib/ordering";
 import { deleteExperienceAction, toggleExperienceFeaturedAction } from "@/actions/experiences";
 
 export default async function DashboardExperiencePage() {
@@ -15,7 +18,7 @@ export default async function DashboardExperiencePage() {
 
   const userExperiences = await db.query.experiences.findMany({
     where: eq(experiences.userId, user.id),
-    orderBy: [asc(experiences.orderIndex)],
+    orderBy: orderedBy("experiences"),
   });
 
   return (
@@ -57,88 +60,94 @@ export default async function DashboardExperiencePage() {
           </Button>
         </Card>
       ) : (
-        <div className="space-y-3.5">
-          {userExperiences.map((exp) => (
-            <Card
-              key={exp.id}
-              className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
-            >
-              <div className="space-y-2 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  {exp.isFeatured && (
-                    <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
-                      <Star className="h-3 w-3 mr-1 fill-amber-400" />
-                      Featured
-                    </Badge>
-                  )}
-                  <Badge variant="secondary" className="bg-zinc-800 text-zinc-300 text-xs px-2 py-0.5">
-                    {exp.employmentType}
-                  </Badge>
-                  <span className="text-xs text-zinc-400 flex items-center gap-1 font-mono">
-                    <Calendar className="h-3 w-3 text-zinc-500" />
-                    {exp.startDate} — {exp.endDate || "Present"}
-                  </span>
-                </div>
-
-                <div>
-                  <h2 className="font-bold text-lg text-zinc-100">{exp.role}</h2>
-                  <div className="text-sm text-sky-400 flex items-center gap-2 mt-0.5">
-                    <span>{exp.company}</span>
-                    {exp.location && (
-                      <span className="text-xs text-zinc-400 flex items-center gap-1">
-                        • <MapPin className="h-3 w-3 inline text-zinc-500" /> {exp.location}
-                      </span>
+        <SortableList
+          kind="experiences"
+          className="space-y-3.5"
+          items={userExperiences.map((exp, idx) => ({
+            id: exp.id,
+            node: (
+              <Card
+                key={exp.id}
+                className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+              >
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {exp.isFeatured && (
+                      <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
+                        <Star className="h-3 w-3 mr-1 fill-amber-400" />
+                        Featured
+                      </Badge>
                     )}
+                    <Badge variant="secondary" className="bg-zinc-800 text-zinc-300 text-xs px-2 py-0.5">
+                      {exp.employmentType}
+                    </Badge>
+                    <span className="text-xs text-zinc-400 flex items-center gap-1 font-mono">
+                      <Calendar className="h-3 w-3 text-zinc-500" />
+                      {exp.startDate} — {exp.endDate || "Present"}
+                    </span>
                   </div>
+
+                  <div>
+                    <h2 className="font-bold text-lg text-zinc-100">{exp.role}</h2>
+                    <div className="text-sm text-sky-400 flex items-center gap-2 mt-0.5">
+                      <span>{exp.company}</span>
+                      {exp.location && (
+                        <span className="text-xs text-zinc-400 flex items-center gap-1">
+                          • <MapPin className="h-3 w-3 inline text-zinc-500" /> {exp.location}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {exp.skills && exp.skills.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {exp.skills.map((skill) => (
+                        <span key={skill} className="text-[11px] px-2 py-0.5 rounded bg-zinc-950 text-zinc-400 border border-zinc-800">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {exp.skills && exp.skills.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {exp.skills.map((skill) => (
-                      <span key={skill} className="text-[11px] px-2 py-0.5 rounded bg-zinc-950 text-zinc-400 border border-zinc-800">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-800/60">
+                  <ReorderButtons kind="experiences" id={exp.id} isFirst={idx === 0} isLast={idx === userExperiences.length - 1} />
+                  <form action={toggleExperienceFeaturedAction.bind(null, exp.id, exp.isFeatured)}>
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="sm"
+                      className={`h-9 px-3 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${exp.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
+                    >
+                      <Star className={`h-3.5 w-3.5 mr-1.5 ${exp.isFeatured ? "fill-amber-400" : ""}`} />
+                      <span>{exp.isFeatured ? "Unfeature" : "Feature"}</span>
+                    </Button>
+                  </form>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-800/60">
-                <form action={toggleExperienceFeaturedAction.bind(null, exp.id, exp.isFeatured)}>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className={`h-9 px-3 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${exp.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
-                  >
-                    <Star className={`h-3.5 w-3.5 mr-1.5 ${exp.isFeatured ? "fill-amber-400" : ""}`} />
-                    <span>{exp.isFeatured ? "Unfeature" : "Feature"}</span>
+                  <Button asChild variant="outline" size="sm" className="h-9 px-3 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                    <Link href={`/dashboard/experience/${exp.id}/edit`}>
+                      <Edit3 className="h-3.5 w-3.5 mr-1.5 text-blue-400" />
+                      <span>Edit</span>
+                    </Link>
                   </Button>
-                </form>
 
-                <Button asChild variant="outline" size="sm" className="h-9 px-3 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                  <Link href={`/dashboard/experience/${exp.id}/edit`}>
-                    <Edit3 className="h-3.5 w-3.5 mr-1.5 text-blue-400" />
-                    <span>Edit</span>
-                  </Link>
-                </Button>
-
-                <form action={deleteExperienceAction.bind(null, exp.id)}>
-                  <Button
-                    type="submit"
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 px-2.5 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
-                    title="Delete Role"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </form>
-              </div>
-            </Card>
-          ))}
-        </div>
+                  <form action={deleteExperienceAction.bind(null, exp.id)}>
+                    <Button
+                      type="submit"
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 px-2.5 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
+                      title="Delete Role"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </form>
+                </div>
+              </Card>
+            ),
+          }))}
+        />
       )}
     </div>
   );

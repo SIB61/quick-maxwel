@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, Sparkles, Star, Trash2, Edit3, ExternalLink, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { SortableList } from "@/components/dashboard/sortable-list";
+import { ReorderButtons } from "@/components/dashboard/reorder-buttons";
+import { orderedBy } from "@/lib/ordering";
 import { deleteServiceAction, toggleServiceFeaturedAction } from "@/actions/services";
 
 export default async function DashboardServicesPage() {
@@ -15,7 +18,7 @@ export default async function DashboardServicesPage() {
 
   const userServices = await db.query.services.findMany({
     where: eq(services.userId, user.id),
-    orderBy: [asc(services.orderIndex)],
+    orderBy: orderedBy("services"),
   });
 
   return (
@@ -57,93 +60,99 @@ export default async function DashboardServicesPage() {
           </Button>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userServices.map((service) => (
-            <Card
-              key={service.id}
-              className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {service.isFeatured && (
-                      <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
-                        <Star className="h-3 w-3 mr-1 fill-amber-400" />
-                        Featured
+        <SortableList
+          kind="services"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          items={userServices.map((service, idx) => ({
+            id: service.id,
+            node: (
+              <Card
+                key={service.id}
+                className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      {service.isFeatured && (
+                        <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
+                          <Star className="h-3 w-3 mr-1 fill-amber-400" />
+                          Featured
+                        </Badge>
+                      )}
+                      <span className="text-xs font-semibold text-purple-400 capitalize">{service.pricingType}</span>
+                    </div>
+                    {service.price && (
+                      <Badge variant="outline" className="text-sky-400 border-sky-500/30 text-xs font-mono">
+                        {service.price}
                       </Badge>
                     )}
-                    <span className="text-xs font-semibold text-purple-400 capitalize">{service.pricingType}</span>
                   </div>
-                  {service.price && (
-                    <Badge variant="outline" className="text-sky-400 border-sky-500/30 text-xs font-mono">
-                      {service.price}
-                    </Badge>
+
+                  <h2 className="font-bold text-base sm:text-lg text-zinc-100">{service.title}</h2>
+
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                    {service.shortDescription}
+                  </p>
+
+                  {service.deliverables && service.deliverables.length > 0 && (
+                    <div className="space-y-1 pt-1">
+                      {service.deliverables.slice(0, 2).map((del) => (
+                        <div key={del} className="flex items-center gap-1.5 text-xs text-zinc-300">
+                          <CheckCircle2 className="h-3 w-3 text-sky-400 shrink-0" />
+                          <span className="truncate">{del}</span>
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
 
-                <h2 className="font-bold text-base sm:text-lg text-zinc-100">{service.title}</h2>
-
-                <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
-                  {service.shortDescription}
-                </p>
-
-                {service.deliverables && service.deliverables.length > 0 && (
-                  <div className="space-y-1 pt-1">
-                    {service.deliverables.slice(0, 2).map((del) => (
-                      <div key={del} className="flex items-center gap-1.5 text-xs text-zinc-300">
-                        <CheckCircle2 className="h-3 w-3 text-sky-400 shrink-0" />
-                        <span className="truncate">{del}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
-                <form action={toggleServiceFeaturedAction.bind(null, service.id, service.isFeatured)}>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${service.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
-                  >
-                    <Star className={`h-3 w-3 mr-1 ${service.isFeatured ? "fill-amber-400" : ""}`} />
-                    <span>{service.isFeatured ? "Unfeature" : "Feature"}</span>
-                  </Button>
-                </form>
-
-                <div className="flex items-center gap-1.5">
-                  <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                    <Link href={`/${user.handle}/services/${service.slug}`} target="_blank">
-                      <ExternalLink className="h-3 w-3 mr-1 text-zinc-400" />
-                      <span>View</span>
-                    </Link>
-                  </Button>
-
-                  <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                    <Link href={`/dashboard/services/${service.id}/edit`}>
-                      <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
-                      <span>Edit</span>
-                    </Link>
-                  </Button>
-
-                  <form action={deleteServiceAction.bind(null, service.id)}>
+                {/* Action Buttons */}
+                <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
+                  <ReorderButtons kind="services" id={service.id} isFirst={idx === 0} isLast={idx === userServices.length - 1} />
+                  <form action={toggleServiceFeaturedAction.bind(null, service.id, service.isFeatured)}>
                     <Button
                       type="submit"
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
-                      title="Delete Service"
+                      className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${service.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Star className={`h-3 w-3 mr-1 ${service.isFeatured ? "fill-amber-400" : ""}`} />
+                      <span>{service.isFeatured ? "Unfeature" : "Feature"}</span>
                     </Button>
                   </form>
+
+                  <div className="flex items-center gap-1.5">
+                    <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                      <Link href={`/${user.handle}/services/${service.slug}`} target="_blank">
+                        <ExternalLink className="h-3 w-3 mr-1 text-zinc-400" />
+                        <span>View</span>
+                      </Link>
+                    </Button>
+
+                    <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                      <Link href={`/dashboard/services/${service.id}/edit`}>
+                        <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
+                        <span>Edit</span>
+                      </Link>
+                    </Button>
+
+                    <form action={deleteServiceAction.bind(null, service.id)}>
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
+                        title="Delete Service"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </form>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ),
+          }))}
+        />
       )}
     </div>
   );

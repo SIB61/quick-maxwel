@@ -7,7 +7,7 @@ import { siteUrl } from "@/lib/seo";
 // Built from the database on request, so it never goes stale or needs a DB at build time.
 export const dynamic = "force-dynamic";
 
-const SECTIONS = ["experience", "projects", "achievements", "articles", "services", "events", "contact"];
+const SECTIONS = ["experience", "education", "projects", "achievements", "articles", "services", "events", "contact"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl();

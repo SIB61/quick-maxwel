@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 import { users } from "./users";
 
 export const articles = pgTable("articles", {
@@ -15,6 +15,7 @@ export const articles = pgTable("articles", {
   readTime: text("read_time").default("3 min read"),
   isFeatured: boolean("is_featured").default(false).notNull(),
   isPublished: boolean("is_published").default(true).notNull(),
+  orderIndex: integer("order_index").default(0).notNull(), // manual order; ties fall back to newest first
   publishedAt: timestamp("published_at", { withTimezone: true }).defaultNow().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

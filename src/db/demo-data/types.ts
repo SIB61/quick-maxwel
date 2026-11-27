@@ -2,6 +2,7 @@ import type {
   NewAchievement,
   NewArticle,
   NewContact,
+  NewEducation,
   NewEvent,
   NewExperience,
   NewPortfolioSettings,
@@ -18,6 +19,7 @@ export interface DemoProfile {
   settings: WithoutOwner<NewPortfolioSettings>;
   articles: Omit<WithoutOwner<NewArticle>, "readTime">[];
   experiences: WithoutOwner<NewExperience>[];
+  education: WithoutOwner<NewEducation>[];
   achievements: WithoutOwner<NewAchievement>[];
   services: WithoutOwner<NewService>[];
   projects: WithoutOwner<NewProject>[];

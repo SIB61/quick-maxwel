@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { achievements, experiences, projects, users } from "@/db/schema";
+import { achievements, education, experiences, projects, users } from "@/db/schema";
 import { requireAuth } from "@/lib/auth";
 import { makeKey } from "@/lib/linkedin/parse";
 import { eq, max } from "drizzle-orm";
@@ -29,6 +29,18 @@ const payloadSchema = z.object({
         company: text(200).min(1),
         role: text(200).min(1),
         location: text(200),
+        startDate: text(20).min(2),
+        endDate: text(20),
+        isCurrent: z.boolean(),
+        description: text(5000),
+      }),
+    )
+    .max(100),
+  education: z
+    .array(
+      z.object({
+        institution: text(200).min(1),
+        degree: text(300).min(1),
         startDate: text(20).min(2),
         endDate: text(20),
         isCurrent: z.boolean(),
@@ -66,6 +78,7 @@ export type LinkedInImportResult =
       counts: {
         profile: boolean;
         experiences: number;
+        education: number;
         achievements: number;
         projects: number;
         skipped: number;
@@ -143,6 +156,37 @@ export async function importLinkedInAction(
         );
       }
 
+      // Education
+      const existingEdu = await tx.select().from(education).where(eq(education.userId, user.id));
+      const eduKeys = new Set(existingEdu.map((e) => makeKey(e.institution, e.degree, e.startDate)));
+      const [{ maxOrder: eduMax }] = await tx
+        .select({ maxOrder: max(education.orderIndex) })
+        .from(education)
+        .where(eq(education.userId, user.id));
+      const newEdu = data.education.filter((e) => {
+        const k = makeKey(e.institution, e.degree, e.startDate);
+        if (eduKeys.has(k)) {
+          skipped++;
+          return false;
+        }
+        eduKeys.add(k);
+        return true;
+      });
+      if (newEdu.length) {
+        await tx.insert(education).values(
+          newEdu.map((e, i) => ({
+            userId: user.id,
+            institution: e.institution,
+            degree: e.degree,
+            startDate: e.startDate,
+            endDate: e.isCurrent ? "Present" : e.endDate || null,
+            isCurrent: e.isCurrent,
+            description: e.description || null,
+            orderIndex: (eduMax ?? 0) + 1 + i,
+          })),
+        );
+      }
+
       // Achievements (certifications)
       const existingAch = await tx.select().from(achievements).where(eq(achievements.userId, user.id));
       const achKeys = new Set(existingAch.map((a) => makeKey(a.title, a.issuer)));
@@ -212,6 +256,7 @@ export async function importLinkedInAction(
       return {
         profile: profileUpdated,
         experiences: newExp.length,
+        education: newEdu.length,
         achievements: newAch.length,
         projects: newProj.length,
       };
@@ -221,10 +266,12 @@ export async function importLinkedInAction(
       "/dashboard",
       "/dashboard/profile",
       "/dashboard/experience",
+      "/dashboard/education",
       "/dashboard/achievements",
       "/dashboard/projects",
       `/${user.handle}`,
       `/${user.handle}/experience`,
+      `/${user.handle}/education`,
       `/${user.handle}/achievements`,
       `/${user.handle}/projects`,
     ]) {

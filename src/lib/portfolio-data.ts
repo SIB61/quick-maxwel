@@ -16,22 +16,25 @@ async function loadPortfolioData(handle: string, explicitTemplate?: string) {
       settings: true,
       articles: {
         where: (articles, { eq }) => eq(articles.isPublished, true),
-        orderBy: (articles, { desc }) => [desc(articles.publishedAt)],
+        orderBy: (articles, { asc, desc }) => [asc(articles.orderIndex), desc(articles.publishedAt)],
       },
       experiences: {
-        orderBy: (experiences, { asc }) => [asc(experiences.orderIndex)],
+        orderBy: (experiences, { asc }) => [asc(experiences.orderIndex), asc(experiences.createdAt)],
+      },
+      education: {
+        orderBy: (education, { asc }) => [asc(education.orderIndex), asc(education.createdAt)],
       },
       achievements: {
-        orderBy: (achievements, { asc }) => [asc(achievements.orderIndex)],
+        orderBy: (achievements, { asc }) => [asc(achievements.orderIndex), asc(achievements.createdAt)],
       },
       services: {
-        orderBy: (services, { asc }) => [asc(services.orderIndex)],
+        orderBy: (services, { asc }) => [asc(services.orderIndex), asc(services.createdAt)],
       },
       projects: {
-        orderBy: (projects, { asc }) => [asc(projects.orderIndex)],
+        orderBy: (projects, { asc }) => [asc(projects.orderIndex), asc(projects.createdAt)],
       },
       events: {
-        orderBy: (events, { asc }) => [asc(events.orderIndex)],
+        orderBy: (events, { asc }) => [asc(events.orderIndex), asc(events.createdAt)],
       },
     },
   });

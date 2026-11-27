@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, Award, Star, Trash2, Edit3, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { SortableList } from "@/components/dashboard/sortable-list";
+import { ReorderButtons } from "@/components/dashboard/reorder-buttons";
+import { orderedBy } from "@/lib/ordering";
 import { deleteAchievementAction, toggleAchievementFeaturedAction } from "@/actions/achievements";
 
 export default async function DashboardAchievementsPage() {
@@ -15,7 +18,7 @@ export default async function DashboardAchievementsPage() {
 
   const userAchievements = await db.query.achievements.findMany({
     where: eq(achievements.userId, user.id),
-    orderBy: [asc(achievements.orderIndex)],
+    orderBy: orderedBy("achievements"),
   });
 
   return (
@@ -57,89 +60,95 @@ export default async function DashboardAchievementsPage() {
           </Button>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userAchievements.map((ach) => (
-            <Card
-              key={ach.id}
-              className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {ach.isFeatured && (
-                      <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
-                        <Star className="h-3 w-3 mr-1 fill-amber-400" />
-                        Featured
-                      </Badge>
+        <SortableList
+          kind="achievements"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          items={userAchievements.map((ach, idx) => ({
+            id: ach.id,
+            node: (
+              <Card
+                key={ach.id}
+                className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      {ach.isFeatured && (
+                        <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
+                          <Star className="h-3 w-3 mr-1 fill-amber-400" />
+                          Featured
+                        </Badge>
+                      )}
+                      <span className="text-xs font-semibold text-amber-400">{ach.issuer}</span>
+                    </div>
+                    {ach.issueDate && (
+                      <span className="text-xs text-zinc-500 font-mono">{ach.issueDate}</span>
                     )}
-                    <span className="text-xs font-semibold text-amber-400">{ach.issuer}</span>
                   </div>
-                  {ach.issueDate && (
-                    <span className="text-xs text-zinc-500 font-mono">{ach.issueDate}</span>
+
+                  <h2 className="font-bold text-base sm:text-lg text-zinc-100">{ach.title}</h2>
+
+                  {ach.description && (
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      {ach.description}
+                    </p>
+                  )}
+
+                  {ach.credentialUrl && (
+                    <div className="pt-1">
+                      <a
+                        href={ach.credentialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-sky-400 hover:underline inline-flex items-center gap-1"
+                      >
+                        <span>Verification Link</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
                   )}
                 </div>
 
-                <h2 className="font-bold text-base sm:text-lg text-zinc-100">{ach.title}</h2>
-
-                {ach.description && (
-                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
-                    {ach.description}
-                  </p>
-                )}
-
-                {ach.credentialUrl && (
-                  <div className="pt-1">
-                    <a
-                      href={ach.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-sky-400 hover:underline inline-flex items-center gap-1"
-                    >
-                      <span>Verification Link</span>
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
-                <form action={toggleAchievementFeaturedAction.bind(null, ach.id, ach.isFeatured)}>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${ach.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
-                  >
-                    <Star className={`h-3 w-3 mr-1 ${ach.isFeatured ? "fill-amber-400" : ""}`} />
-                    <span>{ach.isFeatured ? "Unfeature" : "Feature"}</span>
-                  </Button>
-                </form>
-
-                <div className="flex items-center gap-1.5">
-                  <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                    <Link href={`/dashboard/achievements/${ach.id}/edit`}>
-                      <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
-                      <span>Edit</span>
-                    </Link>
-                  </Button>
-
-                  <form action={deleteAchievementAction.bind(null, ach.id)}>
+                {/* Action Buttons */}
+                <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
+                  <ReorderButtons kind="achievements" id={ach.id} isFirst={idx === 0} isLast={idx === userAchievements.length - 1} />
+                  <form action={toggleAchievementFeaturedAction.bind(null, ach.id, ach.isFeatured)}>
                     <Button
                       type="submit"
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
-                      title="Delete"
+                      className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${ach.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Star className={`h-3 w-3 mr-1 ${ach.isFeatured ? "fill-amber-400" : ""}`} />
+                      <span>{ach.isFeatured ? "Unfeature" : "Feature"}</span>
                     </Button>
                   </form>
+
+                  <div className="flex items-center gap-1.5">
+                    <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                      <Link href={`/dashboard/achievements/${ach.id}/edit`}>
+                        <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
+                        <span>Edit</span>
+                      </Link>
+                    </Button>
+
+                    <form action={deleteAchievementAction.bind(null, ach.id)}>
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
+                        title="Delete"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </form>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ),
+          }))}
+        />
       )}
     </div>
   );

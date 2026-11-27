@@ -23,6 +23,9 @@ import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platform
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function FancyCreativeTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 3);
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 3);
@@ -32,8 +35,9 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = normalizeSocialLinks(portfolio.socialLinks);
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20 relative">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-12 sm:gap-16 lg:gap-20 relative">
       {/* Decorative ambient gradient backdrop */}
       <div
         className="absolute -top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full blur-[120px] pointer-events-none opacity-30"
@@ -131,7 +135,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
 
       {/* Featured Projects */}
       {featuredProjects.length > 0 && (
-        <section className="space-y-8">
+        <section style={sectionStyle("projects")} className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -179,7 +183,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
 
       {/* Featured Services with Glowing Price Tags */}
       {featuredServices.length > 0 && (
-        <section className="space-y-8">
+        <section style={sectionStyle("services")} className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -241,7 +245,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
 
       {/* Featured Articles with Card Highlights */}
       {featuredArticles.length > 0 && (
-        <section className="space-y-8">
+        <section style={sectionStyle("articles")} className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -300,7 +304,7 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
 
       {/* Experience Tree with Neon Bullets */}
       {featuredExperiences.length > 0 && (
-        <section className="space-y-8">
+        <section style={sectionStyle("experience")} className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -356,8 +360,10 @@ export default function FancyCreativeTemplate({ portfolio }: { portfolio: Portfo
         </section>
       )}
 
+      <HomeEducation portfolio={portfolio} variant="fancy" style={sectionStyle("education")} />
+
       {/* High-Impact Contact Banner with Accent Glow */}
-      <section className="relative overflow-hidden p-6 sm:p-10 md:p-14 rounded-3xl bg-zinc-900/90 border border-zinc-800 text-center space-y-5 shadow-2xl">
+      <section style={SECTION_LAST} className="relative overflow-hidden p-6 sm:p-10 md:p-14 rounded-3xl bg-zinc-900/90 border border-zinc-800 text-center space-y-5 shadow-2xl">
         <div
           className="absolute -top-20 -right-20 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
           style={{ backgroundColor: "var(--theme-accent)" }}

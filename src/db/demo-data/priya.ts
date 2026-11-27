@@ -62,6 +62,32 @@ The lesson: a calibrated "we're not sure" is worth more than a confident wrong n
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Meridian School of Design",
+      degree: "MFA",
+      fieldOfStudy: "Interaction Design",
+      location: "Chicago, IL",
+      startDate: "2015-09",
+      endDate: "2017-06",
+      isCurrent: false,
+      grade: "Dean's Award",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Eastfield College",
+      degree: "BA",
+      fieldOfStudy: "Visual Communication",
+      location: "Austin, TX",
+      startDate: "2011-09",
+      endDate: "2015-05",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Basketly",

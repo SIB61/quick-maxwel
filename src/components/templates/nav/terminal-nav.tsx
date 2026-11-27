@@ -8,6 +8,7 @@ export function TerminalNavbar({ portfolio, handle }: { portfolio: PortfolioUser
     { label: "cd ~", href: `/${handle}`, desc: "overview", show: true },
     { label: "cd ~/articles", href: `/${handle}/articles`, desc: "writings", show: (portfolio.articles?.length || 0) > 0 },
     { label: "cd ~/experience", href: `/${handle}/experience`, desc: "career", show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "cd ~/education", href: `/${handle}/education`, desc: "school", show: (portfolio.education?.length || 0) > 0 },
     { label: "cd ~/projects", href: `/${handle}/projects`, desc: "builds", show: (portfolio.projects?.length || 0) > 0 },
     { label: "cd ~/achievements", href: `/${handle}/achievements`, desc: "awards", show: (portfolio.achievements?.length || 0) > 0 },
     { label: "cd ~/services", href: `/${handle}/services`, desc: "advisory", show: (portfolio.services?.length || 0) > 0 },
