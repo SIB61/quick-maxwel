@@ -77,6 +77,32 @@ Contrast ratios are necessary but not sufficient. Test palettes in **sunlight on
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Larchmont Medical University",
+      degree: "Doctor of Medicine",
+      fieldOfStudy: "Internal Medicine",
+      location: "Toronto, Canada",
+      startDate: "2008-09",
+      endDate: "2012-05",
+      isCurrent: false,
+      grade: "Honors",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Larchmont University",
+      degree: "BSc",
+      fieldOfStudy: "Biomedical Science",
+      location: "Toronto, Canada",
+      startDate: "2004-09",
+      endDate: "2008-05",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Kinly Health",

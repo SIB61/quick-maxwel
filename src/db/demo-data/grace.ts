@@ -59,6 +59,32 @@ We replaced four generic webinars a month with **one deep, customer-led session*
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Stonebridge University",
+      degree: "MBA",
+      fieldOfStudy: "Marketing",
+      location: "New York, NY",
+      startDate: "2012-09",
+      endDate: "2014-05",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Fairhaven College",
+      degree: "BA",
+      fieldOfStudy: "Communications",
+      location: "Portland, OR",
+      startDate: "2008-09",
+      endDate: "2012-05",
+      isCurrent: false,
+      grade: "Cum Laude",
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Whitfield Strategy",

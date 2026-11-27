@@ -32,6 +32,9 @@ import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
 type TabId = "all" | "articles" | "experience" | "projects" | "services" | "events";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const [activeTab, setActiveTab] = useState<TabId>("all");
   const [copied, setCopied] = useState(false);
@@ -51,6 +54,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 font-mono text-xs sm:text-sm">
       {/* Window Container */}
@@ -102,7 +106,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
         </div>
 
         {/* Terminal Main Body */}
-        <div className="p-6 sm:p-8 space-y-10 leading-relaxed text-zinc-300">
+        <div className="p-6 sm:p-8 flex flex-col gap-10 leading-relaxed text-zinc-300">
           {/* Section: Whoami & Profile Summary */}
           {(activeTab === "all" || activeTab === "experience") && (
             <div className="space-y-4">
@@ -197,7 +201,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
 
           {/* Section: Writings / Articles */}
           {(activeTab === "all" || activeTab === "articles") && featuredArticles.length > 0 && (
-            <div className="space-y-4">
+            <div style={sectionStyle("articles")} className="space-y-4">
               <div className="flex items-center justify-between text-zinc-400">
                 <div className="flex items-center gap-2">
                   <span style={{ color: "var(--theme-accent)" }}>➜</span>
@@ -247,7 +251,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
 
           {/* Section: Career & Experience */}
           {(activeTab === "all" || activeTab === "experience") && featuredExperiences.length > 0 && (
-            <div className="space-y-4">
+            <div style={sectionStyle("experience")} className="space-y-4">
               <div className="flex items-center justify-between text-zinc-400">
                 <div className="flex items-center gap-2">
                   <span style={{ color: "var(--theme-accent)" }}>➜</span>
@@ -309,7 +313,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
 
           {/* Section: Projects */}
           {(activeTab === "all" || activeTab === "projects") && featuredProjects.length > 0 && (
-            <div className="space-y-4">
+            <div style={sectionStyle("projects")} className="space-y-4">
               <div className="flex items-center justify-between text-zinc-400">
                 <div className="flex items-center gap-2">
                   <span style={{ color: "var(--theme-accent)" }}>➜</span>
@@ -355,7 +359,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
 
           {/* Section: Services & Consulting */}
           {(activeTab === "all" || activeTab === "services") && featuredServices.length > 0 && (
-            <div className="space-y-4">
+            <div style={sectionStyle("services")} className="space-y-4">
               <div className="flex items-center justify-between text-zinc-400">
                 <div className="flex items-center gap-2">
                   <span style={{ color: "var(--theme-accent)" }}>➜</span>
@@ -403,7 +407,7 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
 
           {/* Section: Accolades & Events */}
           {(activeTab === "all" || activeTab === "events") && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            <div style={sectionStyle("achievements")} className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
               {featuredAchievements.length > 0 && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-zinc-400">
@@ -442,8 +446,12 @@ export default function DeveloperTerminalTemplate({ portfolio }: { portfolio: Po
             </div>
           )}
 
+          {activeTab === "all" && (
+            <HomeEducation portfolio={portfolio} variant="terminal" style={sectionStyle("education")} />
+          )}
+
           {/* Interactive Shell Prompt Footer */}
-          <div className="pt-6 border-t border-zinc-800/80 space-y-3">
+          <div style={SECTION_LAST} className="pt-6 border-t border-zinc-800/80 space-y-3">
             <div className="flex items-center gap-2 text-zinc-400">
               <span style={{ color: "var(--theme-accent)" }}>➜</span>
               <span className="text-cyan-400">~</span>

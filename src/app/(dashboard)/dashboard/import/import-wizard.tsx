@@ -8,6 +8,7 @@ import {
   Briefcase,
   CheckCircle2,
   FolderKanban,
+  GraduationCap,
   Loader2,
   ShieldCheck,
   UploadCloud,
@@ -21,10 +22,10 @@ import { buildImport, readLinkedInFiles, type LinkedInImport } from "@/lib/linke
 
 type Props = {
   current: { headline: string; bio: string; location: string };
-  existing: { experiences: string[]; achievements: string[]; projects: string[] };
+  existing: { experiences: string[]; education: string[]; achievements: string[]; projects: string[] };
 };
 
-type Section = "experiences" | "achievements" | "projects";
+type Section = "experiences" | "education" | "achievements" | "projects";
 
 export function ImportWizard({ current, existing }: Props) {
   const [data, setData] = useState<LinkedInImport | null>(null);
@@ -33,6 +34,7 @@ export function ImportWizard({ current, existing }: Props) {
   const [dragging, setDragging] = useState(false);
   const [selected, setSelected] = useState<Record<Section, Set<string>>>({
     experiences: new Set(),
+    education: new Set(),
     achievements: new Set(),
     projects: new Set(),
   });
@@ -44,6 +46,7 @@ export function ImportWizard({ current, existing }: Props) {
   const dupes = useMemo(
     () => ({
       experiences: new Set(existing.experiences),
+      education: new Set(existing.education),
       achievements: new Set(existing.achievements),
       projects: new Set(existing.projects),
     }),
@@ -67,6 +70,7 @@ export function ImportWizard({ current, existing }: Props) {
         const parsed = buildImport(csvs);
         const total =
           parsed.experiences.length +
+          parsed.education.length +
           parsed.achievements.length +
           parsed.projects.length +
           (parsed.profile ? 1 : 0);
@@ -77,6 +81,7 @@ export function ImportWizard({ current, existing }: Props) {
         setData(parsed);
         setSelected({
           experiences: new Set(parsed.experiences.map((e) => e.key).filter((k) => !dupes.experiences.has(k))),
+          education: new Set(parsed.education.map((e) => e.key).filter((k) => !dupes.education.has(k))),
           achievements: new Set(parsed.achievements.map((a) => a.key).filter((k) => !dupes.achievements.has(k))),
           projects: new Set(parsed.projects.map((p) => p.key).filter((k) => !dupes.projects.has(k))),
         });
@@ -111,6 +116,7 @@ export function ImportWizard({ current, existing }: Props) {
 
   const selectedCount =
     selected.experiences.size +
+    selected.education.size +
     selected.achievements.size +
     selected.projects.size +
     Object.values(profilePick).filter(Boolean).length;
@@ -128,6 +134,7 @@ export function ImportWizard({ current, existing }: Props) {
             }
           : null,
         experiences: data.experiences.filter((e) => selected.experiences.has(e.key)),
+        education: data.education.filter((e) => selected.education.has(e.key)),
         achievements: data.achievements.filter((a) => selected.achievements.has(a.key)),
         projects: data.projects.filter((p) => selected.projects.has(p.key)),
       });
@@ -145,7 +152,7 @@ export function ImportWizard({ current, existing }: Props) {
         <div>
           <h2 className="text-xl font-bold text-zinc-50">Your portfolio is filled in</h2>
           <p className="text-sm text-zinc-400 mt-1">
-            Imported {c.experiences} experience{c.experiences === 1 ? "" : "s"}, {c.achievements} certification
+            Imported {c.experiences} experience{c.experiences === 1 ? "" : "s"}, {c.education} education entr{c.education === 1 ? "y" : "ies"}, {c.achievements} certification
             {c.achievements === 1 ? "" : "s"} and {c.projects} project{c.projects === 1 ? "" : "s"}
             {c.profile ? ", and updated your profile" : ""}.
             {c.skipped > 0 && ` ${c.skipped} duplicate${c.skipped === 1 ? " was" : "s were"} skipped.`}
@@ -184,7 +191,7 @@ export function ImportWizard({ current, existing }: Props) {
             </li>
             <li>
               Choose <strong className="text-zinc-200">&ldquo;Want something in particular?&rdquo;</strong> and tick{" "}
-              <strong className="text-zinc-200">Profile, Positions, Certifications, Projects, Skills</strong>, then
+              <strong className="text-zinc-200">Profile, Positions, Education, Certifications, Projects, Skills</strong>, then
               request the archive.
             </li>
             <li>LinkedIn emails you a ZIP (usually within ~10 minutes). Download it — no need to unzip.</li>
@@ -285,6 +292,20 @@ export function ImportWizard({ current, existing }: Props) {
         selected={selected.experiences}
         onToggle={(k) => toggle("experiences", k)}
         onToggleAll={(keys) => toggleAll("experiences", keys)}
+      />
+      <ReviewList
+        title="Education"
+        icon={<GraduationCap className="h-4 w-4" />}
+        items={data.education.map((e) => ({
+          key: e.key,
+          title: e.degree,
+          subtitle: e.institution,
+          meta: `${e.startDate} – ${e.endDate}`,
+          duplicate: dupes.education.has(e.key),
+        }))}
+        selected={selected.education}
+        onToggle={(k) => toggle("education", k)}
+        onToggleAll={(keys) => toggleAll("education", keys)}
       />
       <ReviewList
         title="Certifications"

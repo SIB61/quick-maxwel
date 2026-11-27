@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, FolderKanban, Star, Trash2, Edit3, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { SortableList } from "@/components/dashboard/sortable-list";
+import { ReorderButtons } from "@/components/dashboard/reorder-buttons";
+import { orderedBy } from "@/lib/ordering";
 import { deleteProjectAction, toggleProjectFeaturedAction } from "@/actions/projects";
 
 export default async function DashboardProjectsPage() {
@@ -15,7 +18,7 @@ export default async function DashboardProjectsPage() {
 
   const userProjects = await db.query.projects.findMany({
     where: eq(projects.userId, user.id),
-    orderBy: [asc(projects.orderIndex), asc(projects.createdAt)],
+    orderBy: orderedBy("projects"),
   });
 
   return (
@@ -55,89 +58,95 @@ export default async function DashboardProjectsPage() {
           </Button>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userProjects.map((project) => (
-            <Card
-              key={project.id}
-              className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {project.isFeatured && (
-                      <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
-                        <Star className="h-3 w-3 mr-1 fill-amber-400" />
-                        Featured
-                      </Badge>
+        <SortableList
+          kind="projects"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          items={userProjects.map((project, idx) => ({
+            id: project.id,
+            node: (
+              <Card
+                key={project.id}
+                className="bg-zinc-900/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl p-6 py-5 gap-0 transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      {project.isFeatured && (
+                        <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-xs px-2 py-0.5">
+                          <Star className="h-3 w-3 mr-1 fill-amber-400" />
+                          Featured
+                        </Badge>
+                      )}
+                      <span className="text-xs font-semibold text-emerald-400">
+                        {PROJECT_STATUS_LABELS[project.status] ?? project.status}
+                      </span>
+                    </div>
+                    {project.timeline && (
+                      <span className="text-xs font-mono text-zinc-500">{project.timeline}</span>
                     )}
-                    <span className="text-xs font-semibold text-emerald-400">
-                      {PROJECT_STATUS_LABELS[project.status] ?? project.status}
-                    </span>
                   </div>
-                  {project.timeline && (
-                    <span className="text-xs font-mono text-zinc-500">{project.timeline}</span>
+
+                  <h2 className="font-bold text-base sm:text-lg text-zinc-100">{project.title}</h2>
+
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
+
+                  {project.techStack && project.techStack.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {project.techStack.slice(0, 5).map((tech) => (
+                        <Badge key={tech} variant="outline" className="text-[10px] border-zinc-700 text-zinc-300 px-1.5 py-0">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
                   )}
                 </div>
 
-                <h2 className="font-bold text-base sm:text-lg text-zinc-100">{project.title}</h2>
-
-                <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">{project.summary}</p>
-
-                {project.techStack && project.techStack.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {project.techStack.slice(0, 5).map((tech) => (
-                      <Badge key={tech} variant="outline" className="text-[10px] border-zinc-700 text-zinc-300 px-1.5 py-0">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
-                <form action={toggleProjectFeaturedAction.bind(null, project.id, project.isFeatured)}>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${project.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
-                  >
-                    <Star className={`h-3 w-3 mr-1 ${project.isFeatured ? "fill-amber-400" : ""}`} />
-                    <span>{project.isFeatured ? "Unfeature" : "Feature"}</span>
-                  </Button>
-                </form>
-
-                <div className="flex items-center gap-1.5">
-                  <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                    <Link href={`/${user.handle}/projects/${project.slug}`} target="_blank">
-                      <ExternalLink className="h-3 w-3 mr-1 text-zinc-400" />
-                      <span>View</span>
-                    </Link>
-                  </Button>
-
-                  <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
-                    <Link href={`/dashboard/projects/${project.id}/edit`}>
-                      <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
-                      <span>Edit</span>
-                    </Link>
-                  </Button>
-
-                  <form action={deleteProjectAction.bind(null, project.id)}>
+                <div className="flex items-center justify-between pt-3 border-t border-zinc-800/60">
+                  <ReorderButtons kind="projects" id={project.id} isFirst={idx === 0} isLast={idx === userProjects.length - 1} />
+                  <form action={toggleProjectFeaturedAction.bind(null, project.id, project.isFeatured)}>
                     <Button
                       type="submit"
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
-                      title="Delete Project"
+                      className={`h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 ${project.isFeatured ? "text-amber-400 bg-amber-500/10" : "text-zinc-400"}`}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Star className={`h-3 w-3 mr-1 ${project.isFeatured ? "fill-amber-400" : ""}`} />
+                      <span>{project.isFeatured ? "Unfeature" : "Feature"}</span>
                     </Button>
                   </form>
+
+                  <div className="flex items-center gap-1.5">
+                    <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                      <Link href={`/${user.handle}/projects/${project.slug}`} target="_blank">
+                        <ExternalLink className="h-3 w-3 mr-1 text-zinc-400" />
+                        <span>View</span>
+                      </Link>
+                    </Button>
+
+                    <Button asChild variant="outline" size="sm" className="h-8 px-2.5 rounded-lg text-xs border-zinc-800 hover:border-zinc-700 text-zinc-300">
+                      <Link href={`/dashboard/projects/${project.id}/edit`}>
+                        <Edit3 className="h-3 w-3 mr-1 text-blue-400" />
+                        <span>Edit</span>
+                      </Link>
+                    </Button>
+
+                    <form action={deleteProjectAction.bind(null, project.id)}>
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 rounded-lg text-xs text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
+                        title="Delete Project"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </form>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ),
+          }))}
+        />
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import { users } from "./users";
 import { portfolioSettings } from "./portfolio-settings";
 import { articles } from "./articles";
 import { experiences } from "./experiences";
+import { education } from "./education";
 import { achievements } from "./achievements";
 import { services } from "./services";
 import { projects } from "./projects";
@@ -13,6 +14,7 @@ export * from "./users";
 export * from "./portfolio-settings";
 export * from "./articles";
 export * from "./experiences";
+export * from "./education";
 export * from "./achievements";
 export * from "./services";
 export * from "./projects";
@@ -27,6 +29,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   }),
   articles: many(articles),
   experiences: many(experiences),
+  education: many(education),
   achievements: many(achievements),
   services: many(services),
   projects: many(projects),
@@ -51,6 +54,13 @@ export const articlesRelations = relations(articles, ({ one }) => ({
 export const experiencesRelations = relations(experiences, ({ one }) => ({
   user: one(users, {
     fields: [experiences.userId],
+    references: [users.id],
+  }),
+}));
+
+export const educationRelations = relations(education, ({ one }) => ({
+  user: one(users, {
+    fields: [education.userId],
     references: [users.id],
   }),
 }));

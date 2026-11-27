@@ -59,6 +59,32 @@ Since 2020, every dataset our lab produces is released with a DOI on publication
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Alder Technical University",
+      degree: "MEng",
+      fieldOfStudy: "Structural Engineering",
+      location: "Zurich, Switzerland",
+      startDate: "2010-09",
+      endDate: "2013-06",
+      isCurrent: false,
+      grade: "First Class",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Alder Technical University",
+      degree: "BEng",
+      fieldOfStudy: "Civil Engineering",
+      location: "Zurich, Switzerland",
+      startDate: "2007-09",
+      endDate: "2010-06",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "University of Copenhagen",

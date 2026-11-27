@@ -22,6 +22,9 @@ import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platform
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function MinimalSwissTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 4);
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
@@ -31,8 +34,9 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = normalizeSocialLinks(portfolio.socialLinks);
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-32 font-sans text-zinc-100">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-16 sm:gap-24 lg:gap-32 font-sans text-zinc-100">
       {/* 00: Swiss Editorial Hero */}
       <section className="space-y-10 pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4 text-xs font-mono tracking-widest uppercase text-zinc-500">
@@ -112,7 +116,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
       {/* 01: Selected Technical Essays */}
       {featuredArticles.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("articles")} className="space-y-6">
           <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
             <div>
               <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SECTION 01</span>
@@ -168,7 +172,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
       {/* 02: Career Record & Experience */}
       {featuredExperiences.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("experience")} className="space-y-6">
           <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
             <div>
               <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SECTION 02</span>
@@ -229,7 +233,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
       {/* Selected Works */}
       {featuredProjects.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("projects")} className="space-y-6">
           <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
             <div>
               <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SELECTED WORKS</span>
@@ -268,7 +272,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
 
       {/* 03: Advisory & Engineering Services */}
       {featuredServices.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("services")} className="space-y-6">
           <div className="flex items-end justify-between border-b-2 border-zinc-100 pb-3">
             <div>
               <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SECTION 03</span>
@@ -319,7 +323,7 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
       )}
 
       {/* 04: Honors & Public Speaking */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div style={sectionStyle("achievements")} className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {featuredAchievements.length > 0 && (
           <div className="space-y-4">
             <div className="border-b-2 border-zinc-100 pb-2 flex items-center justify-between">
@@ -368,8 +372,10 @@ export default function MinimalSwissTemplate({ portfolio }: { portfolio: Portfol
         )}
       </div>
 
+      <HomeEducation portfolio={portfolio} variant="swiss" style={sectionStyle("education")} />
+
       {/* 05: Editorial Transmission / Contact */}
-      <section className="border-t-2 border-zinc-100 pt-10 pb-4 space-y-6">
+      <section style={SECTION_LAST} className="border-t-2 border-zinc-100 pt-10 pb-4 space-y-6">
         <div className="space-y-2">
           <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">SECTION 05 // TRANSMISSION</span>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-zinc-50">

@@ -22,6 +22,9 @@ import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platform
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 3);
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
@@ -31,8 +34,9 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = normalizeSocialLinks(portfolio.socialLinks);
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16 lg:space-y-20">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-12 sm:gap-16 lg:gap-20">
       {/* Editorial Minimal Hero */}
       <section className="space-y-6 pt-4 border-b border-zinc-800/60 pb-12">
         <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
@@ -112,7 +116,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
 
       {/* Structured Resume Timeline for Experience */}
       {featuredExperiences.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("experience")} className="space-y-6">
           <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
               <Briefcase className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
@@ -173,7 +177,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
 
       {/* Featured Articles Section */}
       {featuredArticles.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("articles")} className="space-y-6">
           <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
               <FileText className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
@@ -220,7 +224,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
 
       {/* Featured Projects */}
       {featuredProjects.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("projects")} className="space-y-6">
           <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
               <FolderKanban className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
@@ -269,7 +273,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
 
       {/* Featured Services */}
       {featuredServices.length > 0 && (
-        <section className="space-y-6">
+        <section style={sectionStyle("services")} className="space-y-6">
           <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
               <Sparkles className="h-5 w-5" style={{ color: "var(--theme-accent)" }} />
@@ -314,7 +318,7 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
       )}
 
       {/* Achievements & Speaking */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+      <div style={sectionStyle("achievements")} className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
         {featuredAchievements.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-zinc-800/60 pb-2">
@@ -365,8 +369,10 @@ export default function SimpleProfessionalTemplate({ portfolio }: { portfolio: P
         )}
       </div>
 
+      <HomeEducation portfolio={portfolio} variant="simple" style={sectionStyle("education")} />
+
       {/* Direct Contact Banner */}
-      <section className="p-8 sm:p-10 rounded-2xl bg-zinc-900/40 border border-zinc-800 text-center space-y-3">
+      <section style={SECTION_LAST} className="p-8 sm:p-10 rounded-2xl bg-zinc-900/40 border border-zinc-800 text-center space-y-3">
         <h2 className="text-xl sm:text-2xl font-bold text-zinc-100">Get in touch</h2>
         <p className="text-xs sm:text-sm text-zinc-400 max-w-sm mx-auto">
           Interested in working together or discussing an engineering opportunity?

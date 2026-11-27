@@ -67,6 +67,32 @@ Our clinic enrolled **620 patients** in a remote monitoring program using connec
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Rivergate University",
+      degree: "PhD",
+      fieldOfStudy: "Computational Biology",
+      location: "Geneva, Switzerland",
+      startDate: "2014-09",
+      endDate: "2019-03",
+      isCurrent: false,
+      grade: "Magna Cum Laude",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Rivergate University",
+      degree: "MSc",
+      fieldOfStudy: "Bioinformatics",
+      location: "Geneva, Switzerland",
+      startDate: "2012-09",
+      endDate: "2014-06",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Harbor General Hospital",

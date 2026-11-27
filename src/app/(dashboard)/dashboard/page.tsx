@@ -1,6 +1,6 @@
 import { requireAuth } from "@/lib/auth";
 import { db } from "@/db";
-import { articles, experiences, achievements, services, projects, events, contacts, portfolioSettings } from "@/db/schema";
+import { articles, education, experiences, achievements, services, projects, events, contacts, portfolioSettings } from "@/db/schema";
 import { eq, count, desc } from "drizzle-orm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   FileText,
   Briefcase,
+  GraduationCap,
   Award,
   Sparkles,
   Calendar,
@@ -35,6 +36,7 @@ export default async function DashboardOverviewPage() {
   const [
     [articlesCount],
     [experiencesCount],
+    [educationCount],
     [achievementsCount],
     [servicesCount],
     [projectsCount],
@@ -45,6 +47,7 @@ export default async function DashboardOverviewPage() {
   ] = await Promise.all([
     db.select({ count: count() }).from(articles).where(eq(articles.userId, user.id)),
     db.select({ count: count() }).from(experiences).where(eq(experiences.userId, user.id)),
+    db.select({ count: count() }).from(education).where(eq(education.userId, user.id)),
     db.select({ count: count() }).from(achievements).where(eq(achievements.userId, user.id)),
     db.select({ count: count() }).from(services).where(eq(services.userId, user.id)),
     db.select({ count: count() }).from(projects).where(eq(projects.userId, user.id)),
@@ -78,6 +81,15 @@ export default async function DashboardOverviewPage() {
       color: "text-sky-400",
       bg: "bg-sky-500/10 border-sky-500/20",
       addHref: "/dashboard/experience/new",
+    },
+    {
+      title: "Education",
+      count: educationCount?.count || 0,
+      icon: GraduationCap,
+      href: "/dashboard/education",
+      color: "text-violet-400",
+      bg: "bg-violet-500/10 border-violet-500/20",
+      addHref: "/dashboard/education/new",
     },
     {
       title: "Projects",
@@ -218,7 +230,7 @@ export default async function DashboardOverviewPage() {
           <span className="text-xs text-zinc-400 font-mono">6 Categories Active</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-3 sm:gap-4">
           {stats.map((item) => {
             const Icon = item.icon;
             return (

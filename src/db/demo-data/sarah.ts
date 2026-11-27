@@ -85,6 +85,32 @@ When processing telemetry data at 100,000 packets per second, garbage collection
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Northbridge University",
+      degree: "MSc",
+      fieldOfStudy: "Distributed Systems",
+      location: "Cambridge, UK",
+      startDate: "2012-09",
+      endDate: "2014-06",
+      isCurrent: false,
+      grade: "Distinction",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Hollis Institute of Technology",
+      degree: "BSc",
+      fieldOfStudy: "Computer Science",
+      location: "Boston, MA",
+      startDate: "2008-09",
+      endDate: "2012-06",
+      isCurrent: false,
+      grade: "Summa Cum Laude",
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Apex Cloud Infrastructure",

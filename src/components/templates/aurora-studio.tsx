@@ -24,6 +24,9 @@ import { normalizeSocialLinks, SOCIAL_PLATFORM_MAP } from "@/lib/social-platform
 import Link from "next/link";
 import { RichContentDisplay } from "@/components/ui/rich-content-display";
 
+import { sectionStyler, SECTION_LAST } from "@/lib/sections";
+import { HomeEducation } from "./home-education";
+
 export default function AuroraStudioTemplate({ portfolio }: { portfolio: PortfolioUser }) {
   const featuredArticles = portfolio.articles.filter((a) => a.isFeatured).slice(0, 4);
   const featuredExperiences = portfolio.experiences.filter((e) => e.isFeatured).slice(0, 4);
@@ -33,8 +36,9 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
   const featuredEvents = portfolio.events.filter((e) => e.isFeatured).slice(0, 3);
   const socials = normalizeSocialLinks(portfolio.socialLinks);
 
+  const sectionStyle = sectionStyler(portfolio);
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 lg:space-y-28 relative">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-16 sm:gap-24 lg:gap-28 relative">
       {/* Background Spatial Aurora Lighting Flares */}
       <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[750px] h-[450px] rounded-full blur-[140px] pointer-events-none opacity-25"
         style={{
@@ -149,7 +153,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
       {/* Featured Projects: Studio Works */}
       {featuredProjects.length > 0 && (
-        <section className="space-y-8 relative z-10">
+        <section style={sectionStyle("projects")} className="space-y-8 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -195,7 +199,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
       {/* Featured Services: Floating Studio Packages */}
       {featuredServices.length > 0 && (
-        <section className="space-y-8 relative z-10">
+        <section style={sectionStyle("services")} className="space-y-8 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -266,7 +270,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
       {/* Featured Writings: Spotlight Frosted Panels */}
       {featuredArticles.length > 0 && (
-        <section className="space-y-8 relative z-10">
+        <section style={sectionStyle("articles")} className="space-y-8 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -325,7 +329,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
 
       {/* Experience Highlights: Translucent Career Modules */}
       {featuredExperiences.length > 0 && (
-        <section className="space-y-8 relative z-10">
+        <section style={sectionStyle("experience")} className="space-y-8 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold" style={{ color: "var(--theme-accent)" }}>
@@ -384,7 +388,7 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
       )}
 
       {/* Accolades & Speaking: Frosted Glass Tiles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+      <div style={sectionStyle("achievements")} className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
         {featuredAchievements.length > 0 && (
           <div className="p-7 rounded-3xl bg-zinc-900/30 border border-white/10 backdrop-blur-xl space-y-4">
             <div className="flex items-center justify-between">
@@ -432,8 +436,10 @@ export default function AuroraStudioTemplate({ portfolio }: { portfolio: Portfol
         )}
       </div>
 
+      <HomeEducation portfolio={portfolio} variant="aurora" style={sectionStyle("education")} />
+
       {/* Spatial Call to Action Banner */}
-      <section className="relative overflow-hidden p-10 sm:p-14 rounded-3xl bg-gradient-to-br from-zinc-900/60 via-zinc-900/30 to-zinc-950 border border-white/15 backdrop-blur-2xl text-center space-y-6 shadow-2xl">
+      <section style={SECTION_LAST} className="relative overflow-hidden p-10 sm:p-14 rounded-3xl bg-gradient-to-br from-zinc-900/60 via-zinc-900/30 to-zinc-950 border border-white/15 backdrop-blur-2xl text-center space-y-6 shadow-2xl">
         <div
           className="absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
           style={{ backgroundColor: "var(--theme-accent)" }}

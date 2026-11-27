@@ -57,6 +57,32 @@ My quotes have three parts: **creative fee**, **usage license**, and **productio
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Open Hearth Academy",
+      degree: "Certificate",
+      fieldOfStudy: "Full-Stack Web Development",
+      location: "Remote",
+      startDate: "2019-01",
+      endDate: "2019-09",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Calder Community College",
+      degree: "AA",
+      fieldOfStudy: "Business Administration",
+      location: "Denver, CO",
+      startDate: "2015-09",
+      endDate: "2017-05",
+      isCurrent: false,
+      grade: null,
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Independent",

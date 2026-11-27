@@ -22,6 +22,16 @@ export type ImportedExperience = {
   description: string;
 };
 
+export type ImportedEducation = {
+  key: string;
+  institution: string;
+  degree: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  description: string;
+};
+
 export type ImportedAchievement = {
   key: string;
   title: string;
@@ -41,6 +51,7 @@ export type ImportedProject = {
 export type LinkedInImport = {
   profile: ImportedProfile | null;
   experiences: ImportedExperience[];
+  education: ImportedEducation[];
   achievements: ImportedAchievement[];
   projects: ImportedProject[];
   skills: string[];
@@ -176,6 +187,29 @@ function mapExperiences(rows: Record<string, string>[]): ImportedExperience[] {
   });
 }
 
+function mapEducation(rows: Record<string, string>[]): ImportedEducation[] {
+  const out: ImportedEducation[] = [];
+  for (const r of rows) {
+    const institution = clean(r["school name"]);
+    // LinkedIn sometimes leaves the degree blank; fall back so the entry isn't lost.
+    const degree = clean(r["degree name"]) || "Studies";
+    const startDate = normalizeDate(r["start date"] ?? "") || normalizeDate(r["end date"] ?? "");
+    if (!institution || !startDate) continue;
+    const end = normalizeDate(r["end date"] ?? "");
+    const notes = [clean(r["notes"]), clean(r["activities"])].filter(Boolean).join("\n\n");
+    out.push({
+      key: makeKey(institution, degree, startDate),
+      institution,
+      degree,
+      startDate,
+      endDate: end || "Present",
+      isCurrent: !end,
+      description: notes,
+    });
+  }
+  return out.sort((a, b) => b.startDate.localeCompare(a.startDate));
+}
+
 function mapAchievements(rows: Record<string, string>[]): ImportedAchievement[] {
   const out: ImportedAchievement[] = [];
   for (const r of rows) {
@@ -220,6 +254,7 @@ export function buildImport(files: Record<string, string>): LinkedInImport {
   return {
     profile: mapProfile(rec("profile.csv")),
     experiences: mapExperiences(rec("positions.csv")),
+    education: mapEducation(rec("education.csv")),
     achievements: mapAchievements(rec("certifications.csv")),
     projects: mapProjects(rec("projects.csv")),
     skills: Array.from(new Set(skills)),
@@ -229,6 +264,7 @@ export function buildImport(files: Record<string, string>): LinkedInImport {
 export const LINKEDIN_CSV_NAMES = [
   "profile.csv",
   "positions.csv",
+  "education.csv",
   "certifications.csv",
   "projects.csv",
   "skills.csv",

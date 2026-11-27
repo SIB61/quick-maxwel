@@ -17,6 +17,10 @@ export const portfolioSettings = pgTable("portfolio_settings", {
   seoDescription: text("seo_description"),
   seoKeywords: text("seo_keywords"),
   ogImageUrl: text("og_image_url"),
+  // Comma-separated home-page section keys, e.g. "projects,experience". Null = template default.
+  sectionOrder: text("section_order"),
+  // Comma-separated section keys hidden from the home page.
+  hiddenSections: text("hidden_sections"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

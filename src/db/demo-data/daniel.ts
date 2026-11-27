@@ -58,6 +58,32 @@ Across three projects we cut embodied carbon in concrete by **28–41%** using s
       isPublished: true,
     },
   ],
+  education: [
+    {
+      institution: "Kingsbridge Business School",
+      degree: "MBA",
+      fieldOfStudy: "Strategy & Operations",
+      location: "London, UK",
+      startDate: "2013-09",
+      endDate: "2015-06",
+      isCurrent: false,
+      grade: "Distinction",
+      isFeatured: true,
+      orderIndex: 0,
+    },
+    {
+      institution: "Westmere University",
+      degree: "BA",
+      fieldOfStudy: "Economics",
+      location: "Manchester, UK",
+      startDate: "2009-09",
+      endDate: "2012-06",
+      isCurrent: false,
+      grade: "2:1",
+      isFeatured: true,
+      orderIndex: 1,
+    },
+  ],
   experiences: [
     {
       company: "Meridian Infrastructure Partners",

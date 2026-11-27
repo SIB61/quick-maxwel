@@ -1,0 +1,1 @@
+ALTER TABLE "portfolio_settings" ADD COLUMN "hidden_sections" text;

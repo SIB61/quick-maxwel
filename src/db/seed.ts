@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 import { db } from "./index";
-import { users, portfolioSettings, articles, experiences, achievements, services, projects, events, contacts } from "./schema";
+import { users, portfolioSettings, articles, experiences, education, achievements, services, projects, events, contacts } from "./schema";
 import bcrypt from "bcryptjs";
 import { randomBytes } from "node:crypto";
 import { estimateReadTime } from "../lib/rich-text";
@@ -82,6 +82,7 @@ async function seed() {
           .values(own(profile.articles).map((a) => ({ ...a, readTime: estimateReadTime(a.content) })));
       }
       if (profile.experiences.length) await tx.insert(experiences).values(own(profile.experiences));
+      if (profile.education.length) await tx.insert(education).values(own(profile.education));
       if (profile.achievements.length) await tx.insert(achievements).values(own(profile.achievements));
       if (profile.services.length) await tx.insert(services).values(own(profile.services));
       if (profile.projects.length) await tx.insert(projects).values(own(profile.projects));

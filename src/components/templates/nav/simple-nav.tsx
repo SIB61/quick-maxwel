@@ -8,6 +8,7 @@ export function SimpleNavbar({ portfolio, handle }: { portfolio: PortfolioUser; 
     { label: "Overview", href: `/${handle}`, show: true },
     { label: "Articles", href: `/${handle}/articles`, show: (portfolio.articles?.length || 0) > 0 },
     { label: "Experience", href: `/${handle}/experience`, show: (portfolio.experiences?.length || 0) > 0 },
+    { label: "Education", href: `/${handle}/education`, show: (portfolio.education?.length || 0) > 0 },
     { label: "Projects", href: `/${handle}/projects`, show: (portfolio.projects?.length || 0) > 0 },
     { label: "Achievements", href: `/${handle}/achievements`, show: (portfolio.achievements?.length || 0) > 0 },
     { label: "Services", href: `/${handle}/services`, show: (portfolio.services?.length || 0) > 0 },
